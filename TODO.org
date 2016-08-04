@@ -1,0 +1,33 @@
+* TODOlist
+** TODO Set up LaTeX on my macbook air (fithesis template)
+** TODO Collect introductions from some papers
+
+* General notes
+I will start with writing just some overview here and probably then I will start writing everythin in a latex template.
+
+* STUCTURE
+** Introduction
+*** Introduction to the field of biological visualization
+    biological - analyticky(caver) nebo pro vykomunikovani scientific ideas (my)
+    not visualization, but scientific illustration
+    definovat terms(vis), story se da vyjadrit - interactive, story bez interakce
+    do workflow prinasim interactive visualization for scientific animation authoring (preview vysledku)
+    Here I write about the whole field of visualization of biological stuff.
+    I should collect some introduction from all the relevant papers I can get so that I can get a sense of how I could introduce the field (and also learn about the field myself)
+
+    This is the first sentence which will be added later.
+    There are two basic applications of visualization in biology. First, we can focus on processing biological data and creating visualizations that help scientists analyze these data.
+    However, there is another application of computer graphics in biology. One can use computer graphics as a mean of communicating a story. These people, called scientific illustrators, use computer graphics to explan various processes that happen in all kinds of live organisms.
+    In this thesis, we've focus on the this second application. Scientific illustrators use professional 3D authoring applications. These applications are in most cases very robust and complex computer software and they require long training until one is able to use them to their full potential. Even then, these programs were not created with application in biological illustration in mind. The powering motors of 3D software industry has historically always been movies and video games industry. This means that these are the domains that 3D packages have been adapted to. One of the limitations that we could mention is that biological data is in most cases unusually large.
+    This means that there is still potential of how effective we can make the illustrator's workflow and this is exactly what this thesis has taken as its main objective.
+*** Motivation for the tool
+
+    There is cellVIEW tool that is unique by what it can render but there is missing a way of how to author content for this tool. My Maya plugin is a step towards a solution for this problem.
+** Implementation
+*** Introduction of the technologies
+**** Unity
+**** Maya
+***** Maya API
+      This might be a little bit more writing than just this little subsubchapter.
+**** WinAPI
+** Future work
