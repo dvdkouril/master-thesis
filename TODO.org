@@ -2,6 +2,11 @@
 ** TODO Set up LaTeX on my macbook air (fithesis template)
 ** TODO Collect introductions from some papers
 
+* What I want to talk about but I'm not sure yet where
+** TODO MayaAPI introduction and general ideas
+** TODO Shared memory
+** TODO I want to make some reeeeeelly nice diagrams in Illustrator
+
 * General notes
 I will start with writing just some overview here and probably then I will start writing everythin in a latex template.
 
@@ -26,8 +31,31 @@ I will start with writing just some overview here and probably then I will start
 ** Implementation
 *** Introduction of the technologies
 **** Unity
+Unity is a game engine developed by Unity Technologies. It has become incredibly popular in last few year, used mostly but independent game developers. It was also used for bigger projects and there have been applications also outside of games industry. 
+For CellVIEW, Unity has been chosen as a development tool of choice because of several reasons. First and foremost, having a solution like this helps with programmers productivity. Having an editor is also hugely helpful because of debugging and generally useful for development.
+***** Unity native plugin
+Unity allows developer to extend the engine with custom DLL plugins. There are actually two options - either "Managed" plugins written in C# or "Native" plugins written in C++. I have chosen to go with the second option mainly because of performance concerns. In this plugin we use Windows API calls to read data from shared memory.
 **** Maya
 ***** Maya API
       This might be a little bit more writing than just this little subsubchapter.
 **** WinAPI
 ** Future work
+Ideas how it could be extended and what could be implemented better.
+
+* STRUCTURE II
+What I don't know where to put:
+- I might need to write about shared memory in general. This probably should be in 
+** Introduction
+*** Biological visualization and illustration
+*** Motivation for the project
+** Tools
+Here I should talk just about the tools, maybe just a little bit about how they are used in the field but not very much about the actuall implementation
+*** Unity
+    About Unity, how it's a game engine but it can be used for various purposes.
+*** Maya
+    Generally about Maya, how it's been used in various disciplines and give the idea that it's an "industry standard" for any kind of animation and 3D content authoring.
+    
+** Implementation
+*** WinAPI
+*** Maya side
+*** Unity side
