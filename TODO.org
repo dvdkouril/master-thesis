@@ -59,3 +59,7 @@ Here I should talk just about the tools, maybe just a little bit about how they 
 *** WinAPI
 *** Maya side
 *** Unity side
+
+
+* Maya API Materials
+[[http://wanochoi.com/lecture/Maya_Programming_for_3D_Graphics.pdf][Maya Programming for 3D Graphics {PDF}]]
