@@ -5,6 +5,7 @@
 * What I want to talk about but I'm not sure yet where
 ** TODO MayaAPI introduction and general ideas
 ** TODO Shared memory
+** TODO I want to first talk about the two programs, what they are and how they are used in the context of the field
 ** TODO I want to make some reeeeeelly nice diagrams in Illustrator
 
 * General notes
