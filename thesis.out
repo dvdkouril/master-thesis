@@ -1,0 +1,15 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{\040Biological\040visualization\040and\040illustration}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{\040Motivation}{chapter.1}% 3
+\BOOKMARK [0][-]{chapter.2}{Overview\040of\040the\040two\040programs\040that\040I'm\040going\040to\040be\040bridging\040-\040TODO\040better\040title}{}% 4
+\BOOKMARK [1][-]{section.2.1}{\040CellVIEW}{chapter.2}% 5
+\BOOKMARK [2][-]{subsection.2.1.1}{\040Unity}{section.2.1}% 6
+\BOOKMARK [1][-]{section.2.2}{\040Maya}{chapter.2}% 7
+\BOOKMARK [2][-]{subsection.2.2.1}{\040Extensibility}{section.2.2}% 8
+\BOOKMARK [0][-]{chapter.3}{Suggested\040solution}{}% 9
+\BOOKMARK [0][-]{chapter.4}{Implementation\040details}{}% 10
+\BOOKMARK [1][-]{section.4.1}{\040WinAPI}{chapter.4}% 11
+\BOOKMARK [1][-]{section.4.2}{\040Maya\040side}{chapter.4}% 12
+\BOOKMARK [1][-]{section.4.3}{\040Unity\040side}{chapter.4}% 13
+\BOOKMARK [0][-]{chapter.5}{Future\040work}{}% 14
+\BOOKMARK [0][-]{appendix.A}{An\040appendix}{}% 15
