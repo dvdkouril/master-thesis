@@ -48,16 +48,14 @@
     type          = mgr,
     author        = David Kouřil,
     gender        = m,
-    advisor       = John Smith,
-    title         = {Maya2CellVIEW},
-    TeXtitle      = {Maya2CellVIEW},
-    keywords      = {keyword1, keyword2, ...},
+    advisor       = Ivan Viola,
+    title         = {Maya2CellVIEW: 3D Package Integrated Tool for Creating Large and Complex Molecular Scenes},
+    TeXtitle      = {Maya2CellVIEW: 3D Package Integrated Tool for Creating Large and Complex Molecular Scenes},
+    keywords      = {molecular visualization, illustration, Maya, Unity, ...},
     TeXkeywords   = {keyword1, keyword2, \ldots},
 }
 \thesislong{abstract}{
-    This is the abstract of my thesis, which can
-
-    span multiple paragraphs.
+    Scientific illustrators communicate the cutting edge of research through their illustrations. There are numerous software tools that assist them with this job. The aim of this thesis is to push abilities of illustrators working on a large scale molecular scenes. This is done by connecting two software packages - Maya and cellVIEW - combining the rendering possibilities of cellVIEW and modeling tools of Maya which results in more effective and efficient workflow.
 }
 \thesislong{thanks}{
     This is the acknowledgement for my thesis, which can
@@ -87,13 +85,31 @@
 \usepackage{menukeys}
 \begin{document}
 \chapter{Introduction}
+In this age, scientists come to new findings everyday. Unfortunately, not all of these are ever shown to the general public. It could be because of several reasons. One of them might be that the new facts are not easily visualizeable. This can also mean that the things that they found out are a piece of a bigger picture.
+This is the job of scientific illustrator. These artists are usually experts in their own scientific domain and what they do, is they try to visualize the science in their domain with easily understandable images, animation and other media.
+There are many tools for this job. Few years back illustrations have been done by hand, drawings and paintings.
+Then came the age of computer graphics. As graphics tools have become more and more common and sophisticated in a field of computer generated movies (reference to Pixar?). Tools have become more accessible, easier to use and so scientific illustrators adapted and tried to use these tools for their benefit. Tools like Maya, Cinema4D, or XXX are nowadays the industry standards when it comes to authoring 3D content. Inside these programs there usually exist a software called renderer. With this two part - modeler and renderer - the user is able to create images or animations (movies) from the 3d data that he creates in the software.
+ 
+
+\chapter{Introduction - old}
 \section{Biological visualization and illustration}
 Here I should somehow present the field (but I don't know what field exactly - biological visualization, molecular visualization?)
 \section{Motivation}
 In this thesis we focused on providing better tools for scientific illustrators. The idea was to bridge software that they are used to (represented by Maya) and software that brings modern rendering abilities to the domain of molecular rendering (represented by CellVIEW).
 Emphasize the difference between offline and realtime rendering.
 
-\chapter{Overview of the two programs that I'm going to be bridging - TODO better title}
+\chapter{State of the art}
+In this chapter we will look at the current tools for authoring of scientific illustrations. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings.
+Barely any of these tools is perfect. Some of the tools are very closed and tied to it's creator. The ideal case would be if any new user could approach any of these tools and with a little training be able to use it. This is not the case, unfortunately.
+From the ones that are fairly simple from the user experience stand point is Molecular Flipbook[ref]. It provides user the ability to create simple molecular models and animate them with a keyframe-like animation workflow. 
+
+An important part of any scientific illustration are the data the one is trying to illustrate. In the case of molecular models, there is cellPACK which helps us with this. cellPACK is a software that assembles large molecular scenes from a description (a recipe) of how this scene should look, what it should contain and in what quantity.
+
+\section{Maya}
+Autodesk Maya is not a tool for molecular visualization per-se.
+\section{cellVIEW}
+
+\chapter{OLD - Overview of the two programs that I'm going to be bridging - TODO better title}
 Here I will talk about in which context are these two 'systems' used and what is each for.
 The point of this project was to make a bridge between two programs. In this chapter we will look at both of them, see what they bring to the table when used separately, what they lack and how can be benefit from connecting them in this way.
 \section{CellVIEW}
@@ -108,16 +124,21 @@ Although Maya is a very robust piece of software that gives it's users ability t
 Luckily, Maya comes with an enormously useful ability to be extended with so called plugins. Autodesk provides an API that programmers can use to extend Maya's functionality.
 Several plugins have been developed specifically for the field of molecular visualization and illustration. As an example, we can name Molecular Maya which brings users the ability to import molecular data from online Protein Data Bank. The plugin then allows the user to choose how this data should be represented in a 3D scene and Maya then takes care of rendering such structure.
 
-\chapter{Suggested solution}
+\chapter{Method}
 I have introduced the field. I have sketched the problem that we are trying to solve (improving the workflow of animators/illustrators). Now it's time to describe the suggested solution.
+We talked about improving the workflow of scientific illustrator that uses Maya as an authoring software. The way that we are going to accomplish this is by taking advantage of extensibility of both Maya and Unity.
 
-\chapter{Implementation details}
+\chapter{Implementation}
 \section{WinAPI}
 \section{Maya side}
 Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
 \section{Unity side}
 Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#
-\chapter{Future work}
+
+\chapter{Demonstration}
+In this chapter we present two use cases of how the user can approach illustration with this new proposed system.
+
+\chapter{Discussion, future work}
 What optimizations I could implement, how it could be used and what would be needed to implemented for that.
 
 \appendix %% Start the appendices.
