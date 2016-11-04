@@ -160,6 +160,7 @@ Unity side of the system consists of two parts - a C++ plugin and a C# plugin. T
 \section{WinAPI}
 \section{Maya side}
 Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
+What we needed to do is basically scan the 3D scene graph and output positions and rotations of each macromolecule object. There are two usecases which needed to be considered. When modeling the scene, the rate of change is not that high. Usually the scene only changes very little (moving or rotating usually just one or few objects). However, we had in mind also a usecase where the animation of the scene would be outputed as well. This means that artist would create a keyframe animation of (nearly) all molecule objects and we would want to transfer the position/rotation data each frame for the animation. Obviously, for each of these use cases there are different ways how to achieve the optimal performance. In the end I settled for (todo: I don't actually know right now)
 \section{Unity side}
 Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#
 
