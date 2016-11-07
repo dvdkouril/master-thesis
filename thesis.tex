@@ -113,10 +113,11 @@ Some of these plugins have actually already been implemented to help artists in 
 Similar plugin exists for Blender modeling program as well. It's name is cellblender
 This could be a nice reference: https://pdb101.rcsb.org/learn/resource/molecular-animation-q-and-a-interview
 
+On the other side of the spectrum we have a hugely fragmented group of programs. These are usually bi-products of a ongoing research project or a scientific paper. Most of these share the property of solving some niche problem. They vary in the degree of how sophisticated they are. Most of them demonstrate a solution for a problem presented, and solved, in the paper which they accompany. However, there have been attempts to create solutions that provide its users the ability to author molecular content by themselves. As an example we can name Molecular Flipbook. It allow user to create simple molecular models and animate then with a simple, keyframe-like animation workflow.
 On the other side of the spectrum we have custom-built/ad-hoc-built tools coming out as a result of research in rendering and visualization community. These are usually tied to a specific use case, they are a demonstration of a solution. Because of the nature of the data that we are dealing with in molecular visualization, we are able to render our scenes using very effective techniques. The state-of-the-art approach to rendering molecules has been established impostor (or billboard) rendering (TODO: confirm and find references). This technique utilizes the fact that sphere looks the same from all view positions. Because of that we can, instead of rendering sphere consisting of many hundreds of vertices to get the desired level of detail, render sphere using just 4 vertices as a quad always oriented to the camera. This not only optimizes the rendering speed but also memory requirements.
 
 Barely any of these tools is perfect. Some of the tools are very closed and tied to it's creator. The ideal case would be if any new user could approach any of these tools and with a little training be able to use it. This is not the case, unfortunately.
-From the ones that are fairly simple from the user experience stand point is Molecular Flipbook[ref]. It provides user the ability to create simple molecular models and animate them with a keyframe-like animation workflow. 
+
 
 An important part of any scientific illustration are the data one is trying to illustrate. In the case of molecular models, there is cellPACK which helps us with this. cellPACK is a software that assembles large molecular scenes from a description (a recipe) of how this scene should look, what it should contain and in what quantity.
 
@@ -178,6 +179,8 @@ Topics - Architecture of the plugin, very generally about plugins (it's just a b
 
 \chapter{Demonstration}
 In this chapter we present two use cases of how the user can approach illustration with this new proposed system.
+Use case one - modified Janet's scene.
+Use case two - microtubulus (create a model in maya and then name it properly and we will get it in cellVIEW).
 
 \chapter{Discussion, future work}
 Limitations (of the tool) - what was done just for the use case and should be worked on for final production.

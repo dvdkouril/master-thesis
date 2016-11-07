@@ -1,0 +1,10 @@
+@article{iwasa2010animating,
+  title={Animating the model figure},
+  author={Iwasa, Janet H},
+  journal={Trends in cell biology},
+  volume={20},
+  number={12},
+  pages={699--704},
+  year={2010},
+  publisher={Elsevier}
+}
