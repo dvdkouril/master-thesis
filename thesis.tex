@@ -48,7 +48,7 @@
     type          = mgr,
     author        = David Kouřil,
     gender        = m,
-    advisor       = Ivan Viola,
+    advisor       = Ivan Viola and Barbora Kozlikova,
     title         = {Maya2CellVIEW: 3D Package Integrated Tool for Creating Large and Complex Molecular Scenes},
     TeXtitle      = {Maya2CellVIEW: 3D Package Integrated Tool for Creating Large and Complex Molecular Scenes},
     keywords      = {molecular visualization, illustration, Maya, Unity, ...},
@@ -85,7 +85,8 @@
 \usepackage{menukeys}
 \begin{document}
 \chapter{Introduction}
-In this day and age, scientists come to new findings everyday. Unfortunately, not all of these are ever shown to the general public. It could be because of several reasons. The new facts might not be easily visualizeable. Or the things that they found out are a piece of a bigger picture and hence cannot be easily communicated. On top of that, scientists are not usually trained to expose their results to the public eye.
+In this day and age, scientists come up with new findings everyday. Unfortunately, not all of these are ever shown to the general public. It could be because of several reasons. The new facts might not be easily visualizeable. Or the things that they found out are a piece of a bigger picture and hence cannot be easily communicated. On top of that, scientists are not usually trained to present their results to the public eye.
+
 This is the job of scientific illustrator. These artists are usually, by themselves (nebo first, proste zduraznit, ze jsou to predevsim vedci, kteri do oblasti maji ohromny insight), experts in their scientific field but on top of that they have focused on honing their artistic skills as well. They use their skill to visualize the science in their domain with easily understandable images, animations or other forms of media. To name just a few examples - Drew Berry, Graham Johnson, Janet Iwasa, ... (TODO: references to their sites or projects).
 There are many ways how they can do their job. Few years back, illustrations have been done by hand, drawings and paintings. This is a very timely process, as individual illustration can take months to make (reference David Goodsell, feature video na youtube). If we take into consideration that science is moving way faster what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and scientific illustrators have been looking for ways how to accelerate this process.
 Then came the age of computer graphics. As graphics tools have become more and more common and sophisticated in a field of computer generated movies (reference to Pixar?). Tools have become more accessible, easier to use and so scientific illustrators adapted and tried to use these tools for their benefit. Tools like Maya, Cinema4D, or XXX are nowadays the industry standards when it comes to authoring 3D content. Inside these programs there usually exist a software called renderer. With this two parts - modeler and renderer - the user is able to create images or animations (movies) from the 3d data that he creates in the software.
@@ -106,6 +107,7 @@ In the next chapter, we will describe the state of the art tools that are used f
 \chapter{State of the art}
 I think the sections could be: 3D Modeling Software (Maya, C4D), Niche (Specific) Tools (cellVIEW, ...), Data Generation (cellPack)
 Popsat: Molecular Flipbook, Molecular workbench, molecular maya, mcell, cellblender, pymol, VMD, ePMV(scripps)
+
 In this chapter we will introduce the software that is available for scientific illustrators to use now. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings.
 First and foremost, the pipeline of almost all of these illustrators is strongly based on some 3D modeling software. The biggest players right now are Autodesk Maya, Cinema 4D, Autodesk 3Ds Max Design, Blender or even up and comming MODO(https://www.thefoundry.co.uk/case-studies/viscira/), first two named being the dominating choices between illustrators. These programs are complex and aim to provide tool for all kinds of users. Their main functionality revolves around two activities - creation of the 3D scene which is most commonly a mesh models and rendering of this scene. These two stages will be referred to as modeling and rendering. From this brief description we can already see one problem with using a software like this for creating illustrations of molecular models - they make assumptions about the data. While most of the people using this software would actually be using meshes to represent their 3D scenes, in case of molecular models this is not the case. TODO: say something about "scene graph" which is how scene is implemented usually inside these programs.
 Luckily, it has become a convention that all of these programs provide some kind of scripting interface. This enables its users to extend the program with plugins that use the scripting interface. This way the user can implement functionality that he or she is missing from the basic program. Thanks to that these 3D authoring programs are able to be adapted to more use cases. 
@@ -152,11 +154,13 @@ We have implemented this method using Autodesk Maya and cellVIEW. Maya provides 
 Maya actually provides two APIs - one in Python and one in C++. There is also another way how additional functionality can be implemented - MEL scripting language. MEL is very similar to other scripting languages like Bash, ... However, it is meant to be used in a way where user automates tasks, not to access API and even system API calls. Because of that MEL was not suitable for our job. Python API is more mature then MEL. Its advantage is that Python, as a interpreted language, can be run without compilation. This means that there doesn't have to be a compilation step and this makes the iteration loop faster. However, we wanted to implemented a functionality that is real-time. This means that we needed every piece of performance we can get. Because of that, the C++ API has been chosen and thus our Maya plugin has been implemented in C++.
 There is also another reason why only the C++ route could be taken. We wanted to write into shared memory. The most basic way how to do that is via system API function calls. In our case, we implemented this on Windows platform. Thus the API we used has been WinAPI.
 
-
 The key element of the implementation has been how to use all the different parts of the ecosystem, all the extensibility possibilities, and connect them together in a way that would show our method. The architecture of the system basically consists of three parts - a plugin for Maya, plugin for Unity and a Unity script.
 The resulting system consisting of 3 parts which are illustrated on a Figure X. There is only one way which the data flow which simplified the implementation but of course it would be possible to extend the interoperability to be two-way(?).
 On Maya side, a plugin using Maya API written in C++ has been implemented. The function of this plugin is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with info about the instance) into the shared memory.
 Unity side of the system consists of two parts - a C++ plugin and a Csharp plugin. The C++ plugin takes care of reading the data from shared memory, while the Csharp plugin, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene. As you can see, the interoperability is achieved using (1) shared memory functionality and (2) interoperability between C++ and Csharp.
+
+\section{Implementation limitations}
+I think I should talk here about what are the limitation of this method - how much data can we fit into memory and stuff like that.
 
 \section{CellVIEW}
 Briefly describe what CellVIEW is about. Give links to the papers that are describing CellVIEW and those that are using it.
@@ -185,6 +189,8 @@ Use case two - microtubulus (create a model in maya and then name it properly an
 \chapter{Discussion, future work}
 Limitations (of the tool) - what was done just for the use case and should be worked on for final production.
 The project has been presented to Drew Berry (I think). Also, it was mention in a talk in Utah, presentation by Peter Mindek.
+The method has tremendous potential in its application. The current implementation should be extended for both performance and actual use for artists. For this however, we will need additional input from domain experts. We have been fortunate enough that Drew Berry really liked this work and expressed his desire to develop this project further. It is highly probable that we will be working even more closely with him and that we would continue to improve this system so that he can use it for his movies production.
+The challenge will be how to design the system to be easily adaptable by other creators as well.
 
 \appendix %% Start the appendices.
 \chapter{An appendix}
