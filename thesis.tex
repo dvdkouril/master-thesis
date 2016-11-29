@@ -112,16 +112,14 @@ That being said, these techniques are not usually taken into account when 3D aut
 
 In the next chapter, we will describe the state of the art tools that are used for molecular visualization today and we'll mainly focus on showing the gaps in intercompability of the available programs. Then, in chapter 3, we will propose a method of how the problem could be solved.
 
-\chapter{State of the art}
-\section{Commercial 3D software}
+\chapter{State of the Art}
 \subsection{Plugins}
-\section{Domain-specific tool}
-\section{Data generation}
 I think the sections could be: 3D Modeling Software (Maya, C4D), Niche (Specific) Tools (cellVIEW, ...), Data Generation (cellPack)
 Popsat: Molecular Flipbook, Molecular workbench, molecular maya, mcell, cellblender, pymol, VMD, ePMV(scripps)
 
 In this chapter we will introduce the software that is available for scientific illustrators to use now. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings.
 
+\section{Commercial 3D Software}
 [\textbf{Commercial 3D software is absolutely dominating}]First and foremost, the pipeline of almost all of these illustrators is strongly built upon a 3D modeling software of their choice. The biggest players right now are Autodesk Maya, Cinema 4D, Autodesk 3Ds Max Design, although other solutions have started to emerge - we can name open-sourced Blender or more and more popular MODO(https://www.thefoundry.co.uk/case-studies/viscira/), first two named (Maya and Cinema4D) being the dominating choices between illustrators. These programs are complex and aim to provide tool for all kinds of users. Their main functionality revolves around two activities - creation of the 3D scene which is most commonly a mesh model and rendering of this scene. These two stages will be referred to as modeling and rendering.
 
 [\textbf{The problem of this programs for our case} - this probably should go somewhere else]From this brief description we can already see one problem with using a software like this for creating illustrations of molecular models - they make assumptions about the data. While most of the people using this software would actually be using meshes to represent their 3D scenes, in case of molecular models this is not the case. TODO: say something about "scene graph" which is how scene is implemented usually inside these programs.
@@ -136,21 +134,23 @@ This could be a nice reference: https://pdb101.rcsb.org/learn/resource/molecular
 
 [\textbf{Define the workflow - how it is now and how we could improve it (fasten it)}]We should mention here how the workflow of artists looks like. The individual stages - modeling and rendering - don't happen one after another. The workflow actually looks more like a loop with multiple interactions. The final rendered image is essential when creating the actual scene as the artist needs to tweak multiple attributes of the scene to make it look like he wants. In practice, this means that he performs this modeling/rendering iterations very frequently. Thus he needs this iteration loop to be as fast as possible. As the renderers are getting better and computer hardware more and more powerful, the iterations are getting shorter. (Octane-like) renderers are contributing to this as well. They work in a way that they first display some aproximation of ligthing of the scene (primary rays) and iteratively increase the quality of rendering. User can therefore see the effect of changes he's made in the scene sooner. However, when we talk about molecular visualization we don't usually care about the rendering quality and physical correctness. What we usually use are simpler, almost illustrative rendering styles. Thus we can simplify the techniques to the point of being able to render molecular scenes in interactive frametimes (real-time) which brings us the possibility to create interactive molecular scenes. This is hugely attractive for scientific illustrators.
 
+[\textbf{interactive renderers like octane, how do they fit and why they are not the full solution}]
+In recent years, interactive renderers have been gaining popularity. These tools work in a similar way as did previously offline renderers. The difference is that they show the artist an intermediate result of the path tracing (or the technique they are using). This way the artist gets a fast render of his scene with a lower quality and the quality of this image is refined iteratively. This approach also enable its user to see changes in the scene in a quick preview and as it is right now, a lot of artist have been using this feature and they say it's been greatly helping them in their work. There is however one thing that we can still improve. These renderers still operate on meshes. We've already talked about how our data can be efficiently simplified to our purpose and therefore rendered with a great performance in real-time. Thus even if interactive renderers like Octane could improve the workflow we can still provide a better performance by using custom renderer like cellVIEW.
+
+\section{Domain-specific tools}
 [\textbf{``visualization research tools'' that could be used but aren't}]As we've said, today, most of the illustrators use commercial 3D package to create their works. However, there exists a huge group of programs that are made specifically for science illustration/visualization. These are usually bi-products of a ongoing research project or a scientific paper. Most of these share the property of solving some niche problem. They vary in the degree of how sophisticated they are. Most of them demonstrate a solution for a problem presented, and solved, in the paper which they accompany. However, there have been attempts to create solutions that provide its users the ability to author molecular content by themselves. As an example we can name Molecular Flipbook. It allow user to create simple molecular models and animate then with a simple, keyframe-like animation workflow.
 On the other side of the spectrum we have custom-built/ad-hoc-built tools coming out as a result of research in rendering and visualization community. These are usually tied to a specific use case, they are a demonstration of a solution. Because of the nature of the data that we are dealing with in molecular visualization, we are able to render our scenes using very effective techniques. The state-of-the-art approach to rendering molecules has been established impostor (or billboard) rendering (TODO: confirm and find references). This technique utilizes the fact that sphere looks the same from all view positions. Because of that we can, instead of rendering sphere consisting of many hundreds of vertices to get the desired level of detail, render sphere using just 4 vertices as a quad always oriented to the camera. This not only optimizes the rendering speed but also memory requirements.
 
+\section{Data Generation}
 [\textbf{cellpack}]An important part of any scientific illustration are the data one is trying to illustrate. In the case of molecular models, there is cellPACK which helps us with this. cellPACK is a software that assembles large molecular scenes from a description (a recipe) of how this scene should look, what it should contain and in what quantity.
 
-[\textbf{interactive renderers like octane, how do they fit and why they are not the full solution}]
-In recent years, interactive renderers have been gaining popularity. These tools work in a similar way as did previously offline renderers. The difference is that they show the artist an intermediate result of the path tracing (or the technique they are using). This way the artist gets a fast render of his scene with a lower quality and the quality of this image is refined iteratively. This approach also enable its user to see changes in the scene in a quick preview and as it is right now, a lot of artist have been using this feature and they say it's been greatly helping them in their work. There is however one thing that we can still improve. These renderers still operate on meshes. We've already talked about how our data can be efficiently simplified to our purpose and therefore rendered with a great performance in real-time. Thus even if interactive renderers like Octane could improve the workflow we can still provide a better performance by using custom renderer like cellVIEW.
-[\textbf{old}]If we only focused on the problem that the iteration loop is too long because of the rendering times, we would be able to find solution in "interactive renderers" - something like OTOY's Octane or whatever is in MODO. These are path tracers that show the intermediate result which enables the artists to see the progress of the renderer rendering the scene. The artist can then see how his actions are reflected in the final render. This solution however would not solve everything for us if we consider that we are rendering molecular scenes. These scene are usually very big and we still need to use different representation other then meshes to represent our scene and use this representation to effectively render the scene. The contribution of this thesis is not only the fact that we shorten the iteration loop time of the artist but also to sketch an idea of how interoperability of molecular programs can be done.
+\section{File Formats}
 
 [\textbf{are there any standardized file formats in this field?}]In computer science there are not a lot of ways to translate information from one program to another. The majority of this communication is done via files that are exported on one side and imported on another. This lead to a need for standardized format in which this data are formatted so that both of these programs understand each other. TODO: write about standard format in molecules (not a lot - pdb, we are taking advantage of that, other than that, maybe write about packing result data file format) This simple approach is fine for most of the application where it's used. In our case however this isn't sufficient. There is one big problem. If user needs to perform the actual export and import step, this greatly reduces his productivity. Another problem that is found in our domain has already been mentioned - rendering times.
 
-\textbf{[TODO: write about the cooperation between two programs - usually importing/exporting files, what are the standards (there are none, only pdb for molecule data which we take advantage of, maybe describe packing result data file format)]}
-
 \chapter{Method}
-Outline:
+TODO:
+
 [\textbf{two options, we choose third}]
 [image: modeler, renderer, illustrate the connection through shared memory, data streaming, camera position]
 [\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
@@ -169,15 +169,19 @@ On the Figure X, you can see an overview of the system. On one side we have a mo
 [\textbf{what data do we need to transfer}]With these facts in mind, we can define a molecular scene as a set of molecules, where each molecule is defined by its position, rotation, and type, which says what kind of molecule this instance is.
 
 This means that we need to stream this data - positions, rotations and types - of all molecule instances from the modeling software to the rendering tool. Because of the technical implications we write the data in a format described on Figure X. This is more efficient that writing the data in a format position/rotation/into for each molecule.
-
+\section{Process}
+\subsection{Parsing the Scene}
 [\textbf{the actual process}]Inside the modeling software, we scan the scene, looking for molecular objects. We need to identify an object which is supposed to represent an instance of a molecule. We find out what type of molecule this is. This information is saved in a form of pdb id. For each of the found instances we also read its world position and rotation. This info is accumulated into an array and then prepared to be written into the memory.
 
 There are several approaches and optimizations possible at this level and these depent mostly on the API that the modeling software provides. We were able to inject this method into a callback which is called everytime a scene has changed. After this happens, we scan all the models in the scene and look for molecular objects. This could be optimized in a way that only the objects that have changed report their changes. That way not all the object in the scene need to be scanned which saves us some performance. As we've discovered however, the APIs are not always keen on having such a performance-heavy procedures executed on each frame and so the concrete implementation heavily depends on the chosen modeling software and its API. We will describe in more detail how we accomplished this with Maya API in the chapter Implementation.
 
+\subsection{Writing into and Reading from Shared Memory}
 Once the data about current state of the scene is accumulated into position, rotation and info arrays, we can write these into the shared memory. Operating system api calls should be used for this. Again, for more details, see chapter Implementation to see how we did this on Windows operating system.
 
+\subsection{Using the data}
 Reading the data uses operating system api calls as well. In our case, because we are operating on the interface between c++ and c\#, the code that reads from the memory is pretty simple, only retrieving memory address and sending it into the c\# part of the system. This data is then copied into buffers inside cellVIEW which in turn sends them to GPU for render. We format the data in a way so that there is no additional manipulation on the data between these steps required. After the data write, we ideally want to only copy the chunks of memory from one place to another.
 
+\section{Advantages}
 [\textbf{advantages of this method}]Being able to parse the scene, stream the data into the renderer and render it, all of this in real-time, brings us several benefits. The biggest is most certainly how much faster the artist can work. He doesn't have to wait for his render to finish. He can review his changes right away by just either looking at a second monitor or simply switching windows. This also allows for parameter searching and the real-time preview can not only be used for reviewing the changes but also being the way how artist find out which parameters work the best for him.
 
 \section{old}
@@ -239,7 +243,7 @@ The method has tremendous potential in its application. The current implementati
 The challenge will be how to design the system to be easily adaptable by other creators as well.
 
 \appendix %% Start the appendices.
-\chapter{An appendix}
+\chapter{Appendix}
 Here you can insert the appendices of your thesis.
 
 \end{document}
