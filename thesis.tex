@@ -13,9 +13,9 @@
            %% of a document.
   table,   %% Causes the coloring of tables. Replace with `notable`
            %% to restore plain tables.
-  lof,     %% Prints the List of Figures. Replace with `nolof` to
+  nolof,     %% Prints the List of Figures. Replace with `nolof` to
            %% hide the List of Figures.
-  lot,     %% Prints the List of Tables. Replace with `nolot` to
+  nolot,     %% Prints the List of Tables. Replace with `nolot` to
            %% hide the List of Tables.
   %% More options are listed in the user guide at
   %% <http://mirrors.ctan.org/macros/latex/contrib/fithesis/guide/mu/fi.pdf>.
@@ -42,7 +42,7 @@
 %%
 %% The following section sets up the metadata of the thesis.
 \thesissetup{
-    date          = \the\year/\the\month/\the\day,
+    date          = 2017/01/04,
     university    = mu,
     faculty       = fi,
     type          = mgr,
@@ -113,6 +113,10 @@ That being said, these techniques are not usually taken into account when 3D aut
 In the next chapter, we will describe the state of the art tools that are used for molecular visualization today and we'll mainly focus on showing the gaps in intercompability of the available programs. Then, in chapter 3, we will propose a method of how the problem could be solved.
 
 \chapter{State of the art}
+\section{Commercial 3D software}
+\subsection{Plugins}
+\section{Domain-specific tool}
+\section{Data generation}
 I think the sections could be: 3D Modeling Software (Maya, C4D), Niche (Specific) Tools (cellVIEW, ...), Data Generation (cellPack)
 Popsat: Molecular Flipbook, Molecular workbench, molecular maya, mcell, cellblender, pymol, VMD, ePMV(scripps)
 
