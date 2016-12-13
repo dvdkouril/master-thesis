@@ -241,6 +241,9 @@ Once the data about current state of the scene is accumulated into position, rot
 \subsection{Using the data}
 Reading the data uses operating system api calls as well. In our case, because we are operating on the interface between c++ and c\#, the code that reads from the memory is pretty simple, only retrieving memory address and sending it into the c\# part of the system. This data is then copied into buffers inside cellVIEW which in turn sends them to GPU for render. We format the data in a way so that there is no additional manipulation on the data between these steps required. After the data write, we ideally want to only copy the chunks of memory from one place to another.
 
+%[\textbf{Why Maya?}]
+We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he's been a key person that we had in mind when implementing this method. Chosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
+
 \section{old}
 
 [\textbf{we don't want to use files} TODO: why?]Our method tries to solve these two problems. The problem of import/export is solved by using shared memory instead of files managed by the user. The rendering times problem is solved by using modern rendering techniques which enable us to render what we want in an interactive framerate.
@@ -255,23 +258,21 @@ This method is mostly valuable as an example of how interconnection of software 
 %[\textbf{unity side c++/c\# interoperability}]
 %[\textbf{unity side script - how the data is used/rendered}]
 
-This chapter will in detail describe our implementation of real-time scene data sharing between Autodesk Maya and cellVIEW. Maya provides its users an API which allowed us to extend this program with required functionality. Similarly, we have been able to create plugin for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plugins in a form of DLL to be used.
-%[\textbf{Why Maya?}]
-We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he's been a key person that we had in mind when implementing this method. Chosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
+This chapter will in detail describe the implementation of real-time scene data sharing between Autodesk Maya and cellVIEW. Autodesk provides Maya users an API which allowed us to extend this program with required functionality. Similarly, we have been able to create plugin for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plugins in a form of DLL to be used.
 
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.8]{images/system-architecture-overview.pdf}
   \end{center}
   \caption{Overview of system components}
-  \label{system-overview}
+  \label{fig:system-overview}
 \end{figure}
 
 % [\textbf{high-level overview of the architecture}]
-The architecture of the system consists of three parts - a plugin for Maya, plugin for Unity and a Unity script.
-The resulting system consisting of 3 parts which are illustrated on a Figure X. There is only one way which the data flow which simplified the implementation but of course it would be possible to extend the interoperability to be two-way(?).
-On Maya side, a plugin using Maya API written in C++ has been implemented. The function of this plugin is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with info about the instance) into the shared memory.
-Unity side of the system consists of two parts - a C++ plugin and a Csharp plugin. The C++ plugin takes care of reading the data from shared memory, while the Csharp plugin, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene. As you can see, the interoperability is achieved using (1) shared memory functionality and (2) interoperability between C++ and Csharp.
+The architecture of the system consists of three parts - a plugin for Maya, plugin for Unity and a Unity script - as you can see in Figure \ref{fig:system-overview}.
+The data flows only in one way - we write into shared memory with Maya plugin and read from shared memory with Unity plugin. This simplifies the situation from the implementation point of view because we don't have to design synchronization scheme.
+The plugin for Maya is using Maya API (which will be described later) and is written using in C++ programming language. The function of this plugin is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with info about the instance) into the shared memory.
+Unity side of the system consists of two parts - a C++ plugin and a C\# script. The C++ plugin takes care of reading the data from shared memory, while the C\# script, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene. Note that there are two types of interoperability between components: (1) shared memory functionality, which enables two processes to communicate, and (2) interoperability between C++ and C\#, which allows us to pass memory addresses from the plugin to the script on Unity side.
 
 % [\textbf{shared memory} - talk general about shared memory technology]
 \section{Shared Memory}
@@ -281,9 +282,11 @@ Shared memory is a segment of system memory which can be accessed by multiple pr
 
 There are several libraries that would enable us to access shared memory. First option is to use operating system API calls. Another way would be to use boost
 
+\section{C++ and C\# interoperability}
+
 % [\textbf{maya api}]
 \section{Maya API}
-Maya actually provides two APIs - one in Python and one in C++. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language.
+Maya actually provides two APIs - one in Python[ref] and one in C++[ref]. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language.
 
 MEL is very similar to other scripting languages like Bash. MEL is not fully mature programming language an therefore is usable only for things like automating tasks that would be otherwise done through the GUI. There is one purpose for which MEL is suitable inside Maya ecosystem - custom GUI creationg. Because of that MEL was not suitable for our job.
 
@@ -305,6 +308,8 @@ Use case one - modified Janet's scene.
 Use case two - microtubulus (create a model in maya and then name it properly and we will get it in cellVIEW).
 
 \chapter{Discussion, future work}
+The strongest use of the tool as of right now is the live preview of the scene. 
+
 Limitations (of the tool) - what was done just for the use case and should be worked on for final production.
 The project has been presented to Drew Berry (I think). Also, it was mention in a talk in Utah, presentation by Peter Mindek.
 The method has tremendous potential in its application. The current implementation should be extended for both performance and actual use for artists. For this however, we will need additional input from domain experts. We have been fortunate enough that Drew Berry really liked this work and expressed his desire to develop this project further. It is highly probable that we will be working even more closely with him and that we would continue to improve this system so that he can use it for his movies production.
