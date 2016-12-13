@@ -46,11 +46,11 @@
     university    = mu,
     faculty       = fi,
     type          = mgr,
-    author        = David Kouřil,
+    author        = Bc. David Kouřil,
     gender        = m,
     advisor       = Ivan Viola and Barbora Kozlikova,
-    title         = {Maya2CellVIEW: 3D Package Integrated Tool for Creating Large and Complex Molecular Scenes},
-    TeXtitle      = {Maya2CellVIEW: 3D Package Integrated Tool for Creating Large and Complex Molecular Scenes},
+    title         = {Maya2CellVIEW: Integrated Tool for Creating Large and Complex Molecular Scenes},
+    TeXtitle      = {Maya2CellVIEW: Integrated Tool for Creating Large and Complex Molecular Scenes},
     keywords      = {molecular visualization, illustration, Maya, Unity, ...},
     TeXkeywords   = {keyword1, keyword2, \ldots},
     bib           = example.bib,
@@ -86,18 +86,20 @@
 \usepackage{menukeys}
 \begin{document}
 \chapter{Introduction}
-[\textbf{In what field are we? What are the people in this domain doing?}]
+%[\textbf{In what field are we? What are the people in this domain doing?}]
 In this day and age, scientists come to new findings everyday. Unfortunately, not all of these are ever shown to the general public. This can be because of several reasons. New facts might not be easily visualizeable. Or the things that they found out are a piece of a bigger picture and hence cannot be easily communicated. On top of that, scientists are not usually trained to expose their results to the public eye.
 
 This is the job of scientific illustrator. These artists are usually, by themselves (nebo first, proste zduraznit, ze jsou to predevsim vedci, kteri do oblasti maji ohromny insight), experts in their scientific field but on top of that they have focused on honing their artistic skills as well. They use their skill to visualize the science in their domain with easily understandable images, animations or other forms of media. To name just a few examples - Drew Berry, Graham Johnson, Janet Iwasa, ... (TODO: references to their sites or projects).
 
+% TODO: [\textbf{why are illustrations/animations useful: what art was talking about and also janet in molecular flipbook video}]
+
 There are many ways how they can do their job. Few years back, illustrations have been done by hand, drawings and paintings. This is a very timely process, as individual illustration can take months to make (reference David Goodsell, feature video na youtube). If we take into consideration that science is moving way faster what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and scientific illustrators have been looking for ways how to accelerate this process.
 
-[\textbf{Can we use computer graphics for this?}]
+%[\textbf{Can we use computer graphics for this?}]
 Then came the age of computer graphics. As graphics tools have become more and more common and sophisticated in a field of computer generated movies (reference to Pixar?). Tools have become more accessible, easier to use and so scientific illustrators adapted and tried to use these tools for their benefit. Tools like Maya, Cinema4D, or XXX are nowadays the industry standards when it comes to authoring 3D content. Inside these programs there usually exist a software called renderer. With this two parts - modeler and renderer - the user is able to create images or animations (movies) from the 3d data that he creates in the software.
 Even with just this, the modern computer graphics brings us the possibility to create amazing imagery and enables illustrators to show ordinary people fenomena from all kinds of science disciplines.
 
-[\textbf{Are there any problems that we could solve?}]
+%[\textbf{Are there any problems that we could solve?}]
 But this workflow isn't very effective. One of the obstacles in the work of illustrators is that the software they are using is made for somebody else. Games and movies industry are the leading industries that push computer graphics tool creators forwards and provides most of the revenue for them. This means that these tools, no matter how much they try to be versatile, are being skewed towards the use cases of movies and games industries. That means that people who want to create scientific content might struggle to use the tools sometimes.
 
 For this, there are other tools that help them to make the pipeline more effective. This doesn't mean that these tools completely replace Maya or Cinema4D. The domain specific tools are more commonly implemented in a form of a plugin that is developed and loaded into the concrete software packages.
@@ -106,11 +108,11 @@ In the end - the features that 3D authoring package provides for modeling 3D sce
 
 Odstavec mozna namisto toho dalsiho: On the other hand, the fact that science is progressing forward, constantly bringing new data of various formats, techniques how to visualize, render, show this data in the most optimal way have been developed. Visualization research is an on-going and booming branch of science. This means that every year, new techniques of visualization of data are invented and presented. But as we already foreshadowed, developers of 3D modeling software aren't always up to date with these techniques. This also illustrates the fact, that scientific illustration isn't their primary focus. What that means for us is that we do have new, innovative and better ways how to visualize and display our specific data but these are rarely integrated into the tools that scientific illustrators use. This is the gap that we set out to fill in this project.
 
-[\textbf{why are illustrations/animations useful: what art was talking about and also janet in molecular flipbook video}]
+% [\textbf{what are the alternatives to what people are using already?}]
+There also exist programs that are completely separated from any of the mentioned authoring software. There is an active research in the domain of visualization, with many conferences every year and thousands (?) of research papers in this domain. Usually, as a biproduct, these paper generate software that showcases the proposed visualization technique or pipeline. Some of these developed into full featured visualization packages and thus provide a way how to illustrate something in a new way. While these programs might hugely benefit scientific illustrators, it's not always the case that they get used. This might be because of several reasons one of which is that the illustrators are simply used to a certain pipeline and incorporating a new software into this pipeline doesn't seems very beneficial to them. Another problem is that because these programs are developed for a certain use cases (showcasing the point of the paper) they might not be easily appliable to more than one purpose.
 
-[\textbf{what are the alternatives to what people are using already?}]There also exist programs that are completely separated from any of the mentioned authoring software. There is an active research in the domain of visualization, with many conferences every year and thousands (?) of research papers in this domain. Usually, as a biproduct, these paper generate software that showcases the proposed visualization technique or pipeline. Some of these developed into full featured visualization packages and thus provide a way how to illustrate something in a new way. While these programs might hugely benefit scientific illustrators, it's not always the case that they get used. This might be because of several reasons one of which is that the illustrators are simply used to a certain pipeline and incorporating a new software into this pipeline doesn't seems very beneficial to them. Another problem is that because these programs are developed for a certain use cases (showcasing the point of the paper) they might not be easily appliable to more than one purpose.
-
-[\textbf{``mission statement'' of the thesis}]In this thesis, we made an effort to solve these problems. Our domain of choice is molecular visualization.
+[\textbf{``mission statement'' of the thesis}]
+In this thesis, we made an effort to solve these problems. Our domain of choice is molecular visualization.
 
 In this domain we try to visualize living (?) organisms on the smallest possible scale. With this approach, the computer memory and performance requirements are very challenging even for todays available hardware. Still, people have been able to visualize for example model of HIV in blood plasma in it's full detail down do individual atoms of each protein. This however, is achieved by using a very customized rendering method and a custom data format. In 3D graphics, data are usually represented as meshes consisting of triangles (which in turn are made of vertices). If we wanted to represent each atom as a sphere, we would need at least <number> of vertices for one atom and that's only for the roughest level-of-detail. With such representation, a one whole protein could use up to X bytes of memory which already takes up most of the video cards' memory. Thus this representation is not suitable for this task. Instead, various other techniques have been developed for rendering on molecular data.
 
@@ -122,21 +124,21 @@ In the next chapter, we will describe the state of the art tools that are used f
 %I think the sections could be: 3D Modeling Software (Maya, C4D), Niche (Specific) Tools (cellVIEW, ...), Data Generation (cellPack)
 %Popsat: Molecular Flipbook, Molecular workbench, molecular maya, mcell, cellblender, pymol, VMD, ePMV(scripps)
 
-In this chapter we will introduce the software that is available for scientific illustrators working in molecular visualization to use now. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings. However, as we will see there is are multiple level of user accessibility and different programs have different prerequisities on the level of expertise of its users. Given the fact that when communicating science one has to understand to a certain extent the science there are multiple ways to approach the design of the program. We also see that the
+In this chapter we will introduce the software that is currently available for scientific illustrators working in molecular visualization. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings. However, as we will see there is are multiple level of user accessibility and different programs have different prerequisities on the level of expertise of its users. Given the fact that when communicating science one has to understand to a certain extent the science there are multiple ways to approach the design of the program. We also see that the
 
 \section{Commercial 3D Software}
-[\textbf{Commercial 3D software is absolutely dominating}]
+%[\textbf{Commercial 3D software is absolutely dominating}]
 First and foremost, the pipeline of almost all of these illustrators is strongly built upon a 3D modeling software of their choice. The biggest players right now are Autodesk Maya, Cinema 4D, Autodesk 3Ds Max Design, although other solutions have started to emerge - we can name open-sourced Blender or more and more popular MODO(https://www.thefoundry.co.uk/case-studies/viscira/). Maya and Cinema4D are the dominating choices between illustrators. These programs are complex and aim to provide tool for all kinds of users. Their main functionality revolves around two activities - creation of the 3D scene which is most commonly a mesh model and rendering of this scene. These two stages will be referred to as modeling and rendering.
 
-[\textbf{things that are nice to have from these programs - easy manipulation with objects, scene graph to organize the scene, tools for animation, semi-automatic object positioning (random, particles)}]
+%[\textbf{things that are nice to have from these programs - easy manipulation with objects, scene graph to organize the scene, tools for animation, semi-automatic object positioning (random, particles)}]
 Disregarding the differences between all the 3D software of this kind, there are some key features that are more or less contained in all of them. First, objects in scenes are organised into some variation of ``scene hierarchy'' or ``scene tree''. This allows users to organise their objects and establish parent-child relationships between these objects. Second, navigation in the 3D scene is always solved. Every named program allows the user to open multiple viewports at the same time where every viewport shows different camera position. Third, object manipulation - translation, rotation and scale - is solved and made available under shortcut which allows the illustrator/animator to work efficiently.
-These features are the killer features and even though they are present in all of the programs, the illustrators are often used to the way they work or to a certain shortcut which means that it's not trivial for them to switch from one to another (or it is but it takes some time).
+These are the killer features and even though they are present in all of the programs, the illustrators are often used to the way they work or to a certain shortcut which means that it's not trivial for them to switch from one to another (or it is but it takes some time).
 
-[\textbf{scientists have to go through training to be able to use these programs}]
+%[\textbf{scientists have to go through training to be able to use these programs}]
 All of these programs are big and complex. This comes from the fact that they are meant to be general tools for anybody who needs to manipulate 3D models and create images or movies out of it. Therefore, mastering this tool, or even getting on proficiency level enough to produce meaningful work, is not an easy task and takes between several months to years. This amount of time is something not a lot of scientists are willing, or even able, to sacrifice. However, as we said in the introduction, by having the information compiled into visual form is hugely beneficial so some people were willing to dive into learning these tools and have been able to use them to an incredible benefit. Ideally we would like more scientists to be able to create visuals like this so attempts to simplify this process have been made.
 
 \subsection{Plugins}
-[\textbf{We have an ``entry point'' which we can exploit to inject our custom functionality}]
+%[\textbf{We have an ``entry point'' which we can exploit to inject our custom functionality}]
 Luckily, it has become a convention that all of these 3D programs provide some kind of scripting interface. This enables its users to extend the program with plugins that use the scripting interface. This way the user can implement functionality that he or she is missing from the basic program. Thanks to that these 3D authoring programs can be adapted to more use cases.
 
 [\textbf{Tools where people already used this plugin architecture}]
@@ -180,14 +182,17 @@ One of the more user-friendlier and easier to use tools is Molecular Flipbook. I
 [\textbf{are there any standardized file formats in this field?}]In computer science there are not a lot of ways to translate information from one program to another. The majority of this communication is done via files that are exported on one side and imported on another. This lead to a need for standardized format in which this data are formatted so that both of these programs understand each other. TODO: write about standard format in molecules (not a lot - pdb, we are taking advantage of that, other than that, maybe write about packing result data file format) This simple approach is fine for most of the application where it's used. In our case however this isn't sufficient. There is one big problem. If user needs to perform the actual export and import step, this greatly reduces his productivity. Another problem that is found in our domain has already been mentioned - rendering times.
 
 \chapter{Method}
-[image: modeler, renderer, illustrate the connection through shared memory, data streaming, camera position]
+%[image: modeler, renderer, illustrate the connection through shared memory, data streaming, camera position]
 
-This chapter contains in-depth dissection of the problem we are trying to solve. What follows is our suggested solution to this problem. We will talk about the method in general term at first, the actual implementation will be described in detail in the next chapter.
+%[\textbf{we focus on fastening the workflow by using our renderer}]
+As was discussed in State of the Art chapter, the majority of artists uses commercial 3D software. These programs are very good at modeling and rendering 3D content as a set of meshes - 3D objects consisting of triangles. However, for molecular data and scenes, mesh is not the best representation and there exist rendering techniques that perform way better if we use other representation.
 
-[\textbf{the problem} - I need to say what the problem actually is that we want to solve]
-As was already outlined in Introduction and State of the Art, artists in scientific illustration (and more precisely in molecular illustration) have a hard time using tools that are not tailored for this use. Despite that, artists are using modern 3D programs to create scientific artworks. These programs provide several tools that have become crutial to the artists and they are necessary for them to be able to work in an efficient manner. The typical workflow is illustrated on Figure. X [TODO: figure with the steps and times]
+%[\textbf{we can take advantage} of the fact that illustrators use illustrative style, simplified and the data is very compact actually so we can provide them the interactive preview]
+Another thing we can take advantage of is that illustrations and animation describing structures and function of objects at nano-scale don't often profit from using ultra-realistic rendering. They show concepts that are happening at different scales than the stuff that programs are usually made for. Thus they usually want to use more illustrative, simplified, rendering styles.
 
-[\textbf{we can take advantage} of the fact that illustrators use illustrative style, simplified and the data is very compact actually so we can provide them the interactive preview]
+In our use case, this is even more true because we are dealing with a very dense data sets. We want to simplify what we show to reduce the visual noise in the ouput image. Various level-of-detail (LOD) schemes exist and they not only help with filtering of the visual noise but also reduce the performance requierements.
+
+Thanks to these simplifications we can render molecular scenes with interactive framerates, as has been shown by cellVIEW[ref]. Unfortunately, these techniques are not implemented in 3D commercial programs which is what the artists usually use. Our goal is to make it so that the artist can use his software of choice to model his scenes but also take advantage of modern rendering. The use is two-fold: real-time rendering can serve as a preview of the scene but also can be used as a final result. The goal of this project was to come up with an idea of how to connect these two programs so that they will work together.
 
 \begin{figure}
   \centering
@@ -196,33 +201,37 @@ As was already outlined in Introduction and State of the Art, artists in scienti
   \label{fig:workflow}
 \end{figure}
 
-We would like to provide them the ability to use modern visualization methods. These methods are most of the time already implemented and live separately as a standalone application. As an example, cellVIEW is a tool able to render big molecular landscapes in an interactive framerate. For an effective communication of the story that the artist might want to say, it would be beneficial if he could use both of these - his tools and the modern ones. This is exactly what we tried to solve with this system.
-
-[\textbf{two options, we choose third}]
+%[\textbf{two options, we choose third}]
 Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired functionality into the software that is missing it. In our case, that would mean we could either implement the fast and visually appealing rendering into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
 
 The problem with the first option is that most of the 3D software packages that artists are using the most are commercial solutions with closed source code. It is possible to extend them via API that they usually provide but that is not enough if we want to implement state-of-the-art technique that sometimes requires the most modern technology in terms of graphics API etc.
 
 We've chosen to go with another, third, option. We don't want to reimplement from scratch something that is already available to use. We want to avoid this development overhead. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both features at the same time. We do this by using both of the programs and establishing a communication channel between them. We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We have a modeled scene on one side and we want to transfer data describing this scene to have it rendered on the other side. As we will show this can be done in a straight-forward fashion as our scenes can be simplified to the point when we can describe them with few numbers.
 
-[\textbf{why is it that we can do this?}]
+%[\textbf{why is it that we can do this?}]
 We can establish such communication between the two programs mainly thanks to the character of the data we are dealing with.
 
-[\textbf{the data}]
+%[\textbf{the data}]
 Scenes we work with consist of macromolecules - proteins and lipids. Macromolecules in turn are made of atoms of different elements. There are multiple representations by which we usually visualize atomic data (see chapter State of the Art) [TODO: where should I put this?]. However the underlining data doesn't change. An instance of molecule is defined by the type information (what kind of molecule this is), position and rotation of the instance, and last, a list of atoms that this molecule is made of.
 
+% we will use some placeholder geometry in maya
+On the side of modeling program, we want to see an approximation of the scene. One way would be to use a simple geometry like cube or sphere as a placeholder for each molecule. Such placeholder would then serve as an object that we manipulate instead of an actual molecule. We tried something a little bit different. With Molecular Maya plugin, we can load a molecule description in form of a pdb file. With the same plugin it is also possible to generate a polygonial surface mesh representation with choosable detail level. We therefore load a molecule and generate very low resolution mesh which serves as our placeholder.
+% TODO: IMG: show low poly model of a protein generated with mol maya
 
-[\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
+%[\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
 On the Figure X, you can see an overview of the system. On one side we have a modeling software while on the other we have a domain-specific tool, in our case it's a high performance renderer. Our vision was to have both of these programs running at the same time. The illustrator could have his scene opened in his modelling software. This way he would be using the tools he knows and is accustomed to for modelling the actual scene. Then on the renderer side he would be able to see how the changes he's made are reflected in the rendered final image. This all would happen in real-time thanks to writes and reads into and from shared memory.
 
-[\textbf{simplifications, how the scene can be described}]As was already mentioned, when dealing with molecular data we can take advantage of several simplifications. A scene like this consists of macromolecules: proteins and lipids. First simplification - we consider the shape of the molecule to be static. This means that inside each molecule, the positions of all the atoms doesn't change in time. The position of the atoms is taken from the PDB file. The second simplification is that all the instances of certain molecule type look the same. They only differ in position and rotation.
+% [\textbf{simplifications, how the scene can be described}]
+As was already mentioned, when dealing with molecular data we can take advantage of several simplifications. A scene like this consists of macromolecules: proteins and lipids. First simplification - we consider the shape of the molecule to be static. This means that inside each molecule, the positions of all the atoms doesn't change in time. The position of the atoms is taken from the PDB file. The second simplification is that all the instances of certain molecule type look the same. They only differ in position and rotation.
 
-[\textbf{what data do we need to transfer}]With these facts in mind, we can define a molecular scene as a set of molecules, where each molecule is defined by its position, rotation, and type, which says what kind of molecule this instance is.
+% [\textbf{what data do we need to transfer}]
+With these facts in mind, we can define a molecular scene as a set of molecules, where each molecule is defined by its position, rotation, and type, which says what kind of molecule this instance is.
 
 This means that we need to stream this data - positions, rotations and types - of all molecule instances from the modeling software to the rendering tool. Because of the technical implications we write the data in a format described on Figure X. This is more efficient that writing the data in a format position/rotation/into for each molecule.
 \section{Process}
 \subsection{Parsing the Scene}
-[\textbf{the actual process}]Inside the modeling software, we scan the scene, looking for molecular objects. We need to identify an object which is supposed to represent an instance of a molecule. We find out what type of molecule this is. This information is saved in a form of pdb id. For each of the found instances we also read its world position and rotation. This info is accumulated into an array and then prepared to be written into the memory.
+% [\textbf{the actual process}]
+Inside the modeling software, we scan the scene, looking for molecular objects. We need to identify an object which is supposed to represent an instance of a molecule. We find out what type of molecule this is. This information is saved in a form of pdb id. For each of the found instances we also read its world position and rotation. This info is accumulated into an array and then prepared to be written into the memory.
 
 There are several approaches and optimizations possible at this level and these depent mostly on the API that the modeling software provides. We were able to inject this method into a callback which is called everytime a scene has changed. After this happens, we scan all the models in the scene and look for molecular objects. This could be optimized in a way that only the objects that have changed report their changes. That way not all the object in the scene need to be scanned which saves us some performance. As we've discovered however, the APIs are not always keen on having such a performance-heavy procedures executed on each frame and so the concrete implementation heavily depends on the chosen modeling software and its API. We will describe in more detail how we accomplished this with Maya API in the chapter Implementation.
 
@@ -232,28 +241,23 @@ Once the data about current state of the scene is accumulated into position, rot
 \subsection{Using the data}
 Reading the data uses operating system api calls as well. In our case, because we are operating on the interface between c++ and c\#, the code that reads from the memory is pretty simple, only retrieving memory address and sending it into the c\# part of the system. This data is then copied into buffers inside cellVIEW which in turn sends them to GPU for render. We format the data in a way so that there is no additional manipulation on the data between these steps required. After the data write, we ideally want to only copy the chunks of memory from one place to another.
 
-\section{Advantages}
-[\textbf{advantages of this method}]Being able to parse the scene, stream the data into the renderer and render it, all of this in real-time, brings us several benefits. The biggest is most certainly how much faster the artist can work. He doesn't have to wait for his render to finish. He can review his changes right away by just either looking at a second monitor or simply switching windows. This also allows for parameter searching and the real-time preview can not only be used for reviewing the changes but also being the way how artist find out which parameters work the best for him.
-
 \section{old}
-[\textbf{what was the initial vision}]The vision was that there would be cellVIEW which renders the scene on one side and Maya on the other. In Maya the scene would be appropriately simplified. At the beginning we had an idea that there would just be cubes with maybe textures that would give the user at least some visual information about the protein type. We ended up using very rough meshes that represent the proteins in the scene in Maya.
-
-[\textbf{are there any initial requirements?}]As this project wasn't meant to be software intended for certain user group, we work with very little input requirements and so the design and user experience side of things have been explored over the course of development. We however had initial input from one of the most respected domain experts in scientific illustrator - Drew Berry. From this persona came the initial idea to use Maya as the modeling package as that's the software that Drew Berry uses. He expressed his interest in rendering style that cellVIEW provides and suggested that if we were to make cellVIEW usable in his workflow with Maya, it would greatly improve his productivity and shorten the production of his movies. His input sparked our interest in making cellVIEW usable as a part of a pipeline rather than a standalone tool. This then lead to research of which resulted in the following proposed method. This general method is presented as an idea of an approach that tools like cellVIEW could take in making themselves usable in art authoring pipeline. In this chapter we present this idea. Further in implementation chapter we focus on our use case - using Maya and cellVIEW but we believe that this method should be appliable on any two modeling and rendering tools (with possibility to be used in other applications as well).
 
 [\textbf{we don't want to use files} TODO: why?]Our method tries to solve these two problems. The problem of import/export is solved by using shared memory instead of files managed by the user. The rendering times problem is solved by using modern rendering techniques which enable us to render what we want in an interactive framerate.
 The reason why it's possible to take this approach of using shared memory comes from the character of data that we work with. Molecular scenes consist of molecules. Molecules are made of atoms which can be, and usually are, represented as spheres. Atoms of different elements are visualized by having different radii and colors. So for every molecule we need to keep track of what atoms it consists of, positions of those atoms and type of each of those atoms. This is even more leveraged by Protein Data Bank, which stores data about various proteins that have been found through out the years. For us, this means that we only need to keep track of the type of molecule and by fetching data from Protein Data Bank we get information about the protein cataloged under the protein identifier. Our scenes are (simplified) made of macromolecules. That means that in the end for rendering the scene we need a list of molecules, where for each molecule instance we need to save it's position, rotation and type. That's all the info that we need to be able to render our large molecular scenes. Even though this is still a lot of data, we are slowly getting to being able to render this on commonly available hardware. Because of the fact that this data size is "manageable" by modern computers we are able to store the data in shared memory.
 This method is mostly valuable as an example of how interconnection of software can be done and what improvements to the users this can bring. There is some prerequisities - both programs need to be extensible to the extend of the programmers must be able to develop extension that are able to read from and write to the shared memory using operating system api calls.
 
 \chapter{Implementation}
-Outline:
-[\textbf{high-level overview}]
-[\textbf{maya side plugin}]
-[\textbf{unity side plugin}]
-[\textbf{unity side c++/c\# interoperability}]
-[\textbf{unity side script - how the data is used/rendered}]
+%Outline:
+%[\textbf{high-level overview}]
+%[\textbf{maya side plugin}]
+%[\textbf{unity side plugin}]
+%[\textbf{unity side c++/c\# interoperability}]
+%[\textbf{unity side script - how the data is used/rendered}]
 
-This chapter will in detail describe our implementation of real-time scene data sharing using Autodesk Maya and cellVIEW. Maya provides its users an API which allowed us to extend this program with required functionality. Similarly, we have been able to create plugin for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plugins in a form of DLL to be used.
-[\textbf{Why Maya?}] We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he's been a key person that we had in mind when implementing this method. Chosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
+This chapter will in detail describe our implementation of real-time scene data sharing between Autodesk Maya and cellVIEW. Maya provides its users an API which allowed us to extend this program with required functionality. Similarly, we have been able to create plugin for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plugins in a form of DLL to be used.
+%[\textbf{Why Maya?}]
+We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he's been a key person that we had in mind when implementing this method. Chosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
 
 \begin{figure}
   \begin{center}
@@ -263,15 +267,23 @@ This chapter will in detail describe our implementation of real-time scene data 
   \label{system-overview}
 \end{figure}
 
-[\textbf{high-level overview of the architecture}]The architecture of the system consists of three parts - a plugin for Maya, plugin for Unity and a Unity script.
+% [\textbf{high-level overview of the architecture}]
+The architecture of the system consists of three parts - a plugin for Maya, plugin for Unity and a Unity script.
 The resulting system consisting of 3 parts which are illustrated on a Figure X. There is only one way which the data flow which simplified the implementation but of course it would be possible to extend the interoperability to be two-way(?).
 On Maya side, a plugin using Maya API written in C++ has been implemented. The function of this plugin is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with info about the instance) into the shared memory.
 Unity side of the system consists of two parts - a C++ plugin and a Csharp plugin. The C++ plugin takes care of reading the data from shared memory, while the Csharp plugin, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene. As you can see, the interoperability is achieved using (1) shared memory functionality and (2) interoperability between C++ and Csharp.
 
-[\textbf{shared memory} - talk general about shared memory technology]
-Shared memory is a concept that ... Because of the fact that shared memory is an object that is very low-level tied to the operating system we are using WinAPI calls to work with shared memory. Libraries that make working with shared library easier exist, however we didn't want to lose performance by using them. Because we are using WinAPI, the system as it is implemented is tied to Windows platform. Porting to other operating systems should be straight-forward as the concept of shared memory is very similar across all operating systems.
+% [\textbf{shared memory} - talk general about shared memory technology]
+\section{Shared Memory}
+Shared memory is a segment of system memory which can be accessed by multiple programs. It is used as an efficient way to establish communication between separately running processes. It is typically located in random-access-memory (RAM) although it can be swapped onto disk.
 
-[\textbf{maya api}]Maya actually provides two APIs - one in Python and one in C++. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language.
+% TODO: swaping onto disk, unix, named file mapping in windows
+
+There are several libraries that would enable us to access shared memory. First option is to use operating system API calls. Another way would be to use boost
+
+% [\textbf{maya api}]
+\section{Maya API}
+Maya actually provides two APIs - one in Python and one in C++. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language.
 
 MEL is very similar to other scripting languages like Bash. MEL is not fully mature programming language an therefore is usable only for things like automating tasks that would be otherwise done through the GUI. There is one purpose for which MEL is suitable inside Maya ecosystem - custom GUI creationg. Because of that MEL was not suitable for our job.
 
@@ -279,14 +291,12 @@ Python API is more mature then MEL. Its advantage is that Python, as a interpret
 
 There is also another reason why only the C++ route could be taken. We wanted to write into shared memory. The most basic way how to do that is via system API function calls. In our case, we implemented this on Windows platform. Thus the API we used has been WinAPI.
 
-\section{Implementation limitations}
-I think I should talk here about what are the limitation of this method - how much data can we fit into memory and stuff like that.
-
-\section{WinAPI}
 \section{Maya side}
-Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
+On Maya side, we will talk about the one component that belongs there from our system as can be seen on Figure X.
+%Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
 What we needed to do is basically scan the 3D scene graph and output positions and rotations of each macromolecule object. There are two usecases which needed to be considered. When modeling the scene, the rate of change is not that high. Usually the scene only changes very little (moving or rotating usually just one or few objects). However, we had in mind also a usecase where the animation of the scene would be outputed as well. This means that artist would create a keyframe animation of (nearly) all molecule objects and we would want to transfer the position/rotation data each frame for the animation. Obviously, for each of these use cases there are different ways how to achieve the optimal performance. In the end I settled for (todo: I don't actually know right now)
 \section{Unity side}
+On the side of cellVIEW (or Unity), we have two components - dll plugin and a C\# script.
 Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#
 
 \chapter{Demonstration}
