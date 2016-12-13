@@ -56,7 +56,7 @@
     bib           = example.bib,
 }
 \thesislong{abstract}{
-    Scientific illustrators communicate the cutting edge of research through their illustrations. There are numerous software tools that assist them with this job. The aim of this thesis is to push abilities of illustrators working on a large scale molecular scenes. This is done by connecting two software packages - Maya and cellVIEW - combining the rendering possibilities of cellVIEW and modeling tools of Maya which results in more effective and efficient workflow.
+    Scientific illustrators communicate the cutting edge of research through their illustrations. There are numerous software tools that assist them with this job. The aim of this thesis is to push abilities of illustrators working on a large scale molecular scenes. This is done by connecting two software packages - Maya and cellVIEW - combining the rendering possibilities of cellVIEW and modeling tools of Maya which results in more effective and efficient workflow. 
 }
 \thesislong{thanks}{
     This is the acknowledgement for my thesis, which can
@@ -180,17 +180,37 @@ One of the more user-friendlier and easier to use tools is Molecular Flipbook. I
 [\textbf{are there any standardized file formats in this field?}]In computer science there are not a lot of ways to translate information from one program to another. The majority of this communication is done via files that are exported on one side and imported on another. This lead to a need for standardized format in which this data are formatted so that both of these programs understand each other. TODO: write about standard format in molecules (not a lot - pdb, we are taking advantage of that, other than that, maybe write about packing result data file format) This simple approach is fine for most of the application where it's used. In our case however this isn't sufficient. There is one big problem. If user needs to perform the actual export and import step, this greatly reduces his productivity. Another problem that is found in our domain has already been mentioned - rendering times.
 
 \chapter{Method}
-TODO:
-
-[\textbf{two options, we choose third}]
 [image: modeler, renderer, illustrate the connection through shared memory, data streaming, camera position]
-[\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
-[\textbf{advantages of this method}]
+
+This chapter contains in-depth dissection of the problem we are trying to solve. What follows is our suggested solution to this problem. We will talk about the method in general term at first, the actual implementation will be described in detail in the next chapter.
+
+[\textbf{the problem} - I need to say what the problem actually is that we want to solve]
+As was already outlined in Introduction and State of the Art, artists in scientific illustration (and more precisely in molecular illustration) have a hard time using tools that are not tailored for this use. Despite that, artists are using modern 3D programs to create scientific artworks. These programs provide several tools that have become crutial to the artists and they are necessary for them to be able to work in an efficient manner. The typical workflow is illustrated on Figure. X [TODO: figure with the steps and times]
+
+[\textbf{we can take advantage} of the fact that illustrators use illustrative style, simplified and the data is very compact actually so we can provide them the interactive preview]
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{images/pipeline.pdf}
+  \caption{workflow}
+  \label{fig:workflow}
+\end{figure}
+
+We would like to provide them the ability to use modern visualization methods. These methods are most of the time already implemented and live separately as a standalone application. As an example, cellVIEW is a tool able to render big molecular landscapes in an interactive framerate. For an effective communication of the story that the artist might want to say, it would be beneficial if he could use both of these - his tools and the modern ones. This is exactly what we tried to solve with this system.
 
 [\textbf{two options, we choose third}]
-The problem statement could be define as follows. We have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution is that we could implement our desired functionality into the software that is missing it. In our case, that would mean we could either implement the fast and visually appealing rendering into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
+Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired functionality into the software that is missing it. In our case, that would mean we could either implement the fast and visually appealing rendering into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
 
-We've chosen a third option. We don't want to reimplement from scratch something that is already available to use. We want to avoid this development overhead. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both features at the same time. We do this by using both of the programs and establishing a communication channel between them. We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We have a modeled scene on one side and we want to transfer data describing this scene to have it rendered on the other side. As we will show this can be done in a straight-forward fashion as our scenes can be simplified to the point when we can describe them with few numbers.
+The problem with the first option is that most of the 3D software packages that artists are using the most are commercial solutions with closed source code. It is possible to extend them via API that they usually provide but that is not enough if we want to implement state-of-the-art technique that sometimes requires the most modern technology in terms of graphics API etc.
+
+We've chosen to go with another, third, option. We don't want to reimplement from scratch something that is already available to use. We want to avoid this development overhead. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both features at the same time. We do this by using both of the programs and establishing a communication channel between them. We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We have a modeled scene on one side and we want to transfer data describing this scene to have it rendered on the other side. As we will show this can be done in a straight-forward fashion as our scenes can be simplified to the point when we can describe them with few numbers.
+
+[\textbf{why is it that we can do this?}]
+We can establish such communication between the two programs mainly thanks to the character of the data we are dealing with.
+
+[\textbf{the data}]
+Scenes we work with consist of macromolecules - proteins and lipids. Macromolecules in turn are made of atoms of different elements. There are multiple representations by which we usually visualize atomic data (see chapter State of the Art) [TODO: where should I put this?]. However the underlining data doesn't change. An instance of molecule is defined by the type information (what kind of molecule this is), position and rotation of the instance, and last, a list of atoms that this molecule is made of.
+
 
 [\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
 On the Figure X, you can see an overview of the system. On one side we have a modeling software while on the other we have a domain-specific tool, in our case it's a high performance renderer. Our vision was to have both of these programs running at the same time. The illustrator could have his scene opened in his modelling software. This way he would be using the tools he knows and is accustomed to for modelling the actual scene. Then on the renderer side he would be able to see how the changes he's made are reflected in the rendered final image. This all would happen in real-time thanks to writes and reads into and from shared memory.
@@ -216,14 +236,6 @@ Reading the data uses operating system api calls as well. In our case, because w
 [\textbf{advantages of this method}]Being able to parse the scene, stream the data into the renderer and render it, all of this in real-time, brings us several benefits. The biggest is most certainly how much faster the artist can work. He doesn't have to wait for his render to finish. He can review his changes right away by just either looking at a second monitor or simply switching windows. This also allows for parameter searching and the real-time preview can not only be used for reviewing the changes but also being the way how artist find out which parameters work the best for him.
 
 \section{old}
-TODO: there probably shouldn't be any mention about Maya or cellVIEW here (it belongs to implementation)
-I have introduced the field. I have sketched the problem that we are trying to solve (improving the workflow of animators/illustrators). Now it's time to describe the suggested solution.
-We talked about improving the workflow of scientific illustrator that uses Maya as an authoring software. The way that we are going to accomplish this is by taking advantage of extensibility of both Maya and Unity. 
-There are basically two stages of authoring a scientific visualization. These are modeling stage and rendering stage.
-
-[\textbf{high-level description of the method}]In the previous chapter, we sketched out the problem that scientific illustrators face in their day-to-day work - the fact that they don't have domain specific tools. Namely that the software that they use don't support newest results from scientific visualization field. We aim to solve this problem by extending their software by effectively connecting them to software which does implement newest visualization techniques. We want to achieves this by using shared memory and this way enable real time data streaming.
-TODO: image of the pipeline with time estimates of how long each stage takes, compared to our new approach
-
 [\textbf{what was the initial vision}]The vision was that there would be cellVIEW which renders the scene on one side and Maya on the other. In Maya the scene would be appropriately simplified. At the beginning we had an idea that there would just be cubes with maybe textures that would give the user at least some visual information about the protein type. We ended up using very rough meshes that represent the proteins in the scene in Maya.
 
 [\textbf{are there any initial requirements?}]As this project wasn't meant to be software intended for certain user group, we work with very little input requirements and so the design and user experience side of things have been explored over the course of development. We however had initial input from one of the most respected domain experts in scientific illustrator - Drew Berry. From this persona came the initial idea to use Maya as the modeling package as that's the software that Drew Berry uses. He expressed his interest in rendering style that cellVIEW provides and suggested that if we were to make cellVIEW usable in his workflow with Maya, it would greatly improve his productivity and shorten the production of his movies. His input sparked our interest in making cellVIEW usable as a part of a pipeline rather than a standalone tool. This then lead to research of which resulted in the following proposed method. This general method is presented as an idea of an approach that tools like cellVIEW could take in making themselves usable in art authoring pipeline. In this chapter we present this idea. Further in implementation chapter we focus on our use case - using Maya and cellVIEW but we believe that this method should be appliable on any two modeling and rendering tools (with possibility to be used in other applications as well).
@@ -240,16 +252,31 @@ Outline:
 [\textbf{unity side c++/c\# interoperability}]
 [\textbf{unity side script - how the data is used/rendered}]
 
-
-As an example and a proof-of-concept, we have implemented this approach using Autodesk Maya and cellVIEW. Maya provides its users an API which allowed us to implement a plugin which would provide desired functionality. Similarly, we have been able to create plugin for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plugins in a form of DLL to be used.
+This chapter will in detail describe our implementation of real-time scene data sharing using Autodesk Maya and cellVIEW. Maya provides its users an API which allowed us to extend this program with required functionality. Similarly, we have been able to create plugin for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plugins in a form of DLL to be used.
 [\textbf{Why Maya?}] We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he's been a key person that we had in mind when implementing this method. Chosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.8]{images/system-architecture-overview.pdf}
+  \end{center}
+  \caption{Overview of system components}
+  \label{system-overview}
+\end{figure}
 
 [\textbf{high-level overview of the architecture}]The architecture of the system consists of three parts - a plugin for Maya, plugin for Unity and a Unity script.
 The resulting system consisting of 3 parts which are illustrated on a Figure X. There is only one way which the data flow which simplified the implementation but of course it would be possible to extend the interoperability to be two-way(?).
 On Maya side, a plugin using Maya API written in C++ has been implemented. The function of this plugin is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with info about the instance) into the shared memory.
 Unity side of the system consists of two parts - a C++ plugin and a Csharp plugin. The C++ plugin takes care of reading the data from shared memory, while the Csharp plugin, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene. As you can see, the interoperability is achieved using (1) shared memory functionality and (2) interoperability between C++ and Csharp.
 
-[\textbf{maya api}]Maya actually provides two APIs - one in Python and one in C++. There is also another way how additional functionality can be implemented - MEL scripting language. MEL is very similar to other scripting languages like Bash, ... However, it is meant to be used in a way where user automates tasks, not to access API and even system API calls. Because of that MEL was not suitable for our job. Python API is more mature then MEL. Its advantage is that Python, as a interpreted language, can be run without compilation. This means that there doesn't have to be a compilation step and this makes the iteration loop faster. However, we wanted to implemented a functionality that is real-time. This means that we needed every piece of performance we can get. Because of that, the C++ API has been chosen and thus our Maya plugin has been implemented in C++.
+[\textbf{shared memory} - talk general about shared memory technology]
+Shared memory is a concept that ... Because of the fact that shared memory is an object that is very low-level tied to the operating system we are using WinAPI calls to work with shared memory. Libraries that make working with shared library easier exist, however we didn't want to lose performance by using them. Because we are using WinAPI, the system as it is implemented is tied to Windows platform. Porting to other operating systems should be straight-forward as the concept of shared memory is very similar across all operating systems.
+
+[\textbf{maya api}]Maya actually provides two APIs - one in Python and one in C++. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language.
+
+MEL is very similar to other scripting languages like Bash. MEL is not fully mature programming language an therefore is usable only for things like automating tasks that would be otherwise done through the GUI. There is one purpose for which MEL is suitable inside Maya ecosystem - custom GUI creationg. Because of that MEL was not suitable for our job.
+
+Python API is more mature then MEL. Its advantage is that Python, as a interpreted language, can be run without compilation. This means that there doesn't have to be a compilation step and this makes the iteration loop faster. However, we wanted to implemented a functionality that is real-time. This means that we needed every piece of performance we can get. Because of that, the C++ API has been chosen and thus our Maya plugin has been implemented in C++.
+
 There is also another reason why only the C++ route could be taken. We wanted to write into shared memory. The most basic way how to do that is via system API function calls. In our case, we implemented this on Windows platform. Thus the API we used has been WinAPI.
 
 \section{Implementation limitations}
