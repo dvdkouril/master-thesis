@@ -7,3 +7,8 @@
 *.xml
 *.gz
 *.toc
+thesis-blx.bib
+thesis.bbl
+thesis.blg
+thesis.ilg
+thesis.ind

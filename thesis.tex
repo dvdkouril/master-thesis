@@ -66,7 +66,8 @@
 %% The following section sets up the bibliography.
 \usepackage{csquotes}
 \usepackage[              %% When typesetting the bibliography, the
-  backend=biber,          %% `numeric` style will be used for the
+ backend=biber,          %% `numeric` style will be used for the
+%  backend=bibtex,
   style=numeric,          %% entries and the `numeric-comp` style
   citestyle=numeric-comp, %% for the references to the entries. The
   sorting=none,           %% entries will be sorted in cite order.
@@ -89,11 +90,11 @@
 %[\textbf{In what field are we? What are the people in this domain doing?}]
 In this day and age, scientists come to new findings everyday. Unfortunately, not all of these are ever shown to the general public. This can be because of several reasons. New facts might not be easily visualizeable. Or the things that they found out are a piece of a bigger picture and hence cannot be easily communicated. On top of that, scientists are not usually trained to expose their results to the public eye.
 
-This is the job of scientific illustrator. These artists are usually, by themselves (nebo first, proste zduraznit, ze jsou to predevsim vedci, kteri do oblasti maji ohromny insight), experts in their scientific field but on top of that they have focused on honing their artistic skills as well. They use their skill to visualize the science in their domain with easily understandable images, animations or other forms of media. To name just a few examples - Drew Berry, Graham Johnson, Janet Iwasa, ... (TODO: references to their sites or projects).
+This is the job of scientific illustrator. These people are, first and foremost, experts in their fields but on top of that they have invested significant amount of time on acquiring and perfecting their artistic skills. They use these skills to visualize the science in their domain with easily understandable images, animations or other forms of media. To name just a few examples - Drew Berry \cite{DrewBerryMovies}, Graham Johnson \cite{GrahamCellVideo}, Janet Iwasa \cite{iwasa2010animating}.
 
 % TODO: [\textbf{why are illustrations/animations useful: what art was talking about and also janet in molecular flipbook video}]
 
-There are many ways how they can do their job. Few years back, illustrations have been done by hand, drawings and paintings. This is a very timely process, as individual illustration can take months to make (reference David Goodsell, feature video na youtube). If we take into consideration that science is moving way faster what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and scientific illustrators have been looking for ways how to accelerate this process.
+There are many ways how they can do their job. Few years back, illustrations have been done by hand - with traditional drawing and painting methods. This is a very timely process, as individual illustration can take months to make. An example of an artist who still uses these traditional techniques we can name David Goodsell []. Goodsell has developed a style of abstracting details while preserving the general shapes. However, this is a very timely process, as individual illustration can take months to make \cite{DavidGoodsellVideo}. If we consider that science is moving way faster what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and scientific illustrators have been looking for ways how to accelerate this process.
 
 %[\textbf{Can we use computer graphics for this?}]
 Then came the age of computer graphics. As graphics tools have become more and more common and sophisticated in a field of computer generated movies (reference to Pixar?). Tools have become more accessible, easier to use and so scientific illustrators adapted and tried to use these tools for their benefit. Tools like Maya, Cinema4D, or XXX are nowadays the industry standards when it comes to authoring 3D content. Inside these programs there usually exist a software called renderer. With this two parts - modeler and renderer - the user is able to create images or animations (movies) from the 3d data that he creates in the software.
@@ -105,8 +106,6 @@ But this workflow isn't very effective. One of the obstacles in the work of illu
 For this, there are other tools that help them to make the pipeline more effective. This doesn't mean that these tools completely replace Maya or Cinema4D. The domain specific tools are more commonly implemented in a form of a plugin that is developed and loaded into the concrete software packages.
 
 In the end - the features that 3D authoring package provides for modeling 3D scenes are hugely beneficial to the creators. Another things is - people that used these software are used to that and switching from one to another is not a matter of a short time. That's one of the things that we need to take into account. The pipeline of each artist might be a little different and rather than suggesting a solution that completely replaces their pipeline, it's better to make a tools that doesn't break their workflow but rather the artist is able to incorporate the tool, benefit from it but doesn't have to change the way they work a lot.
-
-Odstavec mozna namisto toho dalsiho: On the other hand, the fact that science is progressing forward, constantly bringing new data of various formats, techniques how to visualize, render, show this data in the most optimal way have been developed. Visualization research is an on-going and booming branch of science. This means that every year, new techniques of visualization of data are invented and presented. But as we already foreshadowed, developers of 3D modeling software aren't always up to date with these techniques. This also illustrates the fact, that scientific illustration isn't their primary focus. What that means for us is that we do have new, innovative and better ways how to visualize and display our specific data but these are rarely integrated into the tools that scientific illustrators use. This is the gap that we set out to fill in this project.
 
 % [\textbf{what are the alternatives to what people are using already?}]
 There also exist programs that are completely separated from any of the mentioned authoring software. There is an active research in the domain of visualization, with many conferences every year and thousands (?) of research papers in this domain. Usually, as a biproduct, these paper generate software that showcases the proposed visualization technique or pipeline. Some of these developed into full featured visualization packages and thus provide a way how to illustrate something in a new way. While these programs might hugely benefit scientific illustrators, it's not always the case that they get used. This might be because of several reasons one of which is that the illustrators are simply used to a certain pipeline and incorporating a new software into this pipeline doesn't seems very beneficial to them. Another problem is that because these programs are developed for a certain use cases (showcasing the point of the paper) they might not be easily appliable to more than one purpose.
@@ -276,11 +275,10 @@ Unity side of the system consists of two parts - a C++ plugin and a C\# script. 
 
 % [\textbf{shared memory} - talk general about shared memory technology]
 \section{Shared Memory}
-Shared memory is a segment of system memory which can be accessed by multiple programs. It is used as an efficient way to establish communication between separately running processes. It is typically located in random-access-memory (RAM) although it can be swapped onto disk.
+Shared memory is a segment of system memory which can be accessed by multiple programs. It is used as an efficient way to establish communication between separately running processes. Our implementation has been done on Windows, however the concept of shared memory can be found on all operating systems.
 
 % TODO: swaping onto disk, unix, named file mapping in windows
-
-There are several libraries that would enable us to access shared memory. First option is to use operating system API calls. Another way would be to use boost
+From now on, we will be talking about the implementation that has been done on Windows operating system. There are several way how we can access shared memory here. boost library provides class that provides an abstraction above shared memory functionality. Similarly, Qt framework also has class with comparable function set. We chose to not use any of these. Instead, we directly used Windows API function calls to operate with shared memory. This solution has been chosen because we wanted to use the lowest possible layer because of speed concerns.
 
 \section{C++ and C\# interoperability}
 
@@ -319,4 +317,6 @@ The challenge will be how to design the system to be easily adaptable by other c
 \chapter{Appendix}
 Here you can insert the appendices of your thesis.
 
+\newpage
+\printbibliography[heading=bibintoc]
 \end{document}
