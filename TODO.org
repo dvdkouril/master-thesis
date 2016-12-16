@@ -4,3 +4,6 @@
 
 * Todos
 ** [Figure 4.1] znazornit spojeni pres shared memory
+
+* Questions
+** references to manuals/references: mely by misto toho byt poznamky pod carou?

@@ -284,18 +284,33 @@ From now on, we will be talking about the implementation that has been done on W
 
 % [\textbf{maya api}]
 \section{Maya API}
-Maya actually provides two APIs - one in Python[ref] and one in C++[ref]. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language.
+Maya actually provides two APIs - one in Python \cite{MayaAPIPython} and one in C++ \cite{MayaAPICpp}. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language \cite{MayaMEL}.
 
-MEL is very similar to other scripting languages like Bash. MEL is not fully mature programming language an therefore is usable only for things like automating tasks that would be otherwise done through the GUI. There is one purpose for which MEL is suitable inside Maya ecosystem - custom GUI creationg. Because of that MEL was not suitable for our job.
+% TODO: talk about plugin types: command, node
+% TODo: talk about typlessness
 
-Python API is more mature then MEL. Its advantage is that Python, as a interpreted language, can be run without compilation. This means that there doesn't have to be a compilation step and this makes the iteration loop faster. However, we wanted to implemented a functionality that is real-time. This means that we needed every piece of performance we can get. Because of that, the C++ API has been chosen and thus our Maya plugin has been implemented in C++.
+\subsection{MEL vs. Python vs. C++ in Maya}
+MEL (Maya Embedded Language) is very similar to other scripting languages like Bash or Perl. It is not fully mature programming language and therefore is suitable only for things like automating tasks that would otherwise be done through the GUI. There is however one thing in which MEL excells and is perfectly suited for inside Maya programming ecosystem - creation of custom GUI. Even though graphics interface can be made by using modified Qt library \cite{MayaQt}, extending the interface is way faster and easier with MEL.
+
+Python API is more mature then MEL. Its advantage is that Python, as an interpreted language, can be run without compilation. This means that there doesn't have to be a compilation step and this makes the iteration loop faster. However, Python is, naturaly, expected to be slower than C++. We wanted to implement a functionality that is real-time. This means that we needed every piece of performance we could get. Because of that, the C++ API has been chosen and thus our Maya plugin has been implemented in C++.
 
 There is also another reason why only the C++ route could be taken. We wanted to write into shared memory. The most basic way how to do that is via system API function calls. In our case, we implemented this on Windows platform. Thus the API we used has been WinAPI.
+
+\subsection{Dependency Graph}
+Maya's internal scene representation is called Dependency Graph. It is a network of nodes where each node has a set of inputs and outputs. Through these inputs and outputs the nodes are connected and data is propagated through the network. The idea is that each node performs some computation using input parameters and forwards the result further. There is an optimization in this approach in that the calculation is only done when the input parameters have changed somehow.
+
+\subsection{DAG Hierarchy}
+DAG (Directed Acyclic Graph), as the . In Maya API context this refers to a hierarchy of nodes which establishes parent-child relationships between them.
+
+\subsection{Objects, Function Sets and Proxies}
+asdf
 
 \section{Maya side}
 On Maya side, we will talk about the one component that belongs there from our system as can be seen on Figure X.
 %Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
 What we needed to do is basically scan the 3D scene graph and output positions and rotations of each macromolecule object. There are two usecases which needed to be considered. When modeling the scene, the rate of change is not that high. Usually the scene only changes very little (moving or rotating usually just one or few objects). However, we had in mind also a usecase where the animation of the scene would be outputed as well. This means that artist would create a keyframe animation of (nearly) all molecule objects and we would want to transfer the position/rotation data each frame for the animation. Obviously, for each of these use cases there are different ways how to achieve the optimal performance. In the end I settled for (todo: I don't actually know right now)
+% TODO: mention legacy viewport usage
+% TODO: MPxLocatorNode
 \section{Unity side}
 On the side of cellVIEW (or Unity), we have two components - dll plugin and a C\# script.
 Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#
@@ -313,10 +328,12 @@ The project has been presented to Drew Berry (I think). Also, it was mention in 
 The method has tremendous potential in its application. The current implementation should be extended for both performance and actual use for artists. For this however, we will need additional input from domain experts. We have been fortunate enough that Drew Berry really liked this work and expressed his desire to develop this project further. It is highly probable that we will be working even more closely with him and that we would continue to improve this system so that he can use it for his movies production.
 The challenge will be how to design the system to be easily adaptable by other creators as well.
 
+
+\newpage
+\printbibliography[heading=bibintoc]
+
 \appendix %% Start the appendices.
 \chapter{Appendix}
 Here you can insert the appendices of your thesis.
 
-\newpage
-\printbibliography[heading=bibintoc]
 \end{document}
