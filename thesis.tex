@@ -48,7 +48,7 @@
     type          = mgr,
     author        = Bc. David Kouřil,
     gender        = m,
-    advisor       = Ivan Viola and Barbora Kozlikova,
+    advisor       = Mathieu Le Muzic, Ivan Viola and Barbora Kozlikova,
     title         = {Maya2CellVIEW: Integrated Tool for Creating Large and Complex Molecular Scenes},
     TeXtitle      = {Maya2CellVIEW: Integrated Tool for Creating Large and Complex Molecular Scenes},
     keywords      = {molecular visualization, illustration, Maya, Unity, ...},
@@ -88,15 +88,19 @@
 \begin{document}
 \chapter{Introduction}
 %[\textbf{In what field are we? What are the people in this domain doing?}]
-In this day and age, scientists come to new findings everyday. Unfortunately, not all of these are ever shown to the general public. This can be because of several reasons. New facts might not be easily visualizeable. Or the things that they found out are a piece of a bigger picture and hence cannot be easily communicated. On top of that, scientists are not usually trained to expose their results to the public eye.
+In this day and age, scientists come to new findings every day. Unfortunately, not all of these are ever shown to the general public. %This can be because of several reasons. New facts might not be easily visualizeable. Or the things that they found out are a piece of a bigger picture and hence cannot be easily communicated.
+There can be several reasons for that. New discovered facts are usually pieces of a bigger picture. Also, all the information might be already there, in several databases, but putting it all together would take significant effort and time.
+On top of that, scientists are not usually trained to expose their results to the public eye.
 
 This is the job of scientific illustrator. These people are, first and foremost, experts in their fields but on top of that they have invested significant amount of time on acquiring and perfecting their artistic skills. They use these skills to visualize the science in their domain with easily understandable images, animations or other forms of media. To name just a few examples - Drew Berry \cite{DrewBerryMovies}, Graham Johnson \cite{GrahamCellVideo}, Janet Iwasa \cite{iwasa2010animating}.
 
 % TODO: [\textbf{why are illustrations/animations useful: what art was talking about and also janet in molecular flipbook video}]
+The importance of such work is not only in bringing the science to the laymen. Humans are visual beings and by seeing something we can understand certain concepts from a different angle. And this applies to other scientists as well. In practice this means that such artworks can serve as a discussion starters for. New ideas and hypothesis might emerge just by seeing concepts differently or as a compilation of information into one cohesive artwork.
 
 There are many ways how they can do their job. Few years back, illustrations have been done by hand - with traditional drawing and painting methods. This is a very timely process, as individual illustration can take months to make. An example of an artist who still uses these traditional techniques we can name David Goodsell []. Goodsell has developed a style of abstracting details while preserving the general shapes. However, this is a very timely process, as individual illustration can take months to make \cite{DavidGoodsellVideo}. If we consider that science is moving way faster what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and scientific illustrators have been looking for ways how to accelerate this process.
 
-%[\textbf{Can we use computer graphics for this?}]
+% [\textbf{Can we use computer graphics for this?}]
+With the increasing popularity 
 Then came the age of computer graphics. As graphics tools have become more and more common and sophisticated in a field of computer generated movies (reference to Pixar?). Tools have become more accessible, easier to use and so scientific illustrators adapted and tried to use these tools for their benefit. Tools like Maya, Cinema4D, or XXX are nowadays the industry standards when it comes to authoring 3D content. Inside these programs there usually exist a software called renderer. With this two parts - modeler and renderer - the user is able to create images or animations (movies) from the 3d data that he creates in the software.
 Even with just this, the modern computer graphics brings us the possibility to create amazing imagery and enables illustrators to show ordinary people fenomena from all kinds of science disciplines.
 
@@ -297,20 +301,42 @@ Python API is more mature then MEL. Its advantage is that Python, as an interpre
 There is also another reason why only the C++ route could be taken. We wanted to write into shared memory. The most basic way how to do that is via system API function calls. In our case, we implemented this on Windows platform. Thus the API we used has been WinAPI.
 
 \subsection{Dependency Graph}
-Maya's internal scene representation is called Dependency Graph. It is a network of nodes where each node has a set of inputs and outputs. Through these inputs and outputs the nodes are connected and data is propagated through the network. The idea is that each node performs some computation using input parameters and forwards the result further. There is an optimization in this approach in that the calculation is only done when the input parameters have changed somehow.
+Maya's internal scene representation is called Dependency Graph. It is a network of nodes where each node has a set of inputs and outputs. Through these inputs and outputs the nodes are connected and data is propagated through the network. The idea is that each node performs some computation using input parameters and forwards the result further. There is an optimization in this approach in that the calculation is only done when the input parameters have changed somehow. If an output of a node is requested when the inputs have not changed, instead of performing the computation, a cached value is returned.
 
 \subsection{DAG Hierarchy}
-DAG (Directed Acyclic Graph), as the . In Maya API context this refers to a hierarchy of nodes which establishes parent-child relationships between them.
+DAG (Directed Acyclic Graph), as the name suggests, is a structure in which nodes are connected with edges that have an orientation with the constraint that they can't create loops. In Maya API context this refers to a hierarchy of nodes which establishes parent-child relationships between them.
+% TODO: illustrate with transform -> mesh so that I can reference to it in Maya side section
 
-\subsection{Objects, Function Sets and Proxies}
-asdf
+\subsection{Wrappers, Objects, Function Sets and Proxies}
+In Maya API, we can find four types of C++ objects: wrappers, objects, function sets and proxies.
+
+\textbf{Wrapper} objects usually provide utility functionality either for easier manipulation with data or mathematics. These include classes like MFloatArray, MMatrix, MVector, MQuaternion or iterators for traversing collections of data - MItDependencyGraph, MItMesh...
+
+\textbf{Objects} and \textbf{Function Sets} are used to access and change internal object in Maya. Objects are instances of class MObject and they basically serve as a handle which only holds the necessary information about kind of object do they point to. In a way Objects are typeless and their type is determined by a mechanism called RTTI (Run Time Type Identification). Function Sets are here to actually perform operations on Objects. Function Set classes always start with a MFn* prefix and they are designed to be compatible with only certain Objects.
+
+\textbf{Proxies} are classes that allow developers to implement new types of objects like custom nodes or commands. Proxy classes are always prefixed with MPx*.
 
 \section{Maya side}
-On Maya side, we will talk about the one component that belongs there from our system as can be seen on Figure X.
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{images/plugin-contents.pdf}
+  \caption{Plugin contents}
+  \label{fig:plugin-content}
+\end{figure}
 %Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
-What we needed to do is basically scan the 3D scene graph and output positions and rotations of each macromolecule object. There are two usecases which needed to be considered. When modeling the scene, the rate of change is not that high. Usually the scene only changes very little (moving or rotating usually just one or few objects). However, we had in mind also a usecase where the animation of the scene would be outputed as well. This means that artist would create a keyframe animation of (nearly) all molecule objects and we would want to transfer the position/rotation data each frame for the animation. Obviously, for each of these use cases there are different ways how to achieve the optimal performance. In the end I settled for (todo: I don't actually know right now)
+Maya plugin implements two new custom commands and one new custom node. When the plugin is loaded and initialized it creates a new menu item in Maya's main toolbar. Under this menu item there are two subitems (buttons) - Start Streaming and Stop Streaming. These are set up to trigger call of appropriate command - startStreamingCommand to start the streaming and endStreamingCommand to stop it. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you shouldn't be able to start streaming when you already are.
+
+The new custom node is class which inherits from MPxLocatorNode. This is a proxy type objects (as can be told from MPx prefix) and it serves as way to implement new node type. In this case the node is a locator node. What this inside Maya means is that handle that you use when you change objects in maya scene. This doesn't really sound like something we are trying to do. And indeed this is a little bit of a hack. We needed to implement our functionality in a place in Maya APi that would be called every frame, everytime something in the scene has changed. MPxLocatorNode has a method draw which can be overriden and this way we can implement our custom functionality which will be performed everytime something in the scene changes.
+
+Another option would be to use connection of inputs and outputs and perform the code when these changes happen.
+
+startStreamingCommand adds an instance of the custom node into the scene. 
+
 % TODO: mention legacy viewport usage
 % TODO: MPxLocatorNode
+
+% TODO: left/right handed conversion
+% TODO: image: new menu item
 \section{Unity side}
 On the side of cellVIEW (or Unity), we have two components - dll plugin and a C\# script.
 Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#

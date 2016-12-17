@@ -3,7 +3,9 @@
 ** TODO drew berry broken link
 
 * Todos
-** [Figure 4.1] znazornit spojeni pres shared memory
+** TODO [Figure 4.1] znazornit spojeni pres shared memory
+** TODO Data Generation -> Data
+** TODO change names and errors in the code
 
 * Questions
 ** references to manuals/references: mely by misto toho byt poznamky pod carou?
