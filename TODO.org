@@ -10,7 +10,7 @@
 * Questions
 ** references to manuals/references: mely by misto toho byt poznamky pod carou?
 ** jak pouzit cizi obrazky? kam se da reference?
-** jak citovat state of the art kdyz podle toho pisu molecular data?
+** jak citovat state of the art od bary kdyz podle toho pisu molecular data?
 ** jake papery citovat pro rasterization, ray casting, ray tracing?
 
 * Notes
