@@ -149,7 +149,7 @@ All matter consists of \textbf{atoms} which are grouped in \textbf{molecules}. A
 
 \textbf{Proteins} are macromolecules that are formed by a process called protein synthesis. During this process, part of DNA is transcribed into messenger RNA which is then turned into chain of amino acids that fold into a protein.
 
-\textbf{Lipids} are hydrophobic molecules that typically serve as a building elements of lipid membranes. Lipid membranes separate different compartments in a cell.
+\textbf{Lipids} are hydrophobic molecules that typically serve as a building blocks of lipid membranes. Lipid membranes' function is to separate different compartments in a cell.
 
 % TODO: acquisition
 Different techniques are used to acquire molecular data. The three most widely used are X-ray crystallography, nuclear magnetic resonance spectroscopy (NMR) and cryo-electron microscopy (cryo-EM). Each of these techniques has their benefits and downsides. For example, using NMR, only structures of limited size can be resolved. On the other hand, using cryo-electron microscopy can be used to resolve large structure but only in low resolution.
@@ -218,9 +218,6 @@ BioBlender provides similar functionality for Blender software. MCell and CellBl
 %[\textbf{How people normally render - offline}]
 The rendering stage takes place after the scene is modelled. Again, there are more options at hand. 3D packages usually come with a default rendering solution which is for the most part good enough to use. For more demanding artist, external renderers like vray, mental ray, corona or octane. What these renderes have in common is that they are so called ``offline renderers''. In practice this means that they are using ray tracing (or similar) technique to render the scene with a process that is very much close to how light works in real life. The disadvantage of this approach is that this process take more time. It usually isn't possible to achieve real-time rendering (fps at least 25).
 
-%[\textbf{interactive renderers like octane, how do they fit and why they are not the full solution}]
-%In recent years, interactive renderers have been gaining popularity. These tools work in a similar way as did previously offline renderers. The difference is that they show the artist an intermediate result of the path tracing (or the technique they are using). This way the artist gets a fast render of his scene with a lower quality and the quality of this image is refined iteratively. This approach also enable its user to see changes in the scene in a quick preview and as it is right now, a lot of artist have been using this feature and they say it's been greatly helping them in their work. There is however one thing that we can still improve. These renderers still operate on meshes. We've already talked about how our data can be efficiently simplified to our purpose and therefore rendered with a great performance in real-time. Thus even if interactive renderers like Octane could improve the workflow we can still provide a better performance by using custom renderer like cellVIEW.
-
 \section{Domain-specific tools}
 %kinemage (http://kinemage.biochem.duke.edu/), chimera (http://www.cgl.ucsf.edu/chimera/), jmol?
 %[\textbf{intro}]
@@ -238,12 +235,19 @@ It has been build on top of Blender's game engine functionality.
 
 PyMOL focuses on visualization of individual macromolecules, not so much used to create molecular scenes which contain several thousands of these.
 
-\textbf{VMD} (Visual Molecular Dynamics)\cite{HUMP96} serves as a tool for modeling, visualization and analysis. It actually has a long tradition, being first introduced in 1996. Similarly to PyMOL, VMD has been used extensively to make figures and illustrations for covers of textbooks and journals.
+\textbf{VMD} (Visual Molecular Dynamics)\cite{HUMP96} serves as a tool for modeling, visualization and analysis. It actually has a long tradition, being first introduced in 1996. Similarly to PyMOL, VMD has been used extensively to make figures and illustrations for covers of textbooks and journals. It's primary purpose lays in molecular modelling—using computer simulations in applicati
 
 \textbf{cellVIEW}\cite{cellVIEW_2015} is a tool with the ability to render large biological macromolecular scene at an interactive frame-rate. It has been designed and implemented with regards to this use case with the use of state-of-the-art rendering techniques. It employs several modern techniques to reduce the amount of processed geometry in macromolecular scenes to provide its users with a real-time performance. As a result cellVIEW can render scenes containing up to several billion atoms with a framerate above 60 fps (?). cellVIEW has been implemented with Unity game engine. The rendering styles has been inspired by illustration by David Goodsell who has developed a style of abstracting the shape of individual proteins to reduce visual noise of the picture. cellVIEW immitates this approach by integrating a level-of-details scheme - the farther the protein is from the camera the less amount of its atoms are rendered and the rendered atoms are scaled up. This approach results in a multiscale visualization - user can zoom in to see individual atoms of a protein instance, or he can zoom out and see the whole dataset with its distinguisable compartments. The biggest dataset that has been possible to visualize is HIV, however tests have been done and it should be possible to render e-coli bacteria (which is X times larger)
 
-ePMV tackles similar problem as we do. The goal is to simplify process of generating figures and animations for scientific purposes. ePMV is a plugin which brings molecular visualization toolset into various 3D authoring software. It is using the plugin-using-API architecture which most of the programs provide to implement an unified environment for the molecular tool to run on. 
-\textbf{ePMV}\cite{ePMV} is a project that has tried to solve a similar problem as we do. ePMV is a system which brings molecular visualization toolset into various 3D authoring software. It's building upon the plugin/API architecture which most of the programs provide. They implement an adaptor module which is a plugin for each of the supported 3D programs. This adaptor provides an interface for the actual molecular software to run inside the host 3D program. Uses uPy. We don't use Python.
+\begin{figure}
+  \centering
+  \includegraphics{images/epmv-architecture.jpg}
+  \caption{ePMV architecture}
+  \label{fig:ePMV}
+\end{figure}
+\textbf{ePMV}\cite{ePMV} tackles similar problem as we do. The goal is to simplify process of generating figures and animations for scientific purposes taking into account the fact that illustrators have tools that they are familiar with. ePMV is a plugin which brings molecular visualization toolset into various 3D authoring software, in this context called host. They take advantage of host API which is nowadays commonly exposed to be used by custom Python scripts. By implementing they create an unified environment where the molecular visualization software can run. Thanks to this unified environment, an adaptor, the molecular program can stay the same accross all the supported hosts. Only the adaptor needs to be adapted to a new hosts' API. When designed, emphasis has been given to making sure that both native (general 3D modeling) and scientific molecular tools are used in conjunction to their full potential.
+
+Several host programs are already supported—Cinema4D, Blender, Maya and 3ds Max, with plans to extend this list further.
 
 \section{Workflow}
 % [\textbf{Define the workflow - how it is now and how we could improve it (fasten it)}]
@@ -251,12 +255,12 @@ The actual workflow obviously differs from illustrator to illustrator, different
 
 It is however important to formalize a little bit how the workflow looks like. Our goal is to connect one of the specific domain tools into a professional software. By doing that, we want to achieve faster and therefore more effective workflow.
 
-In general the pipeline is composed of two major steps - modeling and rendering. In the modeling step, all the data, requirements, hypothesis, ideas and stories are compiled into a 3D scene or animation. Artist usually uses software-specific features like particle systems, physics simulations,... to get there.
+We consider the pipeline to be composed of two major steps - modeling and rendering. In the modeling step, all the data, requirements, hypothesis, ideas and stories are compiled into a 3D scene or animation. Artist usually uses software-specific features like particle systems, physics simulations,... to get there.
 
-The next step is generation of either still image or animated video from the 3D scene/animation. This is equally, maybe even more so, important as the first step. By using certain rendering techniques we can underline concepts which are important to the artwork. The level of . Traditionally, this step has been very computationally intensive. Today with the power of modern GPU and the increasing availability of such devices, the render times have been reduced to X-Y. Still, this represents an obstacle in the workflow of animator.
+The next step is generation of either still image or animated video from the 3D scene/animation. This is equally, maybe even more so, important as the first step. By using certain rendering techniques we can underline concepts which are important to the artwork. The level of detail has to be carefully chosen not to overwhelme the audience with visual noise. Traditionally, the rendering step has been very computationally intensive. Today with the power of modern GPUs and the increasing availability of such devices, the render times have been reduced dramatically. Still, this represents an obstacle in the workflow of animator. Even just one minute delay can cause distraction.
 
 % yeah it's good to end this with workflow because I can talk here about how things are and what is the problem that we want to solve and in method I can continue with that and it's exactly as we talked with Ivan about the Problem definition
-This is the problem that we wanted to solve by using custom state-of-the-art molecular renderer. As was mentioned before, at this domain, the super-realistic results of modern rendering methods are not beneficial to us. We instead want to employ more illustrative, simplified rendering style. That brings us another benefit in that this rendering method is better performing allowing us to render at interactive (real-time) framerate. By using our fast renderer, we want to eliminate the time cost of rendering step when using conventional offline renderers.
+This is the problem that we wanted to solve by using custom state-of-the-art molecular renderer. As was mentioned before, at this domain, hyper-realistic results of modern rendering methods are not that beneficial to us. We instead want to employ more illustrative, simplified rendering styles. That brings us another benefit in that this rendering method is better performing allowing us to render at interactive (real-time) framerate. By using our fast renderer, we want to eliminate the time cost of rendering step when using conventional offline renderers.
 
 \chapter{Method}
 \label{chap:method}
@@ -272,19 +276,21 @@ In our use case, this is even more true because we are dealing with a very dense
 
 Thanks to these simplifications we can render molecular scenes with interactive framerates, as has been shown by cellVIEW\cite{cellVIEW_2015}. Unfortunately, these techniques are not implemented in 3D commercial programs which is what the artists usually use. Our goal is to make it so that the artist can use his software of choice to model his scenes but also take advantage of modern rendering. The use is two-fold: real-time rendering can serve as a preview of the scene but also can be used as a final result. The goal of this project was to come up with an idea of how to connect these two programs so that they will work together.
 
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.8]{images/pipeline.pdf}
-  \caption{workflow}
-  \label{fig:workflow}
-\end{figure}
-
 %[\textbf{two options, we choose third}]
 Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired functionality into the software that is missing it. In our case, that would mean we could either implement the fast and visually appealing rendering into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
 
-The problem with the first option is that most of the 3D software packages that artists are using the most are commercial solutions with closed source code. It is possible to extend them via API that they usually provide but that is not enough if we want to implement state-of-the-art technique that sometimes requires the latest technology in terms of graphics API etc.
+The problem with the first approach is that substantial percentage of the 3D software packages that artists are using the most are commercial solutions with closed source code. It is possible to extend them via API that they provide but that is not enough if we want to implement state-of-the-art technique that sometimes requires the latest technology in terms of graphics API etc.
 
-We've chosen to go with another, third, option. We don't want to reimplement from scratch something that is already available to use. We want to avoid this development overhead. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both features at the same time. We do this by using both of the programs and establishing a communication channel between them. We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We have a modeled scene on one side and we want to transfer data describing this scene to have it rendered on the other side. As we will show this can be done in a straight-forward fashion as our scenes can be simplified to the point when we can describe them with few numbers.
+We also don't want to implement desired 3D modeling tools into our specific domain program. This would create development overhead which wouldn't bring much benefit on its own. Besides that, every artist uses different instruments and gratifying all of them would be impossible thing to achieve.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.7]{images/workflow-before-after.pdf}
+  \caption{Workflow, a. before, b. after}
+  \label{fig:workflow}
+\end{figure}
+
+We've chosen to go with another, third, option instead. We don't want to reimplement from scratch something that is already available to use. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both sets of features at the same time. We do this by using both of the programs and establishing a communication channel between them. We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We can model the scene on one side and we want to transfer data describing this scene to have it rendered on the other side. As we will show this can be done in a straight-forward fashion as our scenes can be simplified to the point when we can describe them with few numbers.
 
 %[\textbf{why is it that we can do this?}]
 We can establish such communication between the two programs mainly thanks to the character of the data we are dealing with.
