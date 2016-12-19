@@ -11,3 +11,8 @@
 ** references to manuals/references: mely by misto toho byt poznamky pod carou?
 ** jak pouzit cizi obrazky? kam se da reference?
 ** jak citovat state of the art kdyz podle toho pisu molecular data?
+
+* Notes
+** Chtel jsem dostat Introduction+STAR+Method do co nejfinalnejsiho stavu, protoze to je to hlavni k cemu mi muze Ivan dat feedback
+** Rozdelovani na podkapitoly mozna nemam uplne vyresene, muze to byt takto souvisly text nebo by mely byt subsections?
+** Obrazky jsem zatim moc neresil, doplnim pozdeji
