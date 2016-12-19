@@ -165,11 +165,13 @@ Between the molecular (observable with methods like NMR and X-ray crystallograph
 % [\textbf{Commercial 3D software is absolutely dominating}]
 Using a professional 3D modeling and animation software can help scientists to communicate their ideas. These programs have been designed to provide means for people that need to create three dimensional models of any kind. And in the past several years, more and more scientists do employ professional 3D solutions into their pipeline for various purposes.
 
-Unfortunately, these programs usually come with a very steep learning curve. Mastering this tool, or even getting on proficiency level enough to produce meaningful work, is not an easy task and takes between several months to years. This is not something a lot of researchers are willing, or even able, to sacrifice. The good news is that there is usually a number of learning materials available on the internet, both supplied by the vendor of the software and third parties.
+Unfortunately, these programs usually come with a very steep learning curve. Mastering this tool, or even just getting on level of proficiency enough to produce any meaningful work, is not an easy task and takes between several months to years. This is not something a lot of researchers are willing, or even able, to sacrifice. The good news is that there is usually a number of learning materials available on the internet, both supplied by the vendor of the software and third parties.
 
-Another problem with software meant to general 3D editing is that these tools are not designed with molecular visualizations in mind. This is problematic because of the fact that scientific illustrators want to work from accurate data. Mentioned software is primarily designed to be used by workers in entertainment industry. Thus there is missing any framework which would enable to import scientifically accurate data in the basic program installation.
+Another problem with software meant to general 3D editing is that these tools are not designed with molecular visualizations in mind. This is problematic because of the fact that scientific illustrators mostly want to work from accurate data. Mentioned software is primarily designed to be used by workers in entertainment industry. Thus there is missing any framework which would enable to import scientifically accurate data in the basic program installation.
 
-There is number of options to choose from currently available products. Most widely used are Autodesk Maya and Cinema 4D although other programs have been successfuly used in various projects. We can name open-source Blender or a relatively young product MODO\cite{MODOscientificIll}.
+There is number of options to choose from currently available products. Most widely used are Autodesk Maya and Cinema 4D although other programs, like open-sourced Blender or a relatively young MODO\cite{MODOscientificIll}, have been successfuly used in various projects.
+
+% TODO: what are the difference, are some better than others in some regards?
 
 %[\textbf{things that are nice to have from these programs - easy manipulation with objects, scene graph to organize the scene, tools for animation, semi-automatic object positioning (random, particles)}]
 Disregarding the differences between all the 3D software of this kind, there are features that are more or less contained in all of them and over the years have become must-have features that tremendously help with navigating and editing of 3D scene.
@@ -184,6 +186,14 @@ Third, object manipulation—translation, rotation and scale—is solved and mad
 %These are the killer features and even though they are present in all of the programs, the illustrators are often used to the way they work or to a certain shortcut which means that it's not trivial for them to switch from one to another (or it is but it takes some time).
 
 % TODO: rendering
+Important component of any professional 3D program is a renderer. All of the mentioned products come with at least one default, preinstalled, renderer. On top of that, user is able to purchase a commercial standalone rendering solution which is most likely provided in a form of a plugin that integrates renderer into the 3D program.
+
+% TODO: offline rendering algorithms
+The techniques that these rendering solutions use are sometimes refered to as ``offline'' rendering. The opposite of this would be real-time rendering. The difference is mainly in the time that these two types of rendering take. Offline rendering has taken physical correctness and realistic look as it's primary goal while the rendering time is given less priority. On the other hand, real-time rendering techniques aim to render several times. The obvious benefit here being that the scene can change dynamically and is still rendered in time for human eye to not notice ... In real-time rendering, algorithms called rasterization is considered the state-of-the-art approach as it enables us to achieve interactivity fairly easily.  Ray casting and ray tracing are the two basic categories of algorithms used in offline rendering.
+
+Plethora of commercial renderers exists these days. From the popular ones we can name OTOY's Octane, Chaosgroup's V-ray, Pixar's RenderMan. Open-source solutions exist also - LuxRender or Cycles (which is now available in default installation of Blender).
+
+In the same way as with particular modeling software, the choice of the right renderer is mostly personal choice of the illustrator or animator. Renderers are also complex programs which take some time to truly master. This means that when somebody learns how to use certain renderer they usually stick to this solution.
 
 %[\textbf{scientists have to go through training to be able to use these programs}]
 %However, as we said in the introduction, by having the information compiled into visual form is hugely beneficial so some people were willing to dive into learning these tools and have been able to use them to an incredible benefit. Ideally we would like more scientists to be able to create visuals like this so attempts to simplify this process have been made.
