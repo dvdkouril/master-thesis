@@ -109,7 +109,7 @@ Scientific illustrators have to balance both the correctness and artistic form o
 
 There are many ways how scientific illustrators can do their job. Historically, illustrations have been done by hand with traditional drawing and painting methods. Even today, some illustrators still prefer this way of working. It is however a very timely process, as individual illustration can take months to make. Probably the most well known and accomplished person in this is David Goodsell\footnote{
   David Goodsell's web page: \url{http://mgl.scripps.edu/people/goodsell/}
-}. Goodsell has developed a style of abstracting details while preserving the general shapes. However, this is a very timely process, as individual illustration can take months to make\cite{DavidGoodsellVideo}. If we consider the speed at which science is moving forward nowadays what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and we need to look for ways how to accelerate, or even partially automate, this process.
+} whose work is shown on Figure \ref{fig:goodsell-mycoplasma}. Goodsell has developed a style of abstracting details while preserving the general shapes. However, this is a very timely process, as individual illustration can take months to make\cite{DavidGoodsellVideo}. If we consider the speed at which science is moving forward nowadays what could end up happening is that before an illustration is finished a new finding emerges, rendering the illustration effectively obsolete. This is of course undesirable and we need to look for ways how to accelerate, or even partially automate, this process.
 
 % [\textbf{Can we use computer graphics for this?}]
 With the increasing popularity of computer generated imagery, it has naturally been adopted by scientific illustrators as well. Tools have become more accessible and easier to use over the years. Today, software solutions like Maya, Cinema4D or 3Ds Max have become industry standards for any task that revolves around modeling 3D geometry and rendering it. Game and movie industry are the leading industries that push computer graphics software creators forwards and provides most of the revenue for them. This means that these tools, no matter how versatile they try to be, are being skewed towards the use cases in movies and games. That means that people who want to create scientific content might struggle to use the tools sometimes. Still, people have been able to create amazing images and movies showing people phenomena from all kind of science disciplines.
@@ -328,21 +328,14 @@ Reading the data uses operating system API calls as well. In our case, because w
 %[\textbf{Why Maya?}]
 We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he's been a key person that we had in mind when implementing this method. Choosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
 
-\section{old}
+% \section{old}
 
-[\textbf{we don't want to use files} TODO: why?]Our method tries to solve these two problems. The problem of import/export is solved by using shared memory instead of files managed by the user. The rendering times problem is solved by using modern rendering techniques which enable us to render what we want in an interactive frame-rate.
-The reason why it's possible to take this approach of using shared memory comes from the character of data that we work with. Molecular scenes consist of molecules. Molecules are made of atoms which can be, and usually are, represented as spheres. Atoms of different elements are visualized by having different radii and colors. So for every molecule we need to keep track of what atoms it consists of, positions of those atoms and type of each of those atoms. This is even more leveraged by Protein Data Bank, which stores data about various proteins that have been found through out the years. For us, this means that we only need to keep track of the type of molecule and by fetching data from Protein Data Bank we get information about the protein cataloged under the protein identifier. Our scenes are (simplified) made of macromolecules. That means that in the end for rendering the scene we need a list of molecules, where for each molecule instance we need to save it's position, rotation and type. That's all the info that we need to be able to render our large molecular scenes. Even though this is still a lot of data, we are slowly getting to being able to render this on commonly available hardware. Because of the fact that this data size is "manageable" by modern computers we are able to store the data in shared memory.
-This method is mostly valuable as an example of how interconnection of software can be done and what improvements to the users this can bring. There is some prerequisites - both programs need to be extensible to the extend of the programmers must be able to develop extension that are able to read from and write to the shared memory using operating system API calls.
+%[\textbf{we don't want to use files} TODO: why?]Our method tries to solve these two problems. The problem of import/export is solved by using shared memory instead of files managed by the user. The rendering times problem is solved by using modern rendering techniques which enable us to render what we want in an interactive frame-rate.
+%The reason why it's possible to take this approach of using shared memory comes from the character of data that we work with. Molecular scenes consist of molecules. Molecules are made of atoms which can be, and usually are, represented as spheres. Atoms of different elements are visualized by having different radii and colors. So for every molecule we need to keep track of what atoms it consists of, positions of those atoms and type of each of those atoms. This is even more leveraged by Protein Data Bank, which stores data about various proteins that have been found through out the years. For us, this means that we only need to keep track of the type of molecule and by fetching data from Protein Data Bank we get information about the protein cataloged under the protein identifier. Our scenes are (simplified) made of macromolecules. That means that in the end for rendering the scene we need a list of molecules, where for each molecule instance we need to save it's position, rotation and type. That's all the info that we need to be able to render our large molecular scenes. Even though this is still a lot of data, we are slowly getting to being able to render this on commonly available hardware. Because of the fact that this data size is "manageable" by modern computers we are able to store the data in shared memory.
+%This method is mostly valuable as an example of how interconnection of software can be done and what improvements to the users this can bring. There is some prerequisites - both programs need to be extensible to the extend of the programmers must be able to develop extension that are able to read from and write to the shared memory using operating system API calls.
 
 \chapter{Implementation}
 \label{chap:implementation}
-%Outline:
-%[\textbf{high-level overview}]
-%[\textbf{maya side plugin}]
-%[\textbf{unity side plugin}]
-%[\textbf{unity side c++/c\# interoperability}]
-%[\textbf{unity side script - how the data is used/rendered}]
-
 This chapter will in detail describe the implementation of real-time scene data sharing between Autodesk Maya and cellVIEW. Autodesk provides Maya users an API which allowed us to extend this program with required functionality. Similarly, we have been able to create plug-in for cellVIEW. This was because of the fact that cellVIEW is implemented using Unity engine which also allows custom plug-ins in a form of DLL to be used.
 
 \begin{figure}
@@ -356,31 +349,48 @@ This chapter will in detail describe the implementation of real-time scene data 
 % [\textbf{high-level overview of the architecture}]
 The architecture of the system consists of three parts - a plug-in for Maya, plug-in for Unity and a Unity script - as you can see in Figure \ref{fig:system-overview}.
 The data flows only in one way - we write into shared memory with Maya plug-in and read from shared memory with Unity plug-in. This simplifies the situation from the implementation point of view because we don't have to design synchronization scheme.
-The plug-in for Maya is using Maya API (which will be described later) and is written using in C++ programming language. The function of this plug-in is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with info about the instance) into the shared memory.
-Unity side of the system consists of two parts - a C++ plug-in and a C\# script. The C++ plug-in takes care of reading the data from shared memory, while the C\# script, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene. Note that there are two types of interoperability between components: (1) shared memory functionality, which enables two processes to communicate, and (2) interoperability between C++ and C\#, which allows us to pass memory addresses from the plug-in to the script on Unity side.
+
+The plug-in for Maya is using Maya API (which will be described later) and is written in C++ programming language. The function of this plug-in is to parse the 3D scene, looking for a molecular objects, and output their positions and rotations (along with information about the of type of the instance) into the shared memory.
+
+Unity side of the system consists of two parts - a C++ plug-in and a C\# script. The C++ plug-in takes care of reading the data from shared memory, while the C\# script, which is a part of cellVIEW, receives this data and uses them to render the final molecular scene.
+
+Note that there are two types of interoperability between components: (1) shared memory functionality, which enables two processes to communicate, and (2) interoperability between C++ and C\#, which allows us to pass memory addresses from the plug-in to the script on Unity side.
 
 % [\textbf{shared memory} - talk general about shared memory technology]
 \section{Shared Memory}
 Shared memory is a segment of system memory which can be accessed by multiple programs. It is used as an efficient way to establish communication between separately running processes. Our implementation has been done on Windows, however the concept of shared memory can be found on all operating systems.
 
 % TODO: swaping onto disk, unix, named file mapping in windows
-From now on, we will be talking about the implementation that has been done on Windows operating system. There are several way how we can access shared memory here. boost library provides class that provides an abstraction above shared memory functionality. Similarly, Qt framework also has class with comparable function set. We chose to not use any of these. Instead, we directly used Windows API function calls to operate with shared memory. This solution has been chosen because we wanted to use the lowest possible layer because of speed concerns. This unfortunately means that our implementation is tied to Windows platform. Porting to other platforms should however be straight-forward.
+From now on, we will be talking about the implementation that has been done on Windows operating system. There are several ways how we can access shared memory here. boost library provides class that establishes an abstraction above shared memory functionality. Similarly, Qt framework also has class with comparable function set. We chose to not use any of these. Instead, we directly used Windows API function calls to operate with shared memory. This solution has been chosen because we wanted to use the lowest possible layer because of speed concerns. This unfortunately means that our implementation is tied to Windows platform. Porting to other platforms should however be straight-forward either by using operating system specific calls or by using one of the mentioned libraries.
 
 \section{C++ and C\# interoperability}
 
 % [\textbf{maya api}]
 \section{Maya API}
-Maya actually provides two APIs - one in Python \cite{MayaAPIPython} and one in C++ \cite{MayaAPICpp}. In addition to that, there is also third way how additional functionality can be implemented - MEL scripting language \cite{MayaMEL}.
+There are two ways how one can extend Maya's functionality—scripts and plug-ins.
+
+Scripting can be done with either MEL or Python and it basically provides an alternative to performing actions via GUI. Everything you can go by clicking in GUI (and sometimes even more) you can do by typing commands through Maya's command line. Longer scripts can be written and run through built-in editor. Scripts are most commonly used for automation.
+
+The second way to extend Maya is by creating plug-ins which use Maya API, either in C++ or Python. There are several types of plug-ins that users can make but typically these are either implementation of new custom MEL command, or implementation of a custom Dependency Graph node type.
+
+It should be noted that both scripts and plug-ins are supposed to work together inside Maya ecosystem.
+%Maya provides two APIs - one in Python \cite{MayaAPIPython} and one in C++ \cite{MayaAPICpp}. In addition to that, there is MEL scripting language \cite{MayaMEL}. Each of these is suitable for different tasks but it should be noted that Maya API and MEL is supposed to work together.
 
 % TODO: talk about plugin types: command, node
 % TODo: talk about typlessness
 
+% TODO: image: maya pyramid (MEL -> API -> Maya internals
+
 \subsection{MEL vs. Python vs. C++ in Maya}
-MEL (Maya Embedded Language) is very similar to other scripting languages like Bash or Perl. It is not fully mature programming language and therefore is suitable only for things like automating tasks that would otherwise be done through the GUI. There is however one thing in which MEL excels and is perfectly suited for inside Maya programming ecosystem - creation of custom GUI. Even though graphics interface can be made by using modified Qt library \cite{MayaQt}, extending the interface is way faster and easier with MEL.
+How all the programming languages and technologies work together can be seen of Figure.
 
-Python API is more mature then MEL. Its advantage is that Python, as an interpreted language, can be run without compilation. This means that there doesn't have to be a compilation step and this makes the iteration loop faster. However, Python is, naturally, expected to be slower than C++. We wanted to implement a functionality that is real-time. This means that we needed every piece of performance we could get. Because of that, the C++ API has been chosen and thus our Maya plug-in has been implemented in C++.
+MEL (Maya Embedded Language) is a scripting similar to other scripting language like Bash or Perl. It is generally the fastest way to customize Maya in any way. For any more complex tasks it is generally better to use Python scripting or even turn the functionality into a plug-in. There is however one task where MEL shines and that is custom GUI building. Even though users can use modified Qt library in their plug-ins, it is way easier to create custom graphics interface with MEL.
 
-There is also another reason why only the C++ route could be taken. We wanted to write into shared memory. The most basic way how to do that is via system API function calls. In our case, we implemented this on Windows platform. Thus the API we used has been WinAPI.
+Maya API can be thought of as a level directly under MEL scripting. With Maya API, we can create several types of plugin but two most common are new custom command which can then be called with MEL, and a custom Dependency Graph node. Plug-ins using Maya API can be implemented either in Python or C++.
+
+Python is a powerful and easy to learn scripting language. It's advantage is that it is interpreted which means that there is no need for a compilation step. This is very beneficial for developers in the phase of prototyping because they can make changes more quickly. The disadvantage is also a consequence of Python being interpreted—it is expected to be slower than most compiled language like C++. We wanted to implement functionality which works in real-time. For this reason we decided that Python was not the ideal approach in this project.
+
+C++ Maya API ended up being what we used to create our custom plug-in. It has been chosen primarily because we wanted to get as much performance as we can. But there is another reason for us to use C++. By doing so we can easily use operating system API to issue function calls that work with shared memory.
 
 \subsection{Dependency Graph}
 Maya's internal scene representation is called Dependency Graph. It is a network of nodes where each node has a set of inputs and outputs. Through these inputs and outputs the nodes are connected and data is propagated through the network. The idea is that each node performs some computation using input parameters and forwards the result further. There is an optimization in this approach in that the calculation is only done when the input parameters have changed somehow. If an output of a node is requested when the inputs have not changed, instead of performing the computation, a cached value is returned.
@@ -399,49 +409,86 @@ In Maya API, we can find four types of C++ objects: wrappers, objects, function 
 \textbf{Proxies} are classes that allow developers to implement new types of objects like custom nodes or commands. Proxy classes are always prefixed with MPx*.
 
 \section{Maya side}
+Multiple approaches how the functionality could be implemented exist. First option is a naive one—in a function which gets called every frame, iterate through all the objects in the scene, identify molecular objects, compile the data into buffers and then write this information into shared memory. Two basic problems have been encountered with this approach. Second implementation attempts to address these issues.
+
+Both of these plug-in implementations have in common that they contain two new custom commands - startStreamingCommand and stopStreamingCommand. When the plug-in is loaded and intialized it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (button) - Start Streaming and Stop Streaming. These are set up to trigger call of appropriate command - startStreamingCommand and endStreamingCommand. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you shouldn't be able to start streaming when you already are.
+
+\subsection{Implementation via Custom Locator}
 \begin{figure}
   \centering
   \includegraphics[scale=0.8]{images/plugin-contents.pdf}
   \caption{Plugin contents}
   \label{fig:plugin-content}
 \end{figure}
-%Topics - Architecture of the plugin, what parts/classes of API are used, memory layout, what I tried and didn't work.
-Maya plug-in implements two new custom commands and one new custom node. When the plug-in is loaded and initialized it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (buttons) - Start Streaming and Stop Streaming. These are set up to trigger call of appropriate command - startStreamingCommand to start the streaming and endStreamingCommand to stop it. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you shouldn't be able to start streaming when you already are.
+Locator, in Maya API context, is shape that gets drawn but does not show up in the final render. It can serve as a preview of an effect that actually gets rendered but would be too expensive to draw into the interactive viewport. For us, the important fact is that MPxLocatorNode class has a method draw, which gets called everytime something changes in the scene and thus viewport needs to be re-rendered. This is where we can implement our functionality.
 
-The new custom node is class which inherits from MPxLocatorNode. This is a proxy type objects (as can be told from MPx prefix) and it serves as way to implement new node type. In this case the node is a locator node. What this inside Maya means is that handle that you use when you change objects in Maya scene. This doesn't really sound like something we are trying to do. And indeed this is a little bit of a hack. We needed to implement our functionality in a place in Maya APi that would be called every frame, every time something in the scene has changed. MPxLocatorNode has a method draw which can be overridden and this way we can implement our custom functionality which will be performed every time something in the scene changes.
+This implementation is not exactly in line with Maya philosophy—MPxLocatorNode's draw method is meant for drawing and not for the type of computation that we need to do there. However, we have tried to implement real-time sharing the way it should be done in Maya—using custom nodes which have input and output attributes and only when the inputs have changed perform the write. Unfortunately this turned out to be performing worse. The rate of change was simply not enough to provide smooth streaming without stuttering.
 
-Another option would be to use connection of inputs and outputs and perform the code when these changes happen.
+In the implementation via Custom Locator we do the following. When startStreamingCommand is called, it creates a new instance of the custom locator node and adds it into the scene. From now on, whenever we change something in the scene (move the camera, translate any object, ...) this nodes draw method gets called.
 
-startStreamingCommand adds an instance of the custom node into the scene. 
+In the draw method, we iterate through all objects in the scene. Looking at the names, we locate either camera or molecular object. Position, rotation and type information is accumulated into three buffers. These are then concatenated and written into the shared memory.
 
+\subsection{Implementation via Watchers}
+The previously presented implementation has one dissadvantage. Even if just one object changes its position, all the memory is rewritten. Not only that, but we also iterate through the whole scene as well. This could easily become bottleneck. To address this, another approach has been implemented. A concept of a ``watcher'' node has been established.
+
+Upon initialization of the plugin, the whole scene is scanned. When we process a molecular object we create new watcher node. This new node is then connected to the node of a molecular object in a way that the position and rotation attributes are inputs for this watcher node.
+
+Now whenever there is a change in the scene a draw method is called for each instance of watcher node. The position and rotation attributes are read and compared to their previously cached values. If they are the same, nothing gets done. If they are different, we proceed to the memory writing.
+
+Each watcher node knows its index. Using this index the precise address inside the shared memory is computed and we write the new values into the memory at this address.
+
+This approach works better when we are using the plugin for small incremental chances. That is what happens if artist creates the scene, tweaking positions and rotations of individual objects at once. Where this is when the artist makes an animation and plays it back. This way all the watchers write into the memory at the same time. For this use case it would be better if the memory write would be performed only once per frame.
 % TODO: mention legacy viewport usage
-% TODO: MPxLocatorNode
 
 % TODO: left/right handed conversion
 % TODO: image: new menu item
 \section{Unity side}
-On the side of cellVIEW (or Unity), we have two components - dll plugin and a C\# script.
-Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#
+%On the side of cellVIEW (or Unity), we have two components - dll plugin and a C\# script.
+%Topics - Architecture of the plugin, very generally about plugins (it's just a basic C++ dll plugin), interface between C++ and C\#
+cellVIEW has been developed using Unity game engine. Unity allows users to include additional code in the form of two kinds of plugins—Managed plugins and Native plugins.
+
+Managed plugins
+
+Native plugins contain code that is specific to one platform. They allow to call operating system functions or libraries that are not accessiable in default Unity.
 
 \chapter{Demonstration}
-In this chapter we present two use cases of how the user can approach illustration with this new proposed system.
-Use case one - modified Janet's scene.
-Use case two - microtubulus (create a model in maya and then name it properly and we will get it in cellVIEW).
+Here we present two examples of scenes that has been created to showcase abilities of our plugin.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.4]{images/strand-1-vertical.jpg}
+  \caption{Strand demonstration}
+  \label{fig:strand1}
+\end{figure}
+
+First use case: strand-like structure displayed on Figure \ref{fig:strand1}. This scene has been created using two additional plug-in: Molecular Maya and Instance around Curve. This is very good because it shows that our plug-in can be used in conjunction with other plug-ins and workflows already existing inside Maya.
+
+Protein has been imported using Molecular Maya. We have downloaded a pdb file from Protein Data Bank and loaded it into Maya with this plugin. Then we exported a low resolution mesh from the protein data. This mesh was then used as an object which was instanced around curve using Instance around Curve plug-in. Last step was to rename the individual instances to a pattern that our plugin would recognise as a molecular object.
+
+%In this chapter we present two use cases of how the user can approach illustration with this new proposed system.
+%Use case one - modified Janet's scene.
+%Use case two - microtubulus (create a model in maya and then name it properly and we will get it in cellVIEW).
 
 \chapter{Discussion, future work}
-The strongest use of the tool as of right now is the live preview of the scene. 
+From the practical point of view, our main goal for this project was to investigate how could we integrate our state-of-the-art renderer cellVIEW into modern professional 3D software.
 
-Limitations (of the tool) - what was done just for the use case and should be worked on for final production.
-The project has been presented to Drew Berry (I think). Also, it was mention in a talk in Utah, presentation by Peter Mindek.
-The method has tremendous potential in its application. The current implementation should be extended for both performance and actual use for artists. For this however, we will need additional input from domain experts. We have been fortunate enough that Drew Berry really liked this work and expressed his desire to develop this project further. It is highly probable that we will be working even more closely with him and that we would continue to improve this system so that he can use it for his movies production.
-The challenge will be how to design the system to be easily adaptable by other creators as well.
+This has been successfully achieved. Naturally, there is lots to improve upon. Primarily, we would be interested in
 
+Next, working more closely with a scientific illustrator using our system would certainly push this project further.
+
+However, even with this rough prototype we have attracted potentional partners for further cooperation. This project has been presented to Drew Berry who showed his ama. Both side have been eager to , mainly to get some test Maya scenes so that we can try and use it with our system. Unfortunately, we weren't able to do this mainly because of other commitments on the side of Drew Berry.
+
+Similar response has been given to Peter Mindek when he presented this project among others from our group and a seminar in Utah. Sweden-dome
+
+Experts from the domain of biology visualization are always eager to tell their stories and express their ideas. It is very common that they want to integrate interactivity in this process. In our other project for example, we developed a demo application which was showing HIV dataset generated with cellPACK. All the proteins have been annotated with a name and a description of its function in this virus. What the experts wanted to create initially was an interactive story—a prepare walkthrough with a commentary about the structure and function of the virus. Unfortunately we haven't been able to do this because we did not have proper tools to create this story. Maybe if Maya has been utilized this would have gone the other way. With Maya we could have animated the camera movement on Maya side and then export this movement for replay in cellVIEW.
+
+In this way, we see an incredible potential in this approach. The process of using shared memory for communication between two process has been used in one other project in our group as well. We believe that this could solve a lot of problems in our field. The data that we all try to visualize are mostly the same. There are very few standards so we see that among different programs the data representation stay more or less the same. However as was shown in state of the art, the programs are separated. This leads us to believe that if we can share this (same) data between programs, even better results can be accomplished.
 
 \newpage
 \printbibliography[heading=bibintoc]
 
 \appendix %% Start the appendices.
 \chapter{Appendix}
-Here you can insert the appendices of your thesis.
+%Here you can insert the appendices of your thesis.
 
 \end{document}
