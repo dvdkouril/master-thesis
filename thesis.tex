@@ -364,6 +364,17 @@ Shared memory is a segment of system memory which can be accessed by multiple pr
 From now on, we will be talking about the implementation that has been done on Windows operating system. There are several ways how we can access shared memory here. boost library provides class that establishes an abstraction above shared memory functionality. Similarly, Qt framework also has class with comparable function set. We chose to not use any of these. Instead, we directly used Windows API function calls to operate with shared memory. This solution has been chosen because we wanted to use the lowest possible layer because of speed concerns. This unfortunately means that our implementation is tied to Windows platform. Porting to other platforms should however be straight-forward either by using operating system specific calls or by using one of the mentioned libraries.
 
 \section{C++ and C\# interoperability}
+Unity engine is written with a combination of C++ and C\#/.NET. .NET API is exposed to users which enables them to write scripts in either C\# or Javascript. These scripts are used to implement gameplay or other behaviour.
+
+Managed code is code which runs under CLR (Common Language Runtime) virtual machine. Unmanaged code is any other code which does not need CLR but runs directly on the hardware instead.
+
+C\# and .NET framework have been designed with interoperability in mind. What this means is that programmers can reuse code written in other languages. There are several types of interoperability but we are interested in calling unmanaged (C++) code from a Unity script written in C\#.
+
+We use a feature called Platform Invoke. Platform Invoke enable managed (C\#) code to call unmanaged functions implemented in dynamic link libraries (DLLs).
+
+C\# Marshalling.
+
+%P/Invoke (interoperability of .net code with win32 dlls
 
 % [\textbf{maya api}]
 \section{Maya API}
