@@ -2,6 +2,7 @@
 ** TODO write about limitations (maybe section "Discussion" in chapter Method)
 ** TODO rewrite (add more) abstract
 ** TODO mention MONO somewhere
+** TODO write about writing into shared memory on maya side (mention functions)
 ** DONE finish C++ and C# interoperability chapter
 ** DONE write about unity script (Unity Side)
 
@@ -13,6 +14,7 @@
 * Todos
 ** TODO [Figure 4.1] znazornit spojeni pres shared memory
 ** TODO change names and errors in the code (no "fuck" and similar)
+** TODO figure with data layout and addresses how are they computed (like posPointer + num * float4)
 ** DONE Data Generation -> Data
 
 * Questions
