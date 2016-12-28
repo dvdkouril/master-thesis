@@ -1,15 +1,19 @@
 * Writing TODOs
 ** TODO write about limitations (maybe section "Discussion" in chapter Method)
-** TODO rewrite (add more) abstract
 ** TODO mention MONO somewhere
 ** TODO write about writing into shared memory on maya side (mention functions)
+** TODO mention drew berry sooner then at the end of method
+** DONE rewrite (add more) abstract
 ** DONE finish C++ and C# interoperability chapter
 ** DONE write about unity script (Unity Side)
 
 * Fixes
-** TODO [Figure 4.1] dll -> mll
 ** TODO drew berry broken link
 ** TODO bibliography authors (et al. -> all names)
+** DONE [Figure 4.1] dll -> mll
+
+* Coding
+** TODO two different protein types show as same type
 
 * Todos
 ** TODO [Figure 4.1] znazornit spojeni pres shared memory
@@ -19,9 +23,10 @@
 
 * Questions
 ** Vice odstavcu v abstraktu? muze byt?
-
+Jo muze, v isu to jenom potom bude bez odstavcu ale na to sere pes
 
 ** references to manuals/references: mely by misto toho byt poznamky pod carou?
 ano, nejspis mely, reference prevazne publikace a knizky
+
 ** jak pouzit cizi obrazky? kam se da reference?
 napsat "image taken from [ref]"

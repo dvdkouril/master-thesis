@@ -59,10 +59,8 @@
   Scientific illustrators communicate the cutting edge of research through their illustrations. There are numerous software tools that assist them with this job. Often they use professional modeling and animation 3D programs which are primarily used in games and movies industry. Because of that however these tools are not suitable for scientific illustration out of the box. There have been attempts to address this issue which brought tremendous results.
 
   This work focuses on visualization of structures and processes in biology, focusing mostly on the scales of nano- to micrometers. At this scale we often do not gain much by using hyper-realistic rendering style that the professional software aims for. Instead we want to employ more simplified style which helps to communicate the important story without losing much detail or scientific precision.
-  %With regards to the data illustrators are visualizing and rendering style they are using there is a blind spot which can be improved. If we could close this gap we believe this would lead to more effective workflow of these artists.
   
   The aim of this thesis is to push abilities of illustrators working on large scale molecular scenes. This is done by connecting two software packages—Maya and cellVIEW—combining the real-time rendering possibilities of cellVIEW and modeling and animation tools of Maya which results in more effective and efficient workflow.
-    %Scientific illustrators communicate the cutting edge of research through their illustrations. There are numerous software tools that assist them with this job. The aim of this thesis is to push abilities of illustrators working on a large scale molecular scenes. This is done by connecting two software packages - Maya and cellVIEW - combining the rendering possibilities of cellVIEW and modeling tools of Maya which results in more effective and efficient workflow. 
 }
 \thesislong{thanks}{
   TODO: thanks
@@ -135,8 +133,7 @@ With traditional methods it was timely to create just a static illustrations. Th
 To do that, people have learned to customize this software\cite{GrahamGaelInterview}. Commercial 3D authoring software is by convention highly customizable via scripting and/or APIs. This allowed illustrators and animators to extend the software by implementing functionality that they need. For example, one task that commercial toolsets do not solve is loading scientific data and structures as models. Some of these have been released to public (as we will see in chapter \ref{chap:star}) but most of the scripts are being developed and used only by the original author.
 
 % [\textbf{what are the alternatives to what people are using already?}]
-From a completely different section of the field of molecular visualization, there are domain-specific tools.
-There also exist programs that are completely separated from any of the mentioned commercial software. There is an active research in the domain of visualization, with many conferences every year and hundreds of research papers in this field coming out. Usually, as a byproduct, these paper generate software that showcases the proposed visualization technique or pipeline. Some of these have been turned into full featured visualization packages and thus provide a way how to illustrate something in a new way. While these programs might hugely benefit scientific illustrators, it is not always the case that they get used. This might be because of several reasons one of which is that the illustrators are simply used to a certain pipeline and incorporating a new software into this pipeline does not seems very beneficial to them. Another problem is that because these programs are developed for a certain use cases (showcasing the point of the paper) they might not be easily applicable to more than one purpose.
+From a completely different section of the field of molecular visualization, there are domain-specific tools. There is an active research in the domain of visualization, with many conferences every year and hundreds of research papers in this field coming out. Usually, as a byproduct, these papers generate software that showcases the proposed visualization technique or pipeline. Some of these have been turned into full featured visualization packages and thus provide a way how to illustrate something in a new way. While these programs might hugely benefit scientific illustrators, it is not always the case that they get used. Usually illustrators are simply used to a certain pipeline and incorporating a new software into this pipeline does not seems very beneficial to them. Another problem is that because these programs are developed for a certain use cases (showcasing the point of the paper) they might not be easily applicable to more than one purpose.
 
 % [\textbf{``mission statement'' of the thesis}]
 %In this thesis, we made an effort to solve these problems. Our domain of choice is molecular visualization.
@@ -153,7 +150,7 @@ In next chapter, we will describe the state-of-the-art programs and tools that a
 %Popsat: Molecular Flipbook, Molecular workbench, molecular maya, mcell, cellblender, pymol, VMD, ePMV(scripps)
 Several approaches can be taken when creating an illustration, animation or interactive experience that has some basis in science. We will show tools that help with this process, describing its primary use, discuss its implementation and how this tool is or could be used. Listed solutions are the ones which we believe are or were pivotal or at least present ideas which we think are beneficial to this field.
 
-First however, we will talk about the character of data that we are mostly working with in the field of molecular visualization.
+First however, we will talk about the character of data that we are working with in the field of molecular visualization.
 
 %In this chapter we will introduce the software that is currently available for scientific illustrators working in molecular visualization. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings. However, as we will see there is are multiple level of user accessibility and different programs have different prerequisities on the level of expertise of its users. Given the fact that when communicating science one has to understand to a certain extent the science there are multiple ways to approach the design of the program. We also see that the
 
@@ -170,7 +167,7 @@ All matter consists of \textbf{atoms} which are grouped in \textbf{molecules}. A
 Different techniques are used to acquire molecular data. The three most widely used are X-ray crystallography, nuclear magnetic resonance spectroscopy (NMR) and cryo-electron microscopy (cryo-EM). Each of these techniques has their benefits and downsides. For example, using NMR, only structures of limited size can be resolved. On the other hand, using cryo-electron microscopy can be used to resolve large structure but only in low resolution.
 
 % TODO: pdb
-RCSB Protein Data Bank is a database where the information about structure of large biological molecules resolved using these techniques is stored. Each molecule is identified by PDB ID, typically a four.... Data can be exported and downloaded in several formats, most notably PDB file format with extension .pdb. For us, the most relevant data that can be acquired from this file is the list of atoms with their XYZ coordinates.
+RCSB Protein Data Bank is a database where the information about structure of large biological molecules resolved using these techniques is stored. Each molecule is identified by a PDB ID—alphanumeric code that is 4 characters long. Data can be exported and downloaded in several formats, most notably PDB file format with extension .pdb. For us, the most relevant data that can be acquired from this file is the list of atoms with their XYZ coordinates.
 
 % TODO: cellPACK
 Between the molecular (observable with methods like NMR and X-ray crystallography) and cellular scale (observable with microscopy), there is an intermediate scale (mesoscale, 10-100nm). In general, there are no good method available to observe objects in mesoscale in atomic detail. Because of that models on this level must be compiled computationally by using information from multiple sources. cellPACK\cite{cellPACK} is a software that does exactly that. With cellPACK we can assemble models of an intermediate scale by employing packing algorithms. A recipe serves as an input for this algorithm. A recipe is a compilation of data from light and electron microscopy, x-ray crystalography, NMR spectroscopy and other biochemical data. The process then has two steps: gathering of the data to compile a recipe and then assembling a virtual model from this recipe. cellPACK has been developed at Scripps institute and is a biological version of a more general software called autoPACK. Both of these are implemented in Python and open-sourced.
@@ -180,7 +177,7 @@ Between the molecular (observable with methods like NMR and X-ray crystallograph
 % [\textbf{Commercial 3D software is absolutely dominating}]
 Using a professional 3D modeling and animation software can help scientists to communicate their ideas. These programs have been designed to provide means for people that need to create three dimensional models of any kind. And in the past several years, more and more scientists do employ professional 3D solutions into their pipeline for various purposes.
 
-Unfortunately, these programs usually come with a very steep learning curve. Mastering this tool, or even just getting on level of proficiency enough to produce any meaningful work, is not an easy task and takes between several months to years. This is not something a lot of researchers are willing, or even able, to sacrifice. The good news is that there is usually a number of learning materials available on the Internet, both supplied by the vendor of the software and third parties.
+Unfortunately, these programs usually come with a very steep learning curve. Mastering this tool, or even just getting on level of proficiency that is enough to produce any meaningful work, is not an easy task and takes between several months to years. This is not something a lot of researchers are willing, or even able, to sacrifice. The good news is that there is usually a number of learning materials available on the Internet, both supplied by the vendor of the software and third parties.
 
 Another problem with software meant to general 3D editing is that these tools are not designed with molecular visualizations in mind. This is problematic because of the fact that scientific illustrators mostly want to work from accurate data. Mentioned software is primarily designed to be used by workers in entertainment industry. Thus there is missing any framework which would enable to import scientifically accurate data in the basic program installation.
 
@@ -193,7 +190,7 @@ Disregarding the differences between all the 3D software of this kind, there are
 
 First, objects in scenes are organized into some variation of ``scene hierarchy'' or ``scene tree''. This allows users to organize their objects and establish parent-child relationships between these objects.
 
-Second, navigation in the 3D scene is always solved to be intuitive enough to provide efficient ways how user can position his view. Every named program allows the user to open multiple viewports at the same time where every viewport shows different camera position.
+Second, navigation in the 3D scene is always designed to be intuitive enough to provide efficient ways how user can position his view. Every named program allows the user to open multiple viewports at the same time where every viewport shows different camera position.
 
 Third, object manipulation—translation, rotation and scale—is solved and made available under shortcut which allows the user to work efficiently. Shortcuts are often instruments each individual artist gets used to and might have a hard time switching to different product.
 % TODO: images: scene hierarchy across the programs: maya, c4d, blender?
@@ -206,7 +203,7 @@ Despise the mentioned drawbacks, professional 3D software is being widely adopte
 Important component of any professional 3D program is a renderer. Renderer is a tool which turns the 3D scene into a final image (or series of images in case of an animation). All of the mentioned products come with at least one default, pre-installed, renderer. On top of that, user can install external rendering solutions, either commercial or free-to-use. This installation is most often done via plug-ins.
 
 % TODO: offline rendering algorithms
-The process that these rendering solutions use is sometimes referred to as ``off-line'' rendering. The opposite of this would be real-time rendering. The difference is mainly in the amount of time that these two types of rendering take. Off-line rendering has taken physical correctness and/or realistic look as its primary goal while the amount of  time the rendering process takes is given less priority. Actual numbers are dependent on the complexity of the geometry in the scene and the materials and effects used in this scene. But the ranges are from several minutes to hours for casual purposes. On the other hand, real-time rendering aims to render several times each second. The obvious benefit here being that the scene can change dynamically and is still rendered with a frame-rate that human eye considered continuous movement. In past the benchmark of 30 FPS (frames per second) has been considered to be the standard, however these days 60 FPS is starting to be more and more common. For 30 FPS, every frame has to been rendered in under 1/30 s = 16ms. In real-time rendering, rasterization[TODO:ref] is considered the state-of-the-art approach as it enables us to achieve interactive performance fairly easily.  Ray casting[TODO:ref] and ray tracing[TODO:ref] are the two basic types of algorithms used in off-line rendering.
+The process that these rendering solutions use is sometimes referred to as ``off-line'' rendering. The opposite of this would be real-time rendering. The difference is mainly in the amount of time that these two types of rendering take. Off-line rendering has taken physical correctness and/or realistic look as its primary goal while the amount of  time the rendering process takes is given less priority. Actual numbers are dependent on the complexity of the geometry in the scene and the materials and effects used in this scene. But the ranges are from several minutes to hours for casual purposes. On the other hand, real-time rendering aims to generate a picture several times each second. The obvious benefit here being that the scene can change dynamically and is still rendered with a frame-rate that human eye consideres a continuous movement. In past the benchmark of 30 FPS (frames per second) has been considered to be the standard, however these days 60 FPS is starting to be more and more common. For 30 FPS, every frame has to been rendered in under 1/30 s = 16ms. In real-time rendering, rasterization\cite{rasterization-paper} is considered the state-of-the-art approach as it enables us to achieve interactive performance fairly easily. Ray tracing (and it's variants) is the type of algorithm used in off-line rendering\cite{pbr-book}.
 
 Plethora of external off-line renderers exists these days. From the popular commercial ones like OTOY's Octane, Chaosgroup's V-ray, Pixar's RenderMan to open-sourced solutions—LuxRender or Cycles (which is now available in default installation of Blender).
 
@@ -231,7 +228,7 @@ BioBlender provides similar functionality for Blender software. MCell and CellBl
 % TODO: bioblender: http://www.bioblender.eu/
 
 %[\textbf{How people normally render - offline}]
-The rendering stage takes place after the scene is modeled. Again, there are more options at hand. 3D packages usually come with a default rendering solution which is for the most part good enough to use. For more demanding artist, external renderers like vray, mental ray, corona or octane. What these renderes have in common is that they are so called ``off-line renderers''. In practice this means that they are using ray tracing (or similar) technique to render the scene with a process that is very much close to how light works in real life. The disadvantage of this approach is that this process take more time. It usually is not possible to achieve real-time rendering (fps at least 25).
+%The rendering stage takes place after the scene is modeled. Again, there are more options at hand. 3D packages usually come with a default rendering solution which is for the most part good enough to use. For more demanding artist, external renderers like vray, mental ray, corona or octane. What these renderes have in common is that they are so called ``off-line renderers''. In practice this means that they are using ray tracing (or similar) technique to render the scene with a process that is very much close to how light works in real life. The disadvantage of this approach is that this process take more time. It usually is not possible to achieve real-time rendering (fps at least 25).
 
 \section{Domain-specific tools}
 %kinemage (http://kinemage.biochem.duke.edu/), chimera (http://www.cgl.ucsf.edu/chimera/), jmol?
@@ -239,27 +236,25 @@ The rendering stage takes place after the scene is modeled. Again, there are mor
 In the field of molecular visualization as a separate research topic, numerous programs exist. They share a some features but they each have their own specialties and are meant to be used for slightly different tasks. We will name a few that have been developed for some time and have matured to a certain extent. Apart from that, other tools exist which are even more specialized. These might be results of a research and they accompany a paper describing the technique. This means that these programs are not that well usable out-of-the-box but rather serve as a demonstration of a certain technique.
 
 %\textbf{Molecular Flipbook}
-One of the more user-friendlier and easier to use tools is \textbf{Molecular Flipbook}. It has been developed by a team lead by Janet Iwasa and it consists of two parts - an animation program and a website where creators can share their outputs. Main motivation for this project is to create tool that even scientists without education in animation can use to communicate their ideas through simple molecular animations. They achieve this by building the program around the concept of simplified key-frame animation technique. The website portion of the project is meant to serve as a database of animations explaining various processes. Creators can upload their works and improve works of others.
-
-It has been build on top of Blender's game engine functionality.
+One of the more user-friendlier and easier to use tools is \textbf{Molecular Flipbook}. It has been developed by a team lead by Janet Iwasa and it consists of two parts - an animation program and a website where creators can share their outputs. Main motivation for this project is to create tool that even scientists without education in animation can use to communicate their ideas through simple molecular animations. They achieve this by building the program around the concept of simplified key-frame animation technique. The website portion of the project is meant to serve as a database of animations explaining various processes. Creators can upload their works and improve works of others. Molecular Flipbook has has been build on top of Blender's game engine functionality.
 %[\textbf{TODO:} cons, done on top of a blender game engine, info: http://mikepan.com/flipbook.html]
 
-\textbf{Molecular Workbench}?
+%\textbf{Molecular Workbench}?
 
-\textbf{PyMol}\cite{PyMOL} is a molecular visualization system aimed to be used by expert users. It is an open-source software product in which the user can view, render, animate and export 3D molecular structures. PyMOL can visualize molecules with several representations - spheres, surface, mesh, lines, sticks, etc. Rendering of high quality images can be done with internal ray caster.
+\textbf{PyMol}\cite{PyMOL} is a molecular visualization system aimed to be used by expert users. It is an open-source software product in which the user can view, render, animate and export 3D molecular structures. PyMOL can visualize molecules with several representations—spheres, surface, mesh, lines, sticks, etc. Rendering of high quality images can be done with internal ray caster.
 
 PyMOL focuses on visualization of individual macromolecules, not so much used to create molecular scenes which contain several thousands of these.
 
 \textbf{VMD} (Visual Molecular Dynamics)\cite{HUMP96} serves as a tool for modeling, visualization and analysis. It actually has a long tradition, being first introduced in 1996. Similarly to PyMOL, VMD has been used extensively to make figures and illustrations for covers of textbooks and journals. Its primary purpose lays in molecular modeling—using computer simulations in applicati
 
-\textbf{cellVIEW}\footnote{Additional information and links available at https://www.cg.tuwien.ac.at/research/projects/illvisation/cellview/cellview.php}\cite{cellVIEW_2015} is a tool with the ability to render large biological macromolecular scene at an interactive frame-rate. It has been designed and implemented with regards to this use case with the use of state-of-the-art rendering techniques. It employs several modern techniques to reduce the amount of processed geometry in macromolecular scenes to provide its users with a real-time performance. As a result cellVIEW can render scenes containing up to several billion atoms with a frame-rate above 60 FPS. cellVIEW has been implemented with Unity game engine. The rendering styles has been inspired by illustration by David Goodsell who has developed a style of abstracting the shape of individual proteins to reduce visual noise of the picture. cellVIEW imitates this approach by incorporating a level-of-details scheme - the farther the protein is from the camera the less amount of its atoms are rendered and the rendered atoms are scaled up. This approach results in a multi-scale visualization - user can zoom in to see individual atoms of a protein instance, or he can zoom out and see the whole dataset with its distinguishable compartments. The biggest dataset that has been possible to visualize is HIV, however tests have been done and it should be possible to render e-coli bacteria (which is X times larger)
+\textbf{cellVIEW}\footnote{Additional information and links available at https://www.cg.tuwien.ac.at/research/projects/illvisation/cellview/cellview.php}\cite{cellVIEW_2015} is a tool with the ability to render large biological macromolecular scenes at an interactive frame-rates. It has been designed and implemented with regards to this use case with the use of state-of-the-art rendering techniques. It employs several modern techniques to reduce the amount of processed geometry in macromolecular scenes to provide its users with a real-time performance. As a result cellVIEW can render scenes containing up to several billion atoms with a frame-rate above 60 FPS. cellVIEW has been implemented with Unity game engine. The rendering styles has been inspired by illustration by David Goodsell who has developed a style of abstracting the shape of individual proteins to reduce visual noise of the picture. cellVIEW imitates this approach by incorporating a level-of-details scheme. The farther the protein is from the camera the less amount of its atoms are rendered and the rendered atoms are scaled up. This approach results in a multi-scale visualization—user can zoom in to see individual atoms of a protein instance, or he can zoom out and see the whole dataset with its distinguishable compartments. The biggest dataset that has been visualized using cellVIEW is human immunodeficiency virus (HIV), however performance tests that have been done indicate that larger datasets (e.g. Escherichia coli bacterium) should be possible to render as well.
 
-\begin{figure}
-  \centering
-  \includegraphics{images/epmv-architecture.jpg}
-  \caption{ePMV architecture}
-  \label{fig:ePMV}
-\end{figure}
+%\begin{figure}
+%  \centering
+%  \includegraphics{images/epmv-architecture.jpg}
+%  \caption{ePMV architecture}
+%  \label{fig:ePMV}
+%\end{figure}
 \textbf{ePMV}\cite{ePMV} tackles similar problem as we do. The goal is to simplify process of generating figures and animations for scientific purposes taking into account the fact that illustrators have tools that they are familiar with. ePMV is a plug-in which brings molecular visualization toolset into various 3D authoring software, in this context called host. They take advantage of host API which is nowadays commonly exposed to be used by custom Python scripts. By implementing they create an unified environment where the molecular visualization software can run. Thanks to this unified environment, an adaptor, the molecular program can stay the same across all the supported hosts. Only the adaptor needs to be adapted to a new hosts' API. When designed, emphasis has been given to making sure that both native (general 3D modeling) and scientific molecular tools are used in conjunction to their full potential.
 
 Several host programs are already supported—Cinema4D, Blender, Maya and 3ds Max, with plans to extend this list further.
@@ -270,7 +265,7 @@ The actual workflow obviously differs from illustrator to illustrator, different
 
 It is however important to formalize a little bit how the workflow looks like. Our goal is to connect one of the specific domain tools into a professional software. By doing that, we want to achieve faster and therefore more effective workflow.
 
-We consider the pipeline to be composed of two major steps - modeling and rendering. In the modeling step, all the data, requirements, hypothesis, ideas and stories are compiled into a 3D scene or animation. Artist usually uses software-specific features like particle systems, physics simulations,... to get there.
+We consider the pipeline to be composed of two major steps - modeling and rendering. In the modeling step, all the data, requirements, hypothesis, ideas and stories are compiled into a 3D scene or animation. Artist usually uses software-specific features like particle systems or physics simulations to get there.
 
 The next step is generation of either still image or animated video from the 3D scene/animation. This is equally, maybe even more so, important as the first step. By using certain rendering techniques we can underline concepts which are important to the artwork. The level of detail has to be carefully chosen not to overwhelmed the audience with visual noise. Traditionally, the rendering step has been very computationally intensive. Today with the power of modern GPUs and the increasing availability of such devices, the render times have been reduced dramatically. Still, this represents an obstacle in the workflow of animator. Even just one minute delay can cause distraction.
 
@@ -282,7 +277,7 @@ This is the problem that we wanted to solve by using custom state-of-the-art mol
 %[image: modeler, renderer, illustrate the connection through shared memory, data streaming, camera position]
 
 %[\textbf{we focus on fastening the workflow by using our renderer}]
-As was discussed in Chapter \ref{chap:star}, the majority of artists uses commercial 3D software. These programs are very good at modeling and rendering 3D content as a set of meshes - 3D objects consisting of triangles. However, for molecular data and scenes, mesh is not the best representation and there exist rendering techniques that perform way better if we use other representation.
+As was discussed in Chapter \ref{chap:star}, the majority of artists uses professional (often commercial) 3D software. These programs are very good at modeling and rendering 3D content as a set of meshes—3D objects consisting of triangles. However, for molecular data and scenes, mesh is not the best representation and there exist rendering techniques that perform way better if we use other representation.
 
 %[\textbf{we can take advantage} of the fact that illustrators use illustrative style, simplified and the data is very compact actually so we can provide them the interactive preview]
 Another thing we can take advantage of is that illustrations and animation describing structures and function of objects at nanoscale do not often profit from using ultra-realistic rendering. The concept of realistic rendering and light/material interactions do not exist at this scale. They show concepts that are happening at different scales than the stuff that programs are usually made for. Thus they usually want to use more illustrative, simplified, rendering styles.
@@ -311,22 +306,36 @@ We have chosen to go with another, third, option instead. We do not want to re-i
 We can establish such communication between the two programs mainly thanks to the character of the data we are dealing with.
 
 %[\textbf{the data}]
-Scenes we work with consist of macromolecules - proteins and lipids. Macromolecules in turn are made of atoms of different elements. There are multiple representations by which we usually visualize atomic data (see Chapter \ref{chap:star}) [TODO: where should I put this?]. However the underlining data do not change. An instance of molecule is defined by the type information (what kind of molecule this is), position and rotation of the instance, and last, a list of atoms that this molecule is made of.
+Scenes we work with consist of macromolecules - proteins and lipids. Macromolecules in turn are made of atoms of different elements. There are multiple representations by which we usually visualize atomic data. However the underlining data do not change. An instance of molecule is defined by the type information (what kind of molecule this is), position and rotation of the instance, and last, a list of atoms that this molecule is made of.
 
 % we will use some placeholder geometry in maya
 On the side of modeling program, we want to see an approximation of the scene. One way would be to use a simple geometry like cube or sphere as a placeholder for each molecule. Such placeholder would then serve as an object that we manipulate instead of an actual molecule. We tried something a little bit different. With Molecular Maya plug-in, we can load a molecule description in form of a pdb file. With the same plug-in it is also possible to generate a polygonal surface mesh representation with choosable detail level. We therefore load a molecule and generate very low resolution mesh which serves as our placeholder.
 % TODO: IMG: show low poly model of a protein generated with mol maya
 
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.7]{images/method-overview.pdf}
+  \caption{High-level overview of the system}
+  \label{fig:method-overview}
+\end{figure}
+
 %[\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
-On the Figure X, you can see an overview of the system. On one side we have a modeling software while on the other we have a domain-specific tool, in our case it is a high performance renderer. Our vision was to have both of these programs running at the same time. The illustrator could have his scene opened in his modeling software. This way he would be using the tools he knows and is accustomed to for modeling the actual scene. Then on the renderer side he would be able to see how the changes he has made are reflected in the rendered final image. This all would happen in real-time thanks to writes and reads into and from shared memory.
+On the Figure \ref{fig:method-overview}, you can see an overview of the system. On one side we have a modeling software while on the other we have a domain-specific tool, in our case it is a high performance renderer. Our vision was to have both of these programs running at the same time. The illustrator could have his scene opened in his modeling software. This way he would be using the tools he knows and is accustomed to for modeling the actual scene. Then on the renderer side he would be able to see how the changes he has made are reflected in the rendered final image. This all would happen in real-time thanks to writes and reads into and from shared memory.
 
 % [\textbf{simplifications, how the scene can be described}]
-As was already mentioned, when dealing with molecular data we can take advantage of several simplifications. A scene like this consists of macromolecules: proteins and lipids. First simplification - we consider the shape of the molecule to be static. This means that inside each molecule, the positions of all the atoms does not change in time. The position of the atoms is taken from the PDB file. The second simplification is that all the instances of certain molecule type look the same. They only differ in position and rotation.
+As was already mentioned, when dealing with molecular data we can take advantage of several simplifications. A scene like this consists of macromolecules: proteins and lipids. First simplification—we consider the shape of the molecule to be static. This means that inside each molecule, the positions of all the atoms does not change in time. The position of the atoms is taken from the PDB file. The second simplification is that all the instances of certain molecule type look the same. They only differ in position and rotation.
 
 % [\textbf{what data do we need to transfer}]
 With these facts in mind, we can define a molecular scene as a set of molecules, where each molecule is defined by its position, rotation, and type, which says what kind of molecule this instance is.
 
-This means that we need to stream this data - positions, rotations and types - of all molecule instances from the modeling software to the rendering tool. Because of the technical implications we write the data in a format described on Figure X. This is more efficient that writing the data in a format position/rotation/into for each molecule.
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.7]{images/data-layout.pdf}
+  \caption{Shared memory data layout}
+  \label{fig:data-layout}
+\end{figure}
+
+This means that we need to stream this data—positions, rotations and types—of all molecule instances from the modeling software to the rendering tool. Because of the technical implications we write the data in a format described on Figure \ref{fig:data-layout}. This is more efficient that writing the data in a format position/rotation/into for each molecule.
 \section{Process}
 \subsection{Parsing the Scene}
 % [\textbf{the actual process}]
@@ -393,16 +402,17 @@ The process of transforming arguments from types in native code into equivalent 
 
 % [\textbf{maya api}]
 \section{Maya API}
+
+There are two ways how one can extend Maya's functionality—scripts and plug-ins. The technologies which can be used to do so and how they are related is shown in Figure \ref{fig:maya-ecosystem}
+
+Scripting can be done with either MEL or Python and it basically provides an alternative to performing actions via GUI. Everything you can go by clicking in GUI (and sometimes even more) you can do by typing commands through Maya's command line. Longer scripts can be written and run through built-in editor. Scripts are most commonly used for automation.
+
 \begin{figure}
   \centering
   \includegraphics[scale=0.8]{images/maya-ecosystem.pdf}
   \caption{Maya ecosystem}
   \label{fig:maya-ecosystem}
 \end{figure}
-
-There are two ways how one can extend Maya's functionality—scripts and plug-ins. The technologies which can be used to do so and how they are related is shown in Figure \ref{fig:maya-ecosystem}
-
-Scripting can be done with either MEL or Python and it basically provides an alternative to performing actions via GUI. Everything you can go by clicking in GUI (and sometimes even more) you can do by typing commands through Maya's command line. Longer scripts can be written and run through built-in editor. Scripts are most commonly used for automation.
 
 The second way to extend Maya is by creating plug-ins which use Maya API, either in C++ or Python. There are several types of plug-ins that users can make but typically these are either implementation of new custom MEL command, or implementation of a custom Dependency Graph node type.
 
@@ -435,7 +445,7 @@ In Maya API, we can find four types of C++ objects: wrappers, objects, function 
 
 \textbf{Wrapper} objects usually provide utility functionality either for easier manipulation with data or mathematics. These include classes like \texttt{MFloatArray}, \texttt{MMatrix}, \texttt{MVector}, \texttt{MQuaternion} or iterators for traversing collectionbs of data - \texttt{MItDependencyGraph}, \texttt{MItMesh}...
 
-\textbf{Objects} and \textbf{Function Sets} are used to access and change internal object in Maya. Objects are instances of class MObject and they basically serve as a handle which only holds the necessary information about kind of object do they point to. In a way Objects are typeless and their type is determined by a mechanism called RTTI (Run Time Type Identification). Function Sets are here to actually perform operations on Objects. Function Set classes always start with a \texttt{MFn*} prefix and they are designed to be compatible with only certain Objects.
+\textbf{Objects} and \textbf{Function Sets} are used to access and change internal object in Maya. Objects are instances of class \texttt{MObject} and they basically serve as a handle which only holds the necessary information about kind of object do they point to. In a way Objects are typeless and their type is determined by a mechanism called RTTI (Run Time Type Identification). Function Sets are here to actually perform operations on Objects. Function Set classes always start with a \texttt{MFn*} prefix and they are designed to be compatible with only certain Objects.
 
 \textbf{Proxies} are classes that allow developers to implement new types of objects like custom nodes or commands. Proxy classes are always prefixed with \texttt{MPx*}.
 
@@ -445,11 +455,11 @@ Multiple approaches how the functionality could be implemented exist. First opti
 \begin{figure}
   \centering
   \includegraphics{images/maya-to-unity-menu.png}
-  \caption{Maya2Unity menu item}
+  \caption{Maya2CellVIEW menu item}
   \label{fig:maya-menu-item}
 \end{figure}
 
-Both of these plug-in implementations have in common that they contain two new custom commands - startStreamingCommand and stopStreamingCommand. When the plug-in is loaded and intialized it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (button) - Start Streaming and Stop Streaming (see Figure \ref{fig:maya-menu-item}). These are set up to trigger call of appropriate command - startStreamingCommand and endStreamingCommand. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you should not be able to start streaming when you already are.
+Both of these plug-in implementations have in common that they contain two new custom commands—startStreamingCommand and stopStreamingCommand. When the plug-in is loaded and intialized it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (buttons)—Start Streaming and Stop Streaming (see Figure \ref{fig:maya-menu-item}). These are set up to trigger call of appropriate command—startStreamingCommand and endStreamingCommand. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you should not be able to start streaming when you already are.
 
 \subsection{Implementation via Custom Locator}
 \begin{figure}
@@ -490,7 +500,7 @@ Managed plugins, similiar to the term managed code, are plugins containing .NET 
 Native plugins contain code that is specific to one platform. They allow to call operating system functions or libraries that are not accessible in default Unity.
 
 \subsection{Dynamic-link Library}
-SharedMemDll component is a very simple dynamic-link library which encapsulates Windows API function calls. By doing so we can use shared memory functionality in Unity. It consists of two functions—\texttt{getSharedMemoryPtr} and \texttt{cleanupSharedMemory}.
+SharedMemDll component is a very simple dynamic-link library which encapsulates Windows API function calls. By doing so we can use shared memory functionality in Unity. It consists of two functions—\texttt{get\-Shared\-Memory\-Ptr} and \texttt{cleanup\-Shared\-Memory}.
 
 \texttt{getSharedMemoryPtr} functions opens shared memory segment with a name that is supplied as a parameter to this function. Windows API function \texttt{OpenFileMapping} is used to do that. Then, by calling another WinAPI function \texttt{MapViewOfFile}, we get a pointer to the memory address which we can use to read from this memory. The pointer (of type \texttt{void *}) and a handle (of type \texttt{HANDLE}) are output parameters that are passed on to the C\# script thanks to interoperability feature and marshaling.
 
