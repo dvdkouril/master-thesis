@@ -66,13 +66,13 @@
   TODO: thanks
  % Many people are directly or indirectly responsible for this work.
   
-  %First, I would like to thank Bara Kozlikova for introducing me to the domain of visualization, serving as a mentor to me and building relationships with TU Wien for years before which has enabled me the opportunity to work on this thesis.
+  %First, I would like to thank Bara Kozlikova for introducing me to the domain of visualization, serving as a mentor to me and building relationships with TU Wien for years before by which she has enabled me the opportunity to work on this thesis in cooperation with TU Wien.
 
   %Next, I want to thank Mathieu Le Muzic for being my day-to-day coding supervisor while I was visiting in Vienna. I want to thank Mathieu for being a mentor and a role model for me.
 
   %I thank Ivan Viola for being my remote supervisor and consultant. Thank you for guiding me through the process of writing this thesis, giving feedback and in general going above and beyond with your help.
 
-  %I thank my parents for working hard and and always supporting me.
+  %I thank my parents for working hard on providing for me and my sister and creating homely and supportive environment.
   
   %Last but not least, I want to thank my girlfriend Gabi for being
 }
@@ -142,6 +142,8 @@ From a completely different section of the field of molecular visualization, the
 
 %That being said, these techniques are not usually taken into account when 3D authoring software is developed. As was mentioned, the primary users of these software are video games and movies industry, where mesh representation is the one used. That implies that people that use these programs don't have access to the cutting edge technology of rendering, visualization and illustration of molecular data and there is room for us to improve this situation.
 
+The main motivation for this project comes from talks between researchers of Visualization Group at TU Wien and animator Drew Berry. Rendering capabilities of cellVIEW (see Chapter \ref{chap:star}) have been shown to Berry and he has expressed his interest in the style of rendering that developers of cellVIEW have been able to create. Since Drew Berry has been using Maya software for years to create his animated movies, we have decided to investigate if, and how, it would be possible for him to use cellVIEW for his creations in combination with Maya.
+
 In next chapter, we will describe the state-of-the-art programs and tools that are used for molecular visualization today and we will mainly focus on showing the gaps in intercompatibility of the available programs. Then, in Chapter \ref{chap:method}, we will propose a method of how one particular problem could be solved. Chapter \ref{chap:implementation} is dedicated to in-depth description of our implementation. Chapter \ref{chap:demonstration} will demonstrate use cases of implemented method. Finally, in Chapter \ref{chap:discussion}, we discuss the outcome of the whole project and contemplate how it could be extended in the future.
 
 \chapter{State of the Art}
@@ -151,8 +153,6 @@ In next chapter, we will describe the state-of-the-art programs and tools that a
 Several approaches can be taken when creating an illustration, animation or interactive experience that has some basis in science. We will show tools that help with this process, describing its primary use, discuss its implementation and how this tool is or could be used. Listed solutions are the ones which we believe are or were pivotal or at least present ideas which we think are beneficial to this field.
 
 First however, we will talk about the character of data that we are working with in the field of molecular visualization.
-
-%In this chapter we will introduce the software that is currently available for scientific illustrators working in molecular visualization. Illustrators have gone a long way from doing these works by hand and nowadays there exist a variety of programs that help them do their job communicating the scientific findings. However, as we will see there is are multiple level of user accessibility and different programs have different prerequisities on the level of expertise of its users. Given the fact that when communicating science one has to understand to a certain extent the science there are multiple ways to approach the design of the program. We also see that the
 
 \section{Molecular Data}
 All matter consists of \textbf{atoms} which are grouped in \textbf{molecules}. Atoms in turn contain protons, electron and neutrons which have their own internal structure. This is a level which is out of the scope of what is relevant to this thesis. Individual atoms are the smallest elements that we will consider.
@@ -183,12 +183,15 @@ Another problem with software meant to general 3D editing is that these tools ar
 
 There is number of options to choose from currently available products. Most widely used are Autodesk Maya and Cinema 4D although other programs, like open-sourced Blender or a relatively young MODO\cite{MODOscientificIll}, have been successfully used in various projects.
 
+Despise the mentioned drawbacks, professional 3D software is being widely adopted as a solid base of workflow of scientific illustrators and animators. Once illustrators overcome the initial learning period, general 3D software becomes a powerful tool in their toolset. 
+
 % TODO: what are the difference, are some better than others in some regards?
 
-%[\textbf{things that are nice to have from these programs - easy manipulation with objects, scene graph to organize the scene, tools for animation, semi-automatic object positioning (random, particles)}]
+% [\textbf{things that are nice to have from these programs - easy manipulation with objects, scene graph to organize the scene, tools for animation, semi-automatic object positioning (random, particles)}]
+\subsection{Key Features}
 Disregarding the differences between all the 3D software of this kind, there are features that are more or less contained in all of them and over the years have become must-have features that tremendously help with navigating and editing of 3D scene.
 
-First, objects in scenes are organized into some variation of ``scene hierarchy'' or ``scene tree''. This allows users to organize their objects and establish parent-child relationships between these objects.
+First, objects in scenes are organized into some variation of \textit{scene hierarchy} or \textit{scene tree}. This allows users to organize their objects and establish parent-child relationships between these objects.
 
 Second, navigation in the 3D scene is always designed to be intuitive enough to provide efficient ways how user can position his view. Every named program allows the user to open multiple viewports at the same time where every viewport shows different camera position.
 
@@ -196,7 +199,6 @@ Third, object manipulation—translation, rotation and scale—is solved and mad
 % TODO: images: scene hierarchy across the programs: maya, c4d, blender?
 % TODO: images: object manipulation
 % These are the killer features and even though they are present in all of the programs, the illustrators are often used to the way they work or to a certain shortcut which means that it's not trivial for them to switch from one to another (or it is but it takes some time).
-Despise the mentioned drawbacks, professional 3D software is being widely adopted as a solid base of workflow of scientific illustrators and animators. Once illustrators overcome the initial learning period, general 3D software becomes a powerful tool in their toolset. 
 
 \subsection{Rendering}
 % TODO: rendering
@@ -274,8 +276,6 @@ This is the problem that we wanted to solve by using custom state-of-the-art mol
 
 \chapter{Method}
 \label{chap:method}
-%[image: modeler, renderer, illustrate the connection through shared memory, data streaming, camera position]
-
 %[\textbf{we focus on fastening the workflow by using our renderer}]
 As was discussed in Chapter \ref{chap:star}, the majority of artists uses professional (often commercial) 3D software. These programs are very good at modeling and rendering 3D content as a set of meshes—3D objects consisting of triangles. However, for molecular data and scenes, mesh is not the best representation and there exist rendering techniques that perform way better if we use other representation.
 
