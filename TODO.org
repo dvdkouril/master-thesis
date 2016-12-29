@@ -1,8 +1,9 @@
 * Writing TODOs
+** TODO prepsat method
 ** TODO write about limitations (maybe section "Discussion" in chapter Method)
 ** TODO mention MONO somewhere
 ** TODO write about writing into shared memory on maya side (mention functions)
-** TODO mention drew berry sooner then at the end of method
+** TODO mention drew berry sooner than at the end of method
 ** TODO vyresit Process subsection v Method
 ** DONE rewrite (add more) abstract
 ** DONE finish C++ and C# interoperability chapter
@@ -14,11 +15,11 @@
 ** DONE [Figure 4.1] dll -> mll
 
 * Coding
-** TODO two different protein types show as same type
+** DONE two different protein types show as same type
 
 * Todos
-** TODO change names and errors in the code (no "fuck" and similar)
 ** TODO figure with data layout and addresses how are they computed (like posPointer + num * float4)
+** DONE change names and errors in the code (no "fuck" and similar)
 ** DONE [Figure 4.1] znazornit spojeni pres shared memory
 ** DONE Data Generation -> Data
 
