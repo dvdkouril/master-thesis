@@ -276,87 +276,20 @@ This is the problem that we wanted to solve by using custom state-of-the-art mol
 
 \chapter{Method}
 \label{chap:method}
-%[\textbf{we focus on fastening the workflow by using our renderer}]
-As was discussed in Chapter \ref{chap:star}, the majority of artists uses professional (often commercial) 3D software. These programs are very good at modeling and rendering 3D content as a set of meshes—3D objects consisting of triangles. However, for molecular data and scenes, mesh is not the best representation and there exist rendering techniques that perform way better if we use other representation.
+As was discussed in Chapter \ref{chap:star}, the majority of artists uses professional (often commercial) 3D software. We want to improve their workflow by using custom real-time renderer.
 
-%[\textbf{we can take advantage} of the fact that illustrators use illustrative style, simplified and the data is very compact actually so we can provide them the interactive preview]
-Another thing we can take advantage of is that illustrations and animation describing structures and function of objects at nanoscale do not often profit from using ultra-realistic rendering. The concept of realistic rendering and light/material interactions do not exist at this scale. They show concepts that are happening at different scales than the stuff that programs are usually made for. Thus they usually want to use more illustrative, simplified, rendering styles.
+% There is a difference between: (1) motivation for using cellview as a renderer instead of offline renderer, and (2) motivation for using shared memory instead of implementing it into each other (as opposed to do imported/exporter)
 
-In our use case, this is even more true because we are dealing with a very dense data sets. We want to simplify what we show to reduce the visual noise in the output image. Various level-of-detail (LOD) schemes exist and they not only help with filtering of the visual noise but also reduce the performance requirements.
+\section{Motivation}
+Off-line rendering takes some time to finish. When artist is working, the rendering step is holding them back. It kicks them out of the flow. Because of this we want to
 
-Thanks to these simplifications we can render molecular scenes with interactive frame-rates, as has been shown by cellVIEW\cite{cellVIEW_2015}. Unfortunately, these techniques are not implemented in 3D commercial programs which is what the artists usually use. Our goal is to make it so that the artist can use his software of choice to model his scenes but also take advantage of modern rendering. The use is two-fold: real-time rendering can serve as a preview of the scene but also can be used as a final result. The goal of this project was to come up with an idea of how to connect these two programs so that they will work together.
+\section{Reasons for Using Real-time Renderer}
+Modern 3D programs use mostly polygon meshes as the representation of 3D scenes. Meshes are sets of vertices, edges and triangles used to model real-life objects. For molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of a certain radius. Approximation of a sphere by using meshes is, unfortunately, not very good in terms of req. Very detailed mesh (consisting of thousands of triangles) must be used to create an effect of smooth spherical object.
 
-%[\textbf{two options, we choose third}]
-Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired functionality into the software that is missing it. In our case, that would mean we could either implement the fast and visually appealing rendering into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
+\section{Using Shared Memory}
+We use shared memory as a way of communication between our two programs. It has been naturaly the choice for this ... Are there any alternatives???
 
-The problem with the first approach is that substantial percentage of the 3D software packages that artists are using the most are commercial solutions with closed source code. It is possible to extend them via API that they provide but that is not enough if we want to implement state-of-the-art technique that sometimes requires the latest technology in terms of graphics API etc.
-
-We also do not want to implement desired 3D modeling tools into our specific domain program. This would create development overhead which would not bring much benefit on its own. Besides that, every artist uses different instruments and gratifying all of them would be impossible thing to achieve.
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.7]{images/workflow-before-after.pdf}
-  \caption{Workflow, a. traditional approach with offline rendering, b. our approach with real-time rendering}
-  \label{fig:workflow}
-\end{figure}
-
-We have chosen to go with another, third, option instead. We do not want to re-implement from scratch something that is already available to use. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both sets of features at the same time. We do this by using both of the programs and establishing a communication channel between them. We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We can model the scene on one side and we want to transfer data describing this scene to have it rendered on the other side. As we will show this can be done in a straight-forward fashion as our scenes can be simplified to the point when we can describe them with few numbers.
-
-%[\textbf{why is it that we can do this?}]
-We can establish such communication between the two programs mainly thanks to the character of the data we are dealing with.
-
-%[\textbf{the data}]
-Scenes we work with consist of macromolecules - proteins and lipids. Macromolecules in turn are made of atoms of different elements. There are multiple representations by which we usually visualize atomic data. However the underlining data do not change. An instance of molecule is defined by the type information (what kind of molecule this is), position and rotation of the instance, and last, a list of atoms that this molecule is made of.
-
-% we will use some placeholder geometry in maya
-On the side of modeling program, we want to see an approximation of the scene. One way would be to use a simple geometry like cube or sphere as a placeholder for each molecule. Such placeholder would then serve as an object that we manipulate instead of an actual molecule. We tried something a little bit different. With Molecular Maya plug-in, we can load a molecule description in form of a pdb file. With the same plug-in it is also possible to generate a polygonal surface mesh representation with choosable detail level. We therefore load a molecule and generate very low resolution mesh which serves as our placeholder.
-% TODO: IMG: show low poly model of a protein generated with mol maya
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.7]{images/method-overview.pdf}
-  \caption{High-level overview of the system}
-  \label{fig:method-overview}
-\end{figure}
-
-%[\textbf{overview of the method: two ends, shared memory, what needs to be transfered, ...}]
-On the Figure \ref{fig:method-overview}, you can see an overview of the system. On one side we have a modeling software while on the other we have a domain-specific tool, in our case it is a high performance renderer. Our vision was to have both of these programs running at the same time. The illustrator could have his scene opened in his modeling software. This way he would be using the tools he knows and is accustomed to for modeling the actual scene. Then on the renderer side he would be able to see how the changes he has made are reflected in the rendered final image. This all would happen in real-time thanks to writes and reads into and from shared memory.
-
-% [\textbf{simplifications, how the scene can be described}]
-As was already mentioned, when dealing with molecular data we can take advantage of several simplifications. A scene like this consists of macromolecules: proteins and lipids. First simplification—we consider the shape of the molecule to be static. This means that inside each molecule, the positions of all the atoms does not change in time. The position of the atoms is taken from the PDB file. The second simplification is that all the instances of certain molecule type look the same. They only differ in position and rotation.
-
-% [\textbf{what data do we need to transfer}]
-With these facts in mind, we can define a molecular scene as a set of molecules, where each molecule is defined by its position, rotation, and type, which says what kind of molecule this instance is.
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.7]{images/data-layout.pdf}
-  \caption{Shared memory data layout}
-  \label{fig:data-layout}
-\end{figure}
-
-This means that we need to stream this data—positions, rotations and types—of all molecule instances from the modeling software to the rendering tool. Because of the technical implications we write the data in a format described on Figure \ref{fig:data-layout}. This is more efficient that writing the data in a format position/rotation/into for each molecule.
-\section{Process}
-\subsection{Parsing the Scene}
-% [\textbf{the actual process}]
-Inside the modeling software, we scan the scene, looking for molecular objects. We need to identify an object which is supposed to represent an instance of a molecule. We find out what type of molecule this is. This information is saved in a form of pdb id. For each of the found instances we also read its world position and rotation. This info is accumulated into an array and then prepared to be written into the memory.
-
-There are several approaches and optimizations possible at this level and these depend mostly on the API that the modeling software provides. We were able to inject this method into a callback which is called every time the scene has changed. After this happens, we scan all the models in the scene and look for molecular objects. This could be optimized in a way that only the objects that have changed report their changes. That way not all the object in the scene need to be scanned which saves us some performance. As we have discovered however, the APIs are not always keen on having such a performance-heavy procedures executed on each frame and so the concrete implementation heavily depends on the chosen modeling software and its API. We will describe in more detail how we accomplished this with Maya API in the chapter Implementation.
-
-\subsection{Writing into and Reading from Shared Memory}
-Once the data about current state of the scene is accumulated into position, rotation and info arrays, we can write these into the shared memory. Operating system API calls should be used for this. Again, for more details, see chapter Implementation to see how we did this on Windows operating system.
-
-\subsection{Using the data}
-Reading the data uses operating system API calls as well. In our case, because we are operating on the interface between c++ and c\#, the code that reads from the memory is pretty simple, only retrieving memory address and sending it into the c\# part of the system. This data is then copied into buffers inside cellVIEW which in turn sends them to GPU for render. We format the data in a way so that there is no additional manipulation on the data between these steps required. After the data write, we ideally want to only copy the chunks of memory from one place to another.
-
-%[\textbf{Why Maya?}]
-We have chosen Maya as the modeling software because our collaborating partner, Drew Berry, is its prominent user and he has been a key person that we had in mind when implementing this method. Choosing cellVIEW as the renderer has been an obvious choice as its rendering capabilities are on the state-of-the-art level of what common hardware computers are able to render. Drew Berry has been impressed with the results of cellVIEW and expressed his interest in using it for his movies.
-
-% \section{old}
-
-%[\textbf{we don't want to use files} TODO: why?]Our method tries to solve these two problems. The problem of import/export is solved by using shared memory instead of files managed by the user. The rendering times problem is solved by using modern rendering techniques which enable us to render what we want in an interactive frame-rate.
-%The reason why it's possible to take this approach of using shared memory comes from the character of data that we work with. Molecular scenes consist of molecules. Molecules are made of atoms which can be, and usually are, represented as spheres. Atoms of different elements are visualized by having different radii and colors. So for every molecule we need to keep track of what atoms it consists of, positions of those atoms and type of each of those atoms. This is even more leveraged by Protein Data Bank, which stores data about various proteins that have been found through out the years. For us, this means that we only need to keep track of the type of molecule and by fetching data from Protein Data Bank we get information about the protein cataloged under the protein identifier. Our scenes are (simplified) made of macromolecules. That means that in the end for rendering the scene we need a list of molecules, where for each molecule instance we need to save it's position, rotation and type. That's all the info that we need to be able to render our large molecular scenes. Even though this is still a lot of data, we are slowly getting to being able to render this on commonly available hardware. Because of the fact that this data size is "manageable" by modern computers we are able to store the data in shared memory.
-%This method is mostly valuable as an example of how interconnection of software can be done and what improvements to the users this can bring. There is some prerequisites - both programs need to be extensible to the extend of the programmers must be able to develop extension that are able to read from and write to the shared memory using operating system API calls.
+\section{Discussion of Benefits}
 
 \chapter{Implementation}
 \label{chap:implementation}
@@ -536,17 +469,24 @@ Here we present two examples of scenes that has been created to showcase abiliti
 \begin{figure}
   \centering
   \includegraphics[scale=0.4]{images/strand-1-vertical.jpg}
-  \caption{Strand demonstration}
+  \caption{Strand demonstration. Top: screenshot of a viewport in Maya, bottom: screenshot of a frame rendered by cellVIEW}
   \label{fig:strand1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.4]{images/demonstration/blood-random.png}
+  \caption{Randomized blood proteins}
+  \label{fig:blood}
 \end{figure}
 
 First use case: strand-like structure displayed on Figure \ref{fig:strand1}. This scene has been created using two additional plug-in: Molecular Maya and Instance around Curve. This is very good because it shows that our plug-in can be used in conjunction with other plug-ins and workflows already existing inside Maya.
 
 Protein has been imported using Molecular Maya. We have downloaded a pdb file from Protein Data Bank and loaded it into Maya with this plugin. Then we exported a low resolution mesh from the protein data. This mesh was then used as an object which was instanced around curve using Instance around Curve plug-in. Last step was to rename the individual instances to a pattern that our plugin would recognise as a molecular object.
 
-%In this chapter we present two use cases of how the user can approach illustration with this new proposed system.
-%Use case one - modified Janet's scene.
-%Use case two - microtubulus (create a model in maya and then name it properly and we will get it in cellVIEW).
+Second demonstration: blood-like dataset. Proteins of 5 different types (1atu, 1smd, 2tsc, 2hiu, 2rcj) have been imported using Molecular Maya plugin and low resolution mesh has been generated. Then, using a custom script written in Python, position and rotation of each instance has been determined randomly.
+
+As you can see, the resulting renders are rendered with atomic details, incorporating level-of-detail scheme. These pseudo-scientific scenes would be very hard to create without tools that Maya provides (like scripting and two additional plugins). By combining Maya and cellVIEW this way it was a matter of minutes.
 
 \chapter{Discussion, future work}
 \label{chap:discussion}
