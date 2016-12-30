@@ -139,7 +139,7 @@ From a completely different section of the field of molecular visualization, the
 
 %In this domain we try to visualize living (?) organisms on the smallest possible scale. With this approach, the computer memory and performance requirements are very challenging even for todays available hardware. Still, people have been able to visualize for example model of HIV in blood plasma in it's full detail down do individual atoms of each protein. This however, is achieved by using a very customized rendering method and a custom data format. In 3D graphics, data are usually represented as meshes consisting of triangles (which in turn are made of vertices). If we wanted to represent each atom as a sphere, we would need at least <number> of vertices for one atom and that's only for the roughest level-of-detail. With such representation, a one whole protein could use up to X bytes of memory which already takes up most of the video cards' memory. Thus this representation is not suitable for this task. Instead, various other techniques have been developed for rendering on molecular data.
 
-The main motivation for this project came from talks between researchers of Visualization Group at TU Wien and animator Drew Berry. Rendering capabilities of cellVIEW (see Chapter \ref{chap:star}) have been shown to Berry and he has expressed his interest in the style of rendering that developers of cellVIEW have been able to create. Since Drew Berry has been using Maya software for years to create his animated movies, we have decided to investigate if, and how, it would be possible for him to use cellVIEW for his creations in combination with Maya.
+The main motivation for this project came from talks between researchers of Visualization Group at TU Wien and animator Drew Berry. Rendering capabilities of cellVIEW (see Chapter \ref{chap:star}) have been shown to Berry and he has expressed his interest in the style of rendering that developers of cellVIEW have been able to create. Since Drew Berry has been using Maya software for years for creating his animated movies, we have decided to investigate if, and how, it would be possible for him to use cellVIEW in combination with Maya.
 
 In next chapter, we will describe the state-of-the-art programs and tools that are used for molecular visualization today and we will mainly focus on showing the gaps in intercompatibility of the available programs. Then, in Chapter \ref{chap:method}, we will propose a method of how one particular problem could be solved. Chapter \ref{chap:implementation} is dedicated to in-depth description of our implementation. Chapter \ref{chap:demonstration} will demonstrate use cases of the implemented method. Finally, in Chapter \ref{chap:discussion}, we will discuss the outcome of the whole project and suggest how it could be extended in the future.
 
@@ -269,7 +269,7 @@ We consider the pipeline to be composed of two major steps—modeling and render
 The next step is generation of either a still image or an animated video from the 3D scene/animation. This is equally, maybe even more, important as the first step. By using certain rendering techniques we can underline concepts which are important to the artwork. The level of detail has to be carefully chosen not to overwhelm the audience with visual noise. Traditionally, the rendering step has been very computationally intensive. Today with the power of modern GPUs and the increasing availability of such devices, the rendering times have been reduced dramatically. Still, this represents one of the main limitations in the workflow of an illustrator or animator. Even just one minute delay can cause distraction.
 
 % yeah it's good to end this with workflow because I can talk here about how things are and what is the problem that we want to solve and in method I can continue with that and it's exactly as we talked with Ivan about the Problem definition
-This is the problem that we wanted to solve by using custom state-of-the-art molecular renderer. As it was mentioned before, at this domain, hyper-realistic results of modern rendering methods are not that beneficial. We instead want to employ more illustrative, simplified rendering styles. That brings us another benefit that this rendering method has better performance, allowing us to render at interactive (real-time) frame-rates. By using our fast renderer, we want to eliminate the time cost of rendering step when using conventional off-line renderers.
+This is the problem that we wanted to solve by using custom state-of-the-art molecular renderer. As it was mentioned before, at this domain, hyper-realistic results of modern rendering methods are not that beneficial. We instead want to employ more illustrative, simplified rendering styles. That brings us another benefit that this rendering method has better performance, allowing us to render at interactive (real-time) frame-rates. By using a fast renderer, we want to eliminate the time cost of rendering step when using conventional off-line renderers.
 
 \chapter{Method}
 \label{chap:method}
@@ -281,14 +281,30 @@ As was discussed in Chapter \ref{chap:star}, the majority of artists uses profes
 We see two issues standing in the way between illustrators and animators, and more effective workflow. We believe that by using the real-time renderer cellVIEW, we can solve both of them.
 
 % motivation for using cellview which is renderer made for molecular data
-First problem stems from the fact that modern professional 3D programs are designed primarily for different scenarios than scientific, specifically molecular, content. They mostly use polygon meshes as the representation of 3D scenes. Mesh is a set of vertices, edges and triangles used to model real-life objects. However, for molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of certain radius. Approximation of a sphere using meshes is, unfortunately, not very good in terms of how many triangles are needed for a smooth sphere. Very detailed mesh (consisting of hundreds of triangles) must be used to create an effect of smooth spherical object. Given the fact that our scenes may consist of milions of atom, this creates a big problem.
+First problem stems from the fact that modern professional 3D programs are designed primarily for different scenarios than scientific, specifically molecular, content. They mostly use polygon meshes as the representation of 3D scenes. Mesh is a set of vertices, edges and triangles used to model real-life objects. However, for molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of certain radius. Approximation of a sphere using meshes is, unfortunately, not very good in terms of how many triangles are needed for a smooth sphere. Very detailed mesh (consisting of hundreds of triangles) must be used to create an effect of smooth spherical object (see Figure \ref{fig:spheres-lod}). Given the fact that our scenes may consist of milions of atom, this creates a big problem.
 
-Other representations and rendering techniques have been created to render molecules and atoms. Billboard, sometimes also called impostor, rendering technique is considered to be the most efficient way of rendering atomic data today. Instead of full sphere geometry, we only render a quad for each atom. This quad is then made to always face the camera. The illusion of sphere is then acomplished by using a fragment shader that draws the sphere as if it was projected into this quad.
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.3]{images/spheres.png}
+  \caption{Spheres with different level of detail. From left: 40 triangles, 112 triangles, 264 triangles}
+  \label{fig:spheres-lod}
+\end{figure}
+
+Other representations and rendering techniques have been created to render molecules and atoms. Billboard, sometimes also called impostor, rendering technique is considered to be the most efficient way of rendering atomic data today (see Figure \ref{fig:impostor-rendering}). Instead of full sphere geometry, we only render a quad for each atom. This quad is then made to always face the camera. The illusion of sphere is then acomplished by using a fragment shader that draws the sphere as if it was projected into this quad.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{images/billboards.pdf}
+  \caption{Molecule rendering via impostors}
+  \label{fig:impostor-rendering}
+\end{figure}
 
 % motivation for using shared memory for seamless streaming
 Second issue that we wanted to address is an issue of efficiency. Off-line rendering takes some time to finish. When artist is working, the rendering step is holding them back. It kicks them out of the \textit{state of flow} \cite{FlowTheoryandResearch}. To address this issue, we want to provide the artist with an immediate feedback. Every change he or she makes in the scene should be immediately reflected in the resulting output.
 
-The benefit of using a real-time renderer plays into our cards. We already have a reason to use cellVIEW as a renderer (because it is better for the data we deal with). Because it is real-time (immediate), we just need a way how to utilize this property.
+The benefit of using a real-time renderer plays into our cards [TODO: preformulovat]. We already have a reason to use cellVIEW as a renderer (because it is better for the data we deal with). Because it is real-time (immediate), we just need a way how to utilize this property.
+
+In the end, we would want to completely eliminate the step of rendering and make the process of visual feedback as seemless as possible (as illustrated in Figure \ref{fig:workflow-before-after}).
 
 \begin{figure}
   \centering
@@ -297,14 +313,12 @@ The benefit of using a real-time renderer plays into our cards. We already have 
   \label{fig:workflow-before-after}
 \end{figure}
 
-[TODO: reference somewhere]
-
 \section{Immediate Feedback via Shared Memory}
-Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired features into the software tool that is missing it. In our case, that would mean we could either implement a fast and visually appealing renderer into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
+Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired features into the software tool that is missing it. In our case, that would mean we could either implement a fast and visually appealing renderer into the modeling software tool, or we could do the opposite and implement the desired modeling tools into the renderer program.
 
 The problem with the first approach is that substantial percentage of the 3D software packages that artists use the most are commercial solutions with closed source code. It is possible to extend them via API that they provide but that is not enough if we want to implement state-of-the-art technique that requires the latest technology in terms of graphics API etc.
 
-We also do not want to implement desired 3D modeling and animation tools into our specific molecular visualization program. This would create development overhead which would not bring much benefit on its own. Besides that, every artist uses different instruments (different software, shortcuts, additional plug-ins, etc.) and pleasing all of them would be an impossible goal to achieve.
+We also do not want to implement desired 3D modeling and animation tools into the specific molecular visualization program. This would create development overhead which would not bring much benefit on its own. Besides that, every artist uses different instruments (different software, shortcuts, additional plug-ins, etc.) and pleasing all of them would be an impossible goal to achieve.
 
 Instead, we have chosen to go with another, third, option. We do not want to re-implement from scratch something that is already available to use. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both sets of features at the same time. We do this by using both of the programs and establishing a communication channel between them.
 
@@ -444,7 +458,7 @@ Multiple approaches how the functionality could be implemented exist. First opti
   \label{fig:maya-menu-item}
 \end{figure}
 
-Both of these plug-in implementations have in common that they contain two new custom commands—startStreamingCommand and stopStreamingCommand. When the plug-in is loaded and intialized it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (buttons)—Start Streaming and Stop Streaming (see Figure \ref{fig:maya-menu-item}). These are set up to trigger call of appropriate command—startStreamingCommand and endStreamingCommand. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you should not be able to start streaming when you already are.
+Both of these plug-in implementations have in common that they contain two new custom commands—\textit{startStreamingCommand} and \textit{stopStreamingCommand}. When the plug-in is loaded and intialized, it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (buttons)—Start Streaming and Stop Streaming (see Figure \ref{fig:maya-menu-item}). These are set up to trigger call of appropriate command—\textit{startStreamingCommand} and \textit{endStreamingCommand}. This interface is made to adapt to the state of streaming, you should not be allowed to stop streaming when no streaming is happening and you should not be able to start streaming when you already are.
 
 \subsection{Implementation via Custom Locator}
 \begin{figure}
@@ -455,7 +469,7 @@ Both of these plug-in implementations have in common that they contain two new c
 \end{figure}
 Locator, in Maya API context, is a shape that gets drawn inside Maya's viewport but does not show up in the final render. It can serve as a preview of an effect that actually gets rendered but would be too expensive to draw into the interactive viewport. For us, the important fact is that \texttt{MPxLocatorNode} class has a method \texttt{draw}, which gets called everytime something changes in the scene and thus viewport needs to be re-rendered. This is where we can implement our functionality.
 
-This implementation is not exactly in line with Maya philosophy—\texttt{MPxLocatorNode}'s \texttt{draw} method is meant for drawing and not for the type of computation that we need to do there. However, we have tried to implement real-time sharing the way it should be done in Maya—using custom nodes which have input and output attributes and only when the inputs have changed perform the write. Unfortunately this turned out to be performing worse. The rate of change was simply not enough to provide smooth streaming without stuttering.
+This implementation is not exactly in line with Maya's philosophy—\texttt{MPxLocatorNode}'s \texttt{draw} method is meant for drawing and not for the type of computation that we need to do there. However, we have tried to implement real-time sharing the way it should be done in Maya—using custom nodes which have input and output attributes and only when the inputs have changed perform the write. Unfortunately this turned out to be performing worse. The rate of change was simply not enough to provide smooth streaming without stuttering.
 
 In the implementation via Custom Locator we do the following. When \texttt{startStreamingCommand} is called, it creates a new instance of the custom locator node and adds it into the scene. From now on, whenever we change something in the scene (move the camera, translate any object, ...) this nodes \texttt{draw} method gets called.
 
@@ -558,7 +572,7 @@ As you can see, the resulting renders are rendered with atomic details, incorpor
 
 \chapter{Discussion, Future Work}
 \label{chap:discussion}
-From the practical point of view, our main goal for this project was to investigate how could we integrate our state-of-the-art renderer cellVIEW into modern professional 3D software.
+From the practical point of view, our main goal for this project was to investigate how could we integrate the state-of-the-art renderer cellVIEW into modern professional 3D software.
 
 This has been successfully achieved. Naturally, there is lots to improve upon. Primarily, we would be interested in
 
