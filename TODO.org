@@ -1,5 +1,6 @@
 * Writing TODOs
 ** TODO prepsat method
+** TODO write about streaming camera params
 ** TODO write about limitations (maybe section "Discussion" in chapter Method)
 ** TODO mention MONO somewhere
 ** TODO write about writing into shared memory on maya side (mention functions)
