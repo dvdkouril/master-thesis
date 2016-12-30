@@ -1,11 +1,11 @@
 * Writing TODOs
-** TODO prepsat method
-** TODO write about streaming camera params
-** TODO write about limitations (maybe section "Discussion" in chapter Method)
 ** TODO mention MONO somewhere
 ** TODO write about writing into shared memory on maya side (mention functions)
-** TODO mention drew berry sooner than at the end of method
-** TODO vyresit Process subsection v Method
+** DONE prepsat method
+** DONE write about limitations (maybe section "Discussion" in chapter Method)
+** DONE write about streaming camera params (mozna v method)
+** DONE vyresit Process subsection v Method
+** DONE mention drew berry sooner than at the end of method
 ** DONE rewrite (add more) abstract
 ** DONE finish C++ and C# interoperability chapter
 ** DONE write about unity script (Unity Side)
@@ -18,11 +18,36 @@
 * Coding
 ** DONE two different protein types show as same type
 
-* Todos
+* Other TODOs
 ** TODO figure with data layout and addresses how are they computed (like posPointer + num * float4)
 ** DONE change names and errors in the code (no "fuck" and similar)
 ** DONE [Figure 4.1] znazornit spojeni pres shared memory
 ** DONE Data Generation -> Data
+
+* When finished, to do before submission
+** TODO pripravit k tisku a vazani
+*** TODO nahrat na flasku
+*** TODO barevna vs. cernobile stranky (pozor odkazy a ref)
+*** TODO oneside vs twoside
+*** TODO vytisknout a vyplnit prohlaseni autora skolniho dila (2x, jednou do kazde kopie)
+*** TODO okopirovat oficialni zadani
+
+** TODO tisk a vazba
+*** TODO jednostranny tisk
+*** TODO titulni list -> kopie zadani -> kopie prohlaseni autora -> prohlaseni o autorstvi -> shrnuti a keywords -> obsah
+*** TODO na desky: Masarykova univerzita, Fakulta informatiky, Diplomova prace, nazev (nepovinne), jmeno a prijmeni studenta, rok odevzdani
+
+** TODO pred odevzdanim
+*** TODO vyplnit archiv
+*** TODO vytisknout a vyplnit prihlasku k obhajobe
+*** TODO vytisknout a vyplnit prihlasku ke statnicim
+*** TODO vytisknout a vyplnit prohlaseni autora skolniho dila
+
+** TODO odevzdani
+*** TODO 2 kopie
+*** TODO prihlasku k obhajobe
+*** TODO prihlasku ke statnicim
+*** TODO prohlaseni autora skolniho dila
 
 * Questions
 ** Vice odstavcu v abstraktu? muze byt?
@@ -33,3 +58,5 @@ ano, nejspis mely, reference prevazne publikace a knizky
 
 ** jak pouzit cizi obrazky? kam se da reference?
 napsat "image taken from [ref]"
+
+DON'T USE "OUR RENDERER cellVIEW". IT WILL MAKE IT SEEM LIKE I MADE THAT.

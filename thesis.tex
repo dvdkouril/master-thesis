@@ -17,6 +17,7 @@
            %% hide the List of Figures.
   nolot,     %% Prints the List of Tables. Replace with `nolot` to
            %% hide the List of Tables.
+  oneside,
   %% More options are listed in the user guide at
   %% <http://mirrors.ctan.org/macros/latex/contrib/fithesis/guide/mu/fi.pdf>.
 ]{fithesis3}
@@ -138,7 +139,7 @@ From a completely different section of the field of molecular visualization, the
 
 %In this domain we try to visualize living (?) organisms on the smallest possible scale. With this approach, the computer memory and performance requirements are very challenging even for todays available hardware. Still, people have been able to visualize for example model of HIV in blood plasma in it's full detail down do individual atoms of each protein. This however, is achieved by using a very customized rendering method and a custom data format. In 3D graphics, data are usually represented as meshes consisting of triangles (which in turn are made of vertices). If we wanted to represent each atom as a sphere, we would need at least <number> of vertices for one atom and that's only for the roughest level-of-detail. With such representation, a one whole protein could use up to X bytes of memory which already takes up most of the video cards' memory. Thus this representation is not suitable for this task. Instead, various other techniques have been developed for rendering on molecular data.
 
-The main motivation for this project comes from talks between researchers of Visualization Group at TU Wien and animator Drew Berry. Rendering capabilities of cellVIEW (see Chapter \ref{chap:star}) have been shown to Berry and he has expressed his interest in the style of rendering that developers of cellVIEW have been able to create. Since Drew Berry has been using Maya software for years to create his animated movies, we have decided to investigate if, and how, it would be possible for him to use cellVIEW for his creations in combination with Maya.
+The main motivation for this project came from talks between researchers of Visualization Group at TU Wien and animator Drew Berry. Rendering capabilities of cellVIEW (see Chapter \ref{chap:star}) have been shown to Berry and he has expressed his interest in the style of rendering that developers of cellVIEW have been able to create. Since Drew Berry has been using Maya software for years to create his animated movies, we have decided to investigate if, and how, it would be possible for him to use cellVIEW for his creations in combination with Maya.
 
 In next chapter, we will describe the state-of-the-art programs and tools that are used for molecular visualization today and we will mainly focus on showing the gaps in intercompatibility of the available programs. Then, in Chapter \ref{chap:method}, we will propose a method of how one particular problem could be solved. Chapter \ref{chap:implementation} is dedicated to in-depth description of our implementation. Chapter \ref{chap:demonstration} will demonstrate use cases of the implemented method. Finally, in Chapter \ref{chap:discussion}, we will discuss the outcome of the whole project and suggest how it could be extended in the future.
 
@@ -201,7 +202,7 @@ Third, object manipulation—translation, rotation, and scale—is solved and ma
 Important component of any professional 3D program is a renderer. Renderer is a tool which turns the 3D scene into a final image (or series of images in case of an animation). All of the mentioned products come with at least one default, pre-installed, renderer. On top of that, the user can install external rendering solutions, either commercial or free-to-use ones. This installation is most often done via plug-ins.
 
 % TODO: offline rendering algorithms
-The process that these rendering solutions use is sometimes referred to as ``off-line'' rendering. The opposite of this would be real-time rendering. The difference is mainly in the amount of time that these two types of rendering take. Off-line rendering takes physical correctness and/or realistic look as its primary goal while the amount of  time the rendering process takes is given less priority. Actual numbers depend on the complexity of the geometry in the scene and the materials and effects used in this scene. But the ranges are from several minutes to hours for casual purposes. On the other hand, real-time rendering aims to generate a picture several times each second. The obvious benefit here is that the scene can change dynamically and is still rendered with a frame-rate that human eye considers as a continuous movement. In past, the benchmark of 30 FPS (frames per second) has been considered to be the standard. However, these days 60 FPS is starting to be more and more common. For 30 FPS, every frame has to been rendered in under 1/30 s = 16ms. In real-time rendering, rasterization\cite{rasterization-paper} is considered to be the state-of-the-art approach as it enables us to achieve interactive performance quite easily. Ray tracing (and it's variants) is the type of algorithm used in off-line rendering\cite{pbr-book}.
+The process that these rendering solutions use is sometimes referred to as \textit{off-line} rendering. The opposite of this would be \textit{real-time} rendering. The difference is mainly in the amount of time that these two types of rendering take. Off-line rendering takes physical correctness and/or realistic look as its primary goal while the amount of  time the rendering process takes is given less priority. Actual numbers depend on the complexity of the geometry in the scene and the materials and effects used in this scene. But the ranges are from several minutes to hours for casual purposes. On the other hand, real-time rendering aims to generate a picture several times each second. The obvious benefit here is that the scene can change dynamically and is still rendered with a frame-rate that human eye considers as a continuous movement. In past, the benchmark of 30 FPS (frames per second) has been considered to be the standard. However, these days 60 FPS is starting to be more and more common. For 30 FPS, every frame has to been rendered in under 1/30 s = 16ms. In real-time rendering, rasterization\cite{rasterization-paper} is considered to be the state-of-the-art approach as it enables us to achieve interactive performance quite easily. Ray tracing (and it's variants) is the type of algorithm used in off-line rendering\cite{pbr-book}.
 
 Plethora of external off-line renderers exists these days. From the popular commercial ones like OTOY's Octane, Chaosgroup's V-ray, Pixar's RenderMan to open-sourced solutions—LuxRender or Cycles (which is now available in default installation of Blender).
 
@@ -277,15 +278,70 @@ As was discussed in Chapter \ref{chap:star}, the majority of artists uses profes
 % There is a difference between: (1) motivation for using cellview as a renderer instead of offline renderer, and (2) motivation for using shared memory instead of implementing it into each other (as opposed to do imported/exporter)
 
 \section{Motivation}
-Off-line rendering takes some time to finish. When artist is working, the rendering step is holding them back. It kicks them out of the flow. Because of this we want to
+We see two issues standing in the way between illustrators and animators, and more effective workflow. We believe that by using the real-time renderer cellVIEW, we can solve both of them.
 
-\section{Reasons for Using Real-time Renderer}
-Modern 3D programs use mostly polygon meshes as the representation of 3D scenes. Meshes are sets of vertices, edges and triangles used to model real-life objects. For molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of a certain radius. Approximation of a sphere by using meshes is, unfortunately, not very good in terms of req. Very detailed mesh (consisting of thousands of triangles) must be used to create an effect of smooth spherical object.
+% motivation for using cellview which is renderer made for molecular data
+First problem stems from the fact that modern professional 3D programs are designed primarily for different scenarios than scientific, specifically molecular, content. They mostly use polygon meshes as the representation of 3D scenes. Mesh is a set of vertices, edges and triangles used to model real-life objects. However, for molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of certain radius. Approximation of a sphere using meshes is, unfortunately, not very good in terms of how many triangles are needed for a smooth sphere. Very detailed mesh (consisting of hundreds of triangles) must be used to create an effect of smooth spherical object. Given the fact that our scenes may consist of milions of atom, this creates a big problem.
 
-\section{Using Shared Memory}
-We use shared memory as a way of communication between our two programs. It has been naturaly the choice for this ... Are there any alternatives???
+Other representations and rendering techniques have been created to render molecules and atoms. Billboard, sometimes also called impostor, rendering technique is considered to be the most efficient way of rendering atomic data today. Instead of full sphere geometry, we only render a quad for each atom. This quad is then made to always face the camera. The illusion of sphere is then acomplished by using a fragment shader that draws the sphere as if it was projected into this quad.
 
-\section{Discussion of Benefits}
+% motivation for using shared memory for seamless streaming
+Second issue that we wanted to address is an issue of efficiency. Off-line rendering takes some time to finish. When artist is working, the rendering step is holding them back. It kicks them out of the \textit{state of flow} \cite{FlowTheoryandResearch}. To address this issue, we want to provide the artist with an immediate feedback. Every change he or she makes in the scene should be immediately reflected in the resulting output.
+
+The benefit of using a real-time renderer plays into our cards. We already have a reason to use cellVIEW as a renderer (because it is better for the data we deal with). Because it is real-time (immediate), we just need a way how to utilize this property.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{images/workflow-before-after.pdf}
+  \caption{Workflow, a. traditional approach with off-line rendering, b. our approach with real-time rendering}
+  \label{fig:workflow-before-after}
+\end{figure}
+
+[TODO: reference somewhere]
+
+\section{Immediate Feedback via Shared Memory}
+Ultimately, we have two programs and we want to use some functionality from the first one and other functionality from the second one. The naive solution would be to implement our desired features into the software tool that is missing it. In our case, that would mean we could either implement a fast and visually appealing renderer into our modeling software, or we could do the opposite and implement the desired modeling tools into our renderer.
+
+The problem with the first approach is that substantial percentage of the 3D software packages that artists use the most are commercial solutions with closed source code. It is possible to extend them via API that they provide but that is not enough if we want to implement state-of-the-art technique that requires the latest technology in terms of graphics API etc.
+
+We also do not want to implement desired 3D modeling and animation tools into our specific molecular visualization program. This would create development overhead which would not bring much benefit on its own. Besides that, every artist uses different instruments (different software, shortcuts, additional plug-ins, etc.) and pleasing all of them would be an impossible goal to achieve.
+
+Instead, we have chosen to go with another, third, option. We do not want to re-implement from scratch something that is already available to use. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both sets of features at the same time. We do this by using both of the programs and establishing a communication channel between them.
+
+We use writing and reading from shared memory to accomlish this communication. In our case the communication is one-way. We can model or animate the scene in one program and transfer the data describing this scene to have it rendered in the second program. As we will show, this can be done in a straightforward fashion as our scenes can be simplified to the point of describing them with a few numbers per atom. [TODO: where do I describe it?]
+
+On the side of modeling program, we want to see an approximation of the scene. One way would be to use a simple geometry like cube or sphere as a placeholder for each molecule. Such placeholder would then serve as an object that we manipulate instead of an actual molecule. We tried something a little bit different. With Molecular Maya plug-in, we can load a molecule description in the form of a PDB file. With this plug-in it is also possible to generate a polygonal surface mesh representation with choosable detail level. We therefore load a molecule and generate a very low resolution mesh which serves as our placeholder.
+
+\section{Transfered Data}
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{images/data-layout.pdf}
+  \caption{Shared memory data layout}
+  \label{fig:memory-layout}
+\end{figure}
+
+Thanks to the standardization in the form of PDB files which are stored in a central database, we are able to decrease the amount of data we need to transfer between programs. A typical molecular scene consists of macromolecules: proteins and lipids.
+
+Two simplifications are used. First, we consider the shape of the molecule to be static. This means that inside each molecule, the positions of its atoms do not change in time. These positions are taken from the PDB file. Second, all the instances of a certain molecule look the same. Individual instances of a certain molecule type only differ in their positions and rotations.
+
+With these facts in mind, the molecular scene can be defined by three buffers (arrays):
+\begin{itemize}
+\item Positions buffer: XYZ positions of all the instances in the scene
+\item Rotations buffer: rotations of all the instances in the scene, representated as quaternions
+\item Info buffer: additional information about each instance (so far only molecule type information)
+\end{itemize}
+
+Figure \ref{fig:memory-layout} shows the layout of the data. Because of technical implications, all positions are grouped together, same with rotations and informations, instead of grouping all the information (position, rotation, type) about instance.
+
+Besides the actual scene data, we also want to use shared memory to synchronize cameras on both endpoints. The feel of connection would not be complete if the artist had to control two cameras (one in Maya and one in cellVIEW) at the same. Because of that, we want to reflect the camera movements from Maya into cellVIEW.
+
+To do that, we need to share position and rotation of the camera in Maya. Another shared memory segment is allocated just for this data. On cellVIEW side, we then read the position and rotation of camera in Maya and set the main camera in cellVIEW to have the same parameters. This way what the user looks at in Maya, he sees from the same point of view in cellVIEW.
+
+\section{Limitations}
+The obvious limitation is the amount of space that can be allocated in shared memory. As we will see in Chapter \ref{chap:implementation}, we can use shared memory that is backed by paging system. This means that, theoritically, we should be able to allocate very large chunks of memory. However, in case of working with a very large data sets, the speed of writing into and reading from shared memory might not be ideal.
+
+Another limit could be the amount of placeholder geometry Maya can render in its viewport. 
+
 
 \chapter{Implementation}
 \label{chap:implementation}
@@ -397,7 +453,7 @@ Both of these plug-in implementations have in common that they contain two new c
   \caption{Plugin contents}
   \label{fig:plugin-content}
 \end{figure}
-Locator, in Maya API context, is shape that gets drawn but does not show up in the final render. It can serve as a preview of an effect that actually gets rendered but would be too expensive to draw into the interactive viewport. For us, the important fact is that \texttt{MPxLocatorNode} class has a method \texttt{draw}, which gets called everytime something changes in the scene and thus viewport needs to be re-rendered. This is where we can implement our functionality.
+Locator, in Maya API context, is a shape that gets drawn inside Maya's viewport but does not show up in the final render. It can serve as a preview of an effect that actually gets rendered but would be too expensive to draw into the interactive viewport. For us, the important fact is that \texttt{MPxLocatorNode} class has a method \texttt{draw}, which gets called everytime something changes in the scene and thus viewport needs to be re-rendered. This is where we can implement our functionality.
 
 This implementation is not exactly in line with Maya philosophy—\texttt{MPxLocatorNode}'s \texttt{draw} method is meant for drawing and not for the type of computation that we need to do there. However, we have tried to implement real-time sharing the way it should be done in Maya—using custom nodes which have input and output attributes and only when the inputs have changed perform the write. Unfortunately this turned out to be performing worse. The rate of change was simply not enough to provide smooth streaming without stuttering.
 
@@ -406,7 +462,7 @@ In the implementation via Custom Locator we do the following. When \texttt{start
 In the \texttt{draw} method, we iterate through all objects in the scene. Looking at the names, we locate either camera or molecular object. Position, rotation and type information is accumulated into three buffers. These are then concatenated and written into the shared memory.
 
 \subsection{Implementation via Watchers}
-The previously presented implementation has one disadvantage. Even if just one object changes its position, all the memory is rewritten. Not only that, but we also iterate through the whole scene as well. This could easily become bottleneck. To address this, another approach has been implemented. A concept of a ``watcher'' node has been established.
+The previously presented implementation has one disadvantage. Even if just one object changes its position, all the memory is rewritten. Not only that, but we also iterate through the whole scene as well. This could easily become bottleneck. To address this, another approach has been implemented. A concept of a \textit{watcher} node has been established.
 
 Upon initialization of the plugin, the whole scene is scanned. When we process a molecular object we create new watcher node. This new node is then connected to the node of a molecular object in a way that the position and rotation attributes are inputs for this watcher node.
 
@@ -460,7 +516,7 @@ For details about rendering of molecular scenes in cellVIEW please refer to \cit
 
 \chapter{Demonstration}
 \label{chap:demonstration}
-Here we present two examples of scenes that has been created to showcase abilities of our plugin.
+Here we present two examples of scenes that has been created to showcase abilities of our system.
 
 \begin{figure}
   \centering
@@ -469,22 +525,38 @@ Here we present two examples of scenes that has been created to showcase abiliti
   \label{fig:strand1}
 \end{figure}
 
+%\begin{figure}
+%  \centering
+%  \includegraphics[scale=0.4]{images/demonstration/blood-random.png}
+%  \caption{Randomized blood proteins}
+%  \label{fig:blood}
+%\end{figure}
+
 \begin{figure}
   \centering
-  \includegraphics[scale=0.4]{images/demonstration/blood-random.png}
-  \caption{Randomized blood proteins}
-  \label{fig:blood}
+  \includegraphics[scale=0.4]{images/demonstration/blood-big.png}
+  \caption{Randomized bloog proteins}
+  \label{fig:blood-random}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.4]{images/demonstration/blood-closeup.png}
+  \caption{Randomized blood proteins: close-up}
+  \label{fig:blood-random-close}
+\end{figure}
+
+\section{Demonstration 1: Strand-like Structure}
 First use case: strand-like structure displayed on Figure \ref{fig:strand1}. This scene has been created using two additional plug-in: Molecular Maya and Instance around Curve. This is very good because it shows that our plug-in can be used in conjunction with other plug-ins and workflows already existing inside Maya.
 
 Protein has been imported using Molecular Maya. We have downloaded a pdb file from Protein Data Bank and loaded it into Maya with this plugin. Then we exported a low resolution mesh from the protein data. This mesh was then used as an object which was instanced around curve using Instance around Curve plug-in. Last step was to rename the individual instances to a pattern that our plugin would recognise as a molecular object.
 
-Second demonstration: blood-like dataset. Proteins of 5 different types (1atu, 1smd, 2tsc, 2hiu, 2rcj) have been imported using Molecular Maya plugin and low resolution mesh has been generated. Then, using a custom script written in Python, position and rotation of each instance has been determined randomly.
+\section{Demonstration 2: Randomized Blood Proteins}
+Second demonstration case is shown in Figure \ref{fig:blood-random} and Figure \ref{fig:blood-random-close}. Proteins of 5 different types (1atu, 1smd, 2tsc, 2hiu, 2rcj) have been imported using Molecular Maya plugin and low resolution mesh has been generated. Then, using a custom script written in Python, position and rotation of each instance has been determined randomly.
 
 As you can see, the resulting renders are rendered with atomic details, incorporating level-of-detail scheme. These pseudo-scientific scenes would be very hard to create without tools that Maya provides (like scripting and two additional plugins). By combining Maya and cellVIEW this way it was a matter of minutes.
 
-\chapter{Discussion, future work}
+\chapter{Discussion, Future Work}
 \label{chap:discussion}
 From the practical point of view, our main goal for this project was to investigate how could we integrate our state-of-the-art renderer cellVIEW into modern professional 3D software.
 
