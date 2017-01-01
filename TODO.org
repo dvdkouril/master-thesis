@@ -1,6 +1,12 @@
 * Writing TODOs
 ** TODO mention MONO somewhere
+** TODO put more references in the text
+** TODO fix line overflows
+** TODO rewrite discussion, future work chapter
 ** TODO write about writing into shared memory on maya side (mention functions)
+** TODO write about pdb mapping
+** DONE vyresit kapitoly koncici jednou vetou na dalsi strance:
+*** DONE introduction
 ** DONE prepsat method
 ** DONE write about limitations (maybe section "Discussion" in chapter Method)
 ** DONE write about streaming camera params (mozna v method)
@@ -10,6 +16,13 @@
 ** DONE finish C++ and C# interoperability chapter
 ** DONE write about unity script (Unity Side)
 
+* Other TODOs
+** TODO appendix: popsat prilohy?
+** TODO figure with data layout and addresses how are they computed (like posPointer + num * float4)
+** DONE change names and errors in the code (no "fuck" and similar)
+** DONE [Figure 4.1] znazornit spojeni pres shared memory
+** DONE Data Generation -> Data
+
 * Fixes
 ** TODO drew berry broken link
 ** TODO bibliography authors (et al. -> all names)
@@ -17,12 +30,6 @@
 
 * Coding
 ** DONE two different protein types show as same type
-
-* Other TODOs
-** TODO figure with data layout and addresses how are they computed (like posPointer + num * float4)
-** DONE change names and errors in the code (no "fuck" and similar)
-** DONE [Figure 4.1] znazornit spojeni pres shared memory
-** DONE Data Generation -> Data
 
 * When finished, to do before submission
 ** TODO pripravit k tisku a vazani
