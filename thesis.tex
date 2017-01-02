@@ -274,7 +274,7 @@ As was discussed in Chapter \ref{chap:star}, the majority of artists uses profe
 We see two issues standing in the way between illustrators and animators, and more effective workflow. We believe that by using the real-time renderer cellVIEW, we can solve both of them.
 
 % motivation for using cellview which is renderer made for molecular data
-First problem stems from the fact that modern professional 3D programs are designed primarily for different scenarios than scientific, specifically molecular, content. They mostly use polygonal meshes as the representation of 3D scenes. Mesh is a set of vertices, edges and triangles used to model real-life objects. However, for molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of certain radius. Approximation of a sphere using meshes is, unfortunately, not very good in terms of how many triangles are needed for a smooth sphere. Very detailed mesh (consisting of hundreds of triangles) must be used to create an effect of smooth spherical object (see Figure \ref{fig:spheres-lod}). Given the fact that our scenes may consist of milions of atoms, this creates a big problem in terms of memory space requirements.
+First problem stems from the fact that modern professional 3D programs are designed primarily for different scenarios than scientific, specifically molecular, content. They mostly use polygonal meshes as the representation of 3D scenes. Mesh is a set of vertices, edges and triangles used to model real-life objects. However, for molecular data and scenes, meshes are not the best representation. A single atom is in our case simplified by a single sphere of certain radius. Approximation of a sphere using meshes is, unfortunately, not very good in terms of how many triangles are needed for a smooth sphere. Very detailed mesh (consisting of hundreds of triangles) must be used to create an effect of smooth spherical object (see Figure \ref{fig:spheres-lod}). Given the fact that our scenes may consist of millions of atoms, this creates a big problem in terms of memory space requirements.
 
 \begin{figure}
   \centering
@@ -283,7 +283,7 @@ First problem stems from the fact that modern professional 3D programs are desi
   \label{fig:spheres-lod}
 \end{figure}
 
-Other representations and rendering techniques have been created to render molecules and atoms. Billboarding, sometimes also called impostor, rendering technique is considered to be the most efficient way of rendering atomic data today (see Figure \ref{fig:impostor-rendering}). Instead of full sphere geometry, we only render a quad for each atom. This quad is then made to always face the camera. The illusion of sphere is acomplished by using a fragment shader that draws the sphere as if it was projected into this quad.
+Other representations and rendering techniques have been created to render molecules and atoms. Billboarding, sometimes also called impostor, rendering technique is considered to be the most efficient way of rendering atomic data today (see Figure \ref{fig:impostor-rendering}). Instead of full sphere geometry, we only render a quad for each atom. This quad is then made to always face the camera. The illusion of sphere is accomplished by using a fragment shader that draws the sphere as if it was projected into this quad.
 
 \begin{figure}
   \centering
@@ -295,7 +295,7 @@ Other representations and rendering techniques have been created to render molec
 % motivation for using shared memory for seamless streaming
 Second issue that we wanted to address, is an issue of efficiency. Off-line rendering takes some time to finish. In artists' workflow, it is the rendering step which causes the bottleneck of the creative authoring process. It kicks them out of the \textit{state of flow} \cite{FlowTheoryandResearch}. To address this issue, we want to provide the artist with an immediate feedback. Every change he or she makes in the scene should be immediately reflected in the resulting output. The property of a real-time renderer proves to be beneficial in this situation. The process of rendering is immediate, we just need a way to utilize this property.
 
-Ultimately, we would want to completely eliminate the step of rendering and make the process of visual feedback as seemless as possible (as illustrated in Figure \ref{fig:workflow-before-after}).
+Ultimately, we would want to completely eliminate the step of rendering and make the process of visual feedback as seamless as possible (as illustrated in Figure \ref{fig:workflow-before-after}).
 
 \begin{figure}
   \centering
@@ -313,7 +313,7 @@ We also do not want to implement desired 3D modeling and animation tools into th
 
 Instead, we have chosen to go with another, third, option. We do not want to re-implement from scratch something that is already available to use. Instead, we went for a different approach and tried to connect the two parts in a way that would allow us to use both sets of features at the same time. We do this by using both of the programs and establishing a communication channel between them.
 
-We use writing and reading from shared memory to accomlish this communication. In our case the communication is one-way. We can model or animate the scene in one program and transfer the data describing this scene to have it rendered in the second program. As we will show, this can be done in a straightforward fashion as our scenes can be simplified to the point of describing them with a few numbers per molecule.
+We use writing and reading from shared memory to accomplish this communication. In our case the communication is one-way. We can model or animate the scene in one program and transfer the data describing this scene to have it rendered in the second program. As we will show, this can be done in a straightforward fashion as our scenes can be simplified to the point of describing them with a few numbers per molecule.
 
 On the side of modeling program, we want to see an approximation of the scene. One way would be to use a simple geometry like cube or sphere as a placeholder for each molecule. Such placeholder would then serve as an object that we manipulate instead of an actual molecule. We tried something a little bit different. With Molecular Maya plug-in, we can load a molecule description in the form of a PDB file. With this plug-in it is also possible to generate a polygonal surface mesh representation with adjustable detail level. We therefore load a molecule and generate a very low resolution mesh which serves as our placeholder.
 
@@ -405,7 +405,7 @@ It should be noted that both scripts and plug-ins are supposed to work together 
 \subsection{MEL vs. Python vs. C++ in Maya}
 MEL (Maya Embedded Language) is a scripting similar to other scripting language like Bash or Perl. It is generally the fastest way to customize Maya in any way. For any more complex tasks it is generally better to use Python scripting or even turn the functionality into a plug-in. There is however one task where MEL shines and that is custom GUI building. Even though users can use modified Qt library in their plug-ins, it is way easier to create custom graphics interface with MEL.
 
-Maya API can be thought of as a level directly under MEL scripting. With Maya API, we can create several types of plugins but two most common are new custom commands which can then be called with MEL, and a custom Dependency Graph nodes. Plug-ins using Maya API can be implemented either in Python or C++.
+Maya API can be thought of as a level directly under MEL scripting. With Maya API, we can create several types of plug-ins but two most common are new custom commands which can then be called with MEL, and a custom Dependency Graph nodes. Plug-ins using Maya API can be implemented either in Python or C++.
 
 Python is a powerful and easy-to-learn scripting language. Its advantage is that it is interpreted which means that there is no need for a compilation step. This is beneficial for developers in the phase of prototyping because they can make changes more quickly. The disadvantage is also a consequence of Python being interpreted—Python is expected to be slower than most compiled language like C++. We wanted to implement functionality which works in real-time. For this reason we decided that working in Python was not the ideal approach in this project.
 
@@ -441,7 +441,7 @@ This approach is by itself not very optimal because most of the time only a sm
   \label{fig:maya-menu-item}
 \end{figure}
 
-Both of these plug-in implementations have in common that they contain two new custom commands—\textit{startStreamingCommand} and \textit{stopStreamingCommand}. When the plug-in is loaded and intialized, it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (buttons)—Start Streaming and Stop Streaming (see Figure \ref{fig:maya-menu-item}). These are set up to trigger call of appropriate command—\textit{startStreamingCommand} and \textit{endStreamingCommand}. This interface is made to adapt to the state of streaming, user should not be allowed to stop streaming when no streaming is happening and he or she should not be able to start streaming when the streaming is already running.
+Both of these plug-in implementations have in common that they contain two new custom commands—\textit{startStreamingCommand} and \textit{stopStreamingCommand}. When the plug-in is loaded and initialized, it creates a new menu item in Maya's main toolbar. Under this menu item there are two sub-items (buttons)—Start Streaming and Stop Streaming (see Figure \ref{fig:maya-menu-item}). These are set up to trigger call of appropriate command—\textit{startStreamingCommand} and \textit{endStreamingCommand}. This interface is made to adapt to the state of streaming, user should not be allowed to stop streaming when no streaming is happening and he or she should not be able to start streaming when the streaming is already running.
 
 \subsection{Implementation via Custom Locator}
 \begin{figure}
@@ -451,14 +451,14 @@ Both of these plug-in implementations have in common that they contain two new c
   \label{fig:attribute-writing}
 \end{figure}
 
-Locator, in Maya API context, is a shape that gets drawn inside Maya's viewport, but does not show up in the final rendered image. It can serve as a preview of an effect that actually gets rendered, but would be too expensive to draw into the interactive viewport. For us, the important fact is that \texttt{MPxLocatorNode} class has a method \texttt{draw}, which gets called everytime something changes in the scene and thus viewport needs to be re-rendered. This is where we can implement our functionality.
+Locator, in Maya API context, is a shape that gets drawn inside Maya's viewport, but does not show up in the final rendered image. It can serve as a preview of an effect that actually gets rendered, but would be too expensive to draw into the interactive viewport. For us, the important fact is that \texttt{MPxLocatorNode} class has a method \texttt{draw}, which gets called every time something changes in the scene and thus viewport needs to be re-rendered. This is where we can implement our functionality.
 
 This implementation is not exactly in line with Maya's philosophy—\texttt{MPxLocatorNode}'s \texttt{draw} method is meant for drawing and not for the type of computation that we need to do there. However, we have tried to implement real-time sharing the way it should be done in Maya—using custom nodes which have input and output attributes and only when the inputs have changed perform the write. Unfortunately this turned out to be performing worse. The rate of change was simply not enough to provide smooth streaming without stuttering.
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.8]{images/plugin-contents.pdf}
-  \caption{Plugin contents: implementation via streaming locator}
+  \caption{Plug-in contents: implementation via streaming locator}
   \label{fig:plugin-content}
 \end{figure}
 
@@ -481,13 +481,13 @@ Overall, four shared memory segments are opened:
 \begin{figure}
   \centering
   \includegraphics[scale=0.8]{images/plugin-contents-watchers.pdf}
-  \caption{Plugin contents: implementation via watchers}
+  \caption{Plug-in contents: implementation via watchers}
   \label{fig:plugin-content-watchers}
 \end{figure}
 
 The previously presented implementation has one disadvantage. Even if just one object changes its position, all the memory is rewritten. Not only that, but we also iterate through the whole scene as well. This could easily become bottleneck. To address this, another approach has been implemented. A concept of a \textit{watcher} node has been established.
 
-Upon initialization of the plugin, the whole scene is scanned. When we process a molecular object we create new watcher node. This new node is then connected to the node of a molecular object in a way that the position and rotation attributes are inputs for this watcher node.
+Upon initialization of the plug-in, the whole scene is scanned. When we process a molecular object we create new watcher node. This new node is then connected to the node of a molecular object in a way that the position and rotation attributes are inputs for this watcher node.
 
 Now whenever there is a change in the scene, the \texttt{draw} method is called for each instance of watcher node. The position and rotation attributes are read and compared to their previously cached values. If they are the same, nothing gets done. If they are different, we proceed to the memory writing.
 
@@ -503,11 +503,11 @@ Each watcher node knows its index. Using this index the precise address inside 
 This approach works better in the stage of creating the 3D model. In this stage, the artist tweaks position and rotation of only few objects at once. In that case, only a small part of shared memory is written over. This approach however falls short when the artist plays back an animation. In this situation, mostly all molecular objects in the scene change. Therefore writing changes into the memory one by one is not beneficial and might actually be performing worse.
 
 \section{Unity Side}
-cellVIEW has been developed using the Unity game engine. Unity allows users to include additional code in the form of two kinds of plugins—Managed plugins and Native plugins.
+cellVIEW has been developed using the Unity game engine. Unity allows users to include additional code in the form of two kinds of plug-ins—Managed plug-ins and Native plug-ins.
 
-Managed plugins, similiar to the term managed code, are plugins containing .NET code using CLR virtual machine to execute this code. There is little difference between writting functionality using scripts (common way to code behaviour in Unity) and managed plugins (other than the fact that managed plugins are compiled separately outside of Unity).
+Managed plug-ins, similiar to the term managed code, are plug-ins containing .NET code using CLR virtual machine to execute this code. There is little difference between writting functionality using scripts (common way to code behaviour in Unity) and managed plug-ins (other than the fact that managed plug-ins are compiled separately outside of Unity).
 
-Native plugins contain code that is specific to one platform. They allow to call operating system functions or libraries that are not accessible in default Unity.
+Native plug-ins contain code that is specific to one platform. They allow to call operating system functions or libraries that are not accessible in default Unity.
 
 \subsection{Dynamic-link Library}
 SharedMemDll component is a very simple dynamic-link library which encapsulates Windows API function calls. By doing so we can use shared memory functionality in Unity. The DLL consists of two functions—\texttt{get\-Shared\-Memory\-Ptr} and \texttt{cleanup\-Shared\-Memory}.
@@ -521,7 +521,7 @@ Unity uses scripting as a mechanism for implementing gameplay behaviour. Users 
 
 Every Unity C\# script must be derived from \texttt{MonoBehaviour} class. \texttt{MonoBehaviour} is a base class which implements basic methods like \texttt{Start}, \texttt{Update}, \texttt{FixedUpdate} and \texttt{OnGUI}. Our script, MayaStreamUpdater, is therefore a child class of \texttt{MonoBehaviour}.
 
-We use the two functions implemented in the native DLL plugin by declaring them as private static external methods and using DllImport attribute macro. In \texttt{OnEnable} method, we call \texttt{getSharedMemoryPtr} to get pointer to shared memory.
+We use the two functions implemented in the native DLL plug-in by declaring them as private static external methods and using DllImport attribute macro. In \texttt{OnEnable} method, we call \texttt{getSharedMemoryPtr} to get pointer to shared memory.
 %Four shared memory segments are opened this way:
 %\begin{itemize}
 %\item \textit{MayaToUnityPosRotSharedMem}: positions (vector of 4 components), rotations (quaternions) and internal IDs of each protein instance
@@ -573,10 +573,10 @@ Here we present two examples of scenes that have been created to showcase abilit
 \section{Demonstration 1: Strand-like Structure}
 First use case: strand-like structure displayed in Figure \ref{fig:strand1}. This scene has been created using two additional plug-ins: already mentioned Molecular Maya and Instance around Curve\footnote{Available for download from: \url{https://github.com/mmerchante/instanceAlongCurve}}.
 
-Protein has been imported using Molecular Maya. A pdb file has been downloaded from the Protein Data Bank and loaded into Maya with this plugin. Then, a low resolution mesh has been exported from the protein data. This mesh was then used as an object which was instanced along a curve using Instance Along Curve plug-in. Last step was to rename the individual instances to a pattern that our plugin would recognise as a molecular object.
+Protein has been imported using Molecular Maya. A pdb file has been downloaded from the Protein Data Bank and loaded into Maya with this plug-in. Then, a low resolution mesh has been exported from the protein data. This mesh was then used as an object which was instanced along a curve using Instance Along Curve plug-in. Last step was to rename the individual instances to a pattern that our plug-in would recognise as a molecular object.
 
 \section{Demonstration 2: Randomized Blood Proteins}
-Second demonstration case is shown in Figure \ref{fig:blood-random} and Figure \ref{fig:blood-random-close}. Proteins of 5 different types (1atu, 1smd, 2tsc, 2hiu, 2rcj) have been imported using Molecular Maya plugin and low resolution mesh has been generated. Then, using a custom script written in Python, position and rotation of each instance has been determined randomly.
+Second demonstration case is shown in Figure \ref{fig:blood-random} and Figure \ref{fig:blood-random-close}. Proteins of 5 different types (1atu, 1smd, 2tsc, 2hiu, 2rcj) have been imported using Molecular Maya plug-in and low resolution mesh has been generated. Then, using a custom script written in Python, position and rotation of each instance has been determined randomly.
 This scene contains 1593 instances of the 5 types of proteins. On Maya side, the scene consists of almost 3 million triangles.
 %[TODO: numbers]
 
@@ -589,11 +589,11 @@ Closer collaboration with an illustrator would be extremely helpful at this stag
 
 The pipeline does not have to end with just two programs communicating. Some further processing might be performed after the image is rendered with cellVIEW. For example, compositing or editing with tool like Adobe After Effects.
 
-However, even with this rough prototype we have attracted potentional partners for further cooperation. This project has been presented to Drew Berry who showed his amazement. It is possible that closer co-operation will be established with him.
+However, even with this rough prototype we have potential attracted partners for further cooperation. This project has been presented to Drew Berry who showed his amazement. It is possible that closer co-operation will be established with him.
 
 Similar response has been given when this project was presented (among other projects from our group) at a seminar in Utah. The visualization of the multiscale data that cellVIEW offers is very unique, so naturally researchers are interested in seeing it used together with the tool that they have been using themselves.
 
-Experts from the domain of biological visualization are always eager to tell their stories and express their ideas. It is very common that they want to integrate interactivity in this process. Hopefully, the system presented in this thesis will be expanded and fullfill the ultimate goal of helping illustrators and animators with the process of communicating the science to a broad audience.
+Experts from the domain of biological visualization are always eager to tell their stories and express their ideas. It is very common that they want to integrate interactivity in this process. Hopefully, the system presented in this thesis will be expanded and fulfill the ultimate goal of helping illustrators and animators with the process of communicating the science to a broad audience.
 %In our other project for example, we developed a demo application which was showing HIV dataset generated with cellPACK. All the proteins have been annotated with a name and a description of its function in this virus. What the experts wanted to create initially was an interactive story—a prepared walkthrough with a commentary about the structure and function of the virus. Unfortunately we have not been able to do this because we did not have proper tools to create this story. Maybe if Maya has been utilized this would have gone the other way. With Maya we could have animated the camera movement on Maya side and then export this movement for replay in cellVIEW.
 
 %In this way, we see an incredible potential in this approach. The process of using shared memory for communication between two processes has been used in one other project in our group as well. We believe that this approach could be applied in many situations in this domain. The data that we all try to visualize are mostly the same. There are very few standards so we see that among different programs the data representation stay more or less the same. However as was shown in state of the art, the programs are separated. This leads us to believe that if we can share this (same) data between programs, even better results can be accomplished.
