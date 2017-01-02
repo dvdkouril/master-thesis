@@ -1,10 +1,10 @@
 * Writing TODOs
-** TODO mention MONO somewhere
-** TODO put more references in the text
+** TODO put more references in the text (maybe reference programs?)
 ** TODO fix line overflows
 ** TODO rewrite discussion, future work chapter
-** TODO write about writing into shared memory on maya side (mention functions)
-** TODO write about pdb mapping
+** DONE put shared memory names into maya section
+** DONE write about pdb mapping
+** DONE write about writing into shared memory on maya side (mention functions)
 ** DONE vyresit kapitoly koncici jednou vetou na dalsi strance:
 *** DONE introduction
 ** DONE prepsat method
@@ -17,8 +17,7 @@
 ** DONE write about unity script (Unity Side)
 
 * Other TODOs
-** TODO appendix: popsat prilohy?
-** TODO figure with data layout and addresses how are they computed (like posPointer + num * float4)
+** DONE figure with data layout and addresses how are they computed (like posPointer + num * float4)
 ** DONE change names and errors in the code (no "fuck" and similar)
 ** DONE [Figure 4.1] znazornit spojeni pres shared memory
 ** DONE Data Generation -> Data
