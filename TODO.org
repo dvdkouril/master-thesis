@@ -1,7 +1,7 @@
 * Writing TODOs
 ** TODO put more references in the text (maybe reference programs?)
 ** TODO fix line overflows
-** TODO rewrite discussion, future work chapter
+** TODO rewrite discussion, future work chapter*
 ** DONE put shared memory names into maya section
 ** DONE write about pdb mapping
 ** DONE write about writing into shared memory on maya side (mention functions)
